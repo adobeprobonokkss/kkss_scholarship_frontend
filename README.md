@@ -1,0 +1,1 @@
+# kkss_scholarship_frontend
