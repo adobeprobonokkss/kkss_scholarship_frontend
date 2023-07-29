@@ -62,10 +62,6 @@ const configs = [
           change: (e: Event) => {
             console.log("named changed");
           },
-          style: {
-            width: "400px",
-            height: "100px",
-          },
         },
       },
       {
