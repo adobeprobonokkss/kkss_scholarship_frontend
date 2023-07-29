@@ -7,6 +7,8 @@ import "@spectrum-web-components/theme/express/theme-light.js";
 import "@spectrum-web-components/theme/scale-medium.js";
 import "@spectrum-web-components/theme/express/scale-medium.js";
 import { Theme } from "@swc-react/theme";
+import App from "./App";
+import "./index.css";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCpuU7tJgSciOLdUB-fVJsRaSpDRD72NJs",
@@ -19,14 +21,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-
-const App: React.FC = () => {
-  return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
-  );
-};
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

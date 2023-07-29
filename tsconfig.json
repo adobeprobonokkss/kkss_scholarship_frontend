@@ -8,6 +8,6 @@
     "moduleResolution": "node",
     "baseUrl": "./src"
   },
-  "include": ["src/**/*.tsx", "src/**/*.ts"],
+  "include": ["src/**/*.tsx", "src/**/*.ts", "declarations.d.ts"],
   "exclude": ["node_modules"]
 }

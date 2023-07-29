@@ -24,6 +24,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-form-stepper": "^2.0.3",
+    "react-router-dom": "^6.14.2",
     "typescript": "^5.1.6"
   },
   "devDependencies": {
@@ -31,6 +32,7 @@
     "@types/react-dom": "^18.2.7",
     "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.3",
+    "mini-css-extract-plugin": "^2.7.6",
     "style-loader": "^3.3.3",
     "ts-loader": "^9.4.4",
     "webpack": "^5.88.2",
