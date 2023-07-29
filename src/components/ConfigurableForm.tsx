@@ -2,6 +2,8 @@ import React from "react";
 import { MenuItem } from "@swc-react/menu";
 import { FieldLabel } from "@swc-react/field-label";
 
+import classes from "../styles/ConfigurableForm.module.css";
+
 interface IConfigurableFormProps {
   config: any;
 }
@@ -14,24 +16,29 @@ const ConfigurableForm: React.FC<IConfigurableFormProps> = (
   config.forEach((el: any) => {
     initForm[el.key] = "";
   });
+  console.log(initForm);
   const [formData, setFormData] = React.useState(initForm);
 
   const renderMenuItem = (item: string) => {
     return React.createElement(MenuItem, {
       value: item,
       children: item,
+      key: item,
     });
   };
 
   const renderTextfield = (input: any) => {
     return React.createElement(input.component, {
       ...input.props,
-      value: formData[input.key],
+      quiet: true,
+      style: {
+        width: "100%",
+      },
+      value: input.props.value ?? formData[input.key],
       change: (e: any) => {
         e.preventDefault();
         setFormData({ ...formData, [input.key]: e.target.value });
-        console.log(formData);
-        input.props.change(e);
+        if (input.props.change) input.props.change(e);
       },
     });
   };
@@ -43,8 +50,7 @@ const ConfigurableForm: React.FC<IConfigurableFormProps> = (
       change: (e: any) => {
         e.preventDefault();
         setFormData({ ...formData, [input.key]: e.target.value });
-        console.log(formData);
-        input.props.change(e);
+        if (input.props.change) input.props.change(e);
       },
       children: input.props.children.map((item: string) =>
         renderMenuItem(item)
@@ -66,12 +72,19 @@ const ConfigurableForm: React.FC<IConfigurableFormProps> = (
   const renderInputFields = () => {
     const inputFields: any = config.map((el: any) => {
       return (
-        <>
+        <div key={el.key} className={classes.card}>
           {React.createElement(FieldLabel, {
             children: el.label,
+            style: {
+              fontSize: "16pt",
+              fontFamily: `'docs-Roboto', Helvetica, Arial, sans-serif`,
+              letterSpacing: 0,
+              color: "#000000",
+              fontWeight: 510,
+            },
           })}
           {switchComponent(el)}
-        </>
+        </div>
       );
     });
     return inputFields;
@@ -84,7 +97,9 @@ const ConfigurableForm: React.FC<IConfigurableFormProps> = (
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>{renderInputFields()}</form>
+      <form className={classes.form} onSubmit={handleSubmit}>
+        {renderInputFields()}
+      </form>
     </div>
   );
 };

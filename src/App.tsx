@@ -8,7 +8,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [{ path: "/scholarship-form", element: <ScholarshipForm /> }],
+    children: [
+      { path: "/", element: <ScholarshipForm /> },
+      { path: "/scholarship-form", element: <ScholarshipForm /> },
+    ],
   },
 ]);
 
