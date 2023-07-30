@@ -1,5 +1,7 @@
 import { Textfield } from "@swc-react/textfield";
 import { Picker } from "@swc-react/picker";
+import { createElement } from "react";
+import { MenuItem } from "@swc-react/menu";
 
 export type ScholarshipData = {
   email: string;
@@ -16,7 +18,9 @@ export type ScholarshipData = {
   refferralPhNumber: string;
   schoolCollegeNameAndAddress: string;
   education: string;
+  stream: string;
   class: string;
+  educationOthers: string;
   mediumOfEducation: string;
   schoolCollegePhNumber: string;
   estimatedAnnualFee: string;
@@ -27,15 +31,15 @@ export type ScholarshipData = {
   ambition: string;
   awardDetails: string;
   attendanceDetails: string;
-  fathersName: string;
-  fathersAge: string;
-  fathersOccupation: string;
-  fathersAnnualIncome: string;
+  fatherName: string;
+  fatherAge: string;
+  fatherOccupation: string;
+  fatherAnnualIncome: string;
   fatherPhNumber: string;
-  mothersName: string;
-  mothersAge: string;
-  mothersOccupation: string;
-  mothersAnnualIncome: string;
+  motherName: string;
+  motherAge: string;
+  motherOccupation: string;
+  motherAnnualIncome: string;
   motherPhNumber: string;
   siblingName: string;
   siblingAge: string;
@@ -45,6 +49,8 @@ export type ScholarshipData = {
   formSubmittedBy: string;
   yourPhNumber: string;
 };
+
+export type ScholarshipFormKeys = keyof ScholarshipData;
 
 const configs = [
   // Personal Details
@@ -59,9 +65,11 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Valid Email",
+          placeholder: "Enter valid Email",
           id: "email",
           value: "",
+          required: true,
+          type: "email",
         },
       },
       // Name
@@ -74,6 +82,7 @@ const configs = [
           placeholder: "Enter Name as per Bank Account",
           id: "name",
           value: "",
+          required: true,
         },
       },
       // Aadhar Number
@@ -83,20 +92,20 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
+          type: "number",
           placeholder: "Enter Aadhar Number",
           id: "aadharNumber",
           value: "",
+          required: true,
         },
       },
       // Date of Birth
       {
         key: "dateOfBirth",
         label: "Date of Birth",
-        type: "text",
-        component: Textfield,
+        type: "date",
         props: {
           id: "dateOfBirth",
-          value: "",
         },
       },
       // Gender
@@ -106,10 +115,9 @@ const configs = [
         component: Picker,
         type: "dropdown",
         props: {
-          placeholder: "Select Gender",
+          label: "Select Gender",
           id: "gender",
           value: "",
-          children: ["Male", "Female"],
         },
       },
       // Category
@@ -119,10 +127,9 @@ const configs = [
         component: Picker,
         type: "dropdown",
         props: {
-          placeholder: "Choose Category",
+          label: "Choose Category",
           id: "category",
           value: "",
-          children: ["SC", "ST", "OBC", "EWS", "General"],
         },
       },
       // Address
@@ -136,6 +143,7 @@ const configs = [
           id: "address",
           value: "",
           multiline: true,
+          required: true,
         },
       },
       // Phone Number
@@ -148,6 +156,7 @@ const configs = [
           placeholder: "Enter Phone Number",
           id: "phNumber",
           value: "",
+          required: true,
         },
       },
       // Mother Tongue
@@ -160,6 +169,7 @@ const configs = [
           placeholder: "Enter Mother Tongue",
           id: "motherTongue",
           value: "",
+          required: true,
         },
       },
       // Place of Birth
@@ -172,6 +182,7 @@ const configs = [
           placeholder: "Enter Place of Birth",
           id: "placeOfBirth",
           value: "",
+          required: true,
         },
       },
       // Referred By
@@ -184,6 +195,7 @@ const configs = [
           placeholder: "Enter name of the person Referred",
           id: "referral",
           value: "",
+          required: true,
         },
       },
       // Contact Number of the Person Referred
@@ -196,6 +208,7 @@ const configs = [
           placeholder: "Enter contact number of the person Referred",
           id: "",
           value: "",
+          required: true,
         },
       },
     ],
@@ -215,6 +228,7 @@ const configs = [
           placeholder: "Enter School/College Name and Address",
           id: "schoolCollegeNameAndAddress",
           value: "",
+          required: true,
         },
       },
       // Education
@@ -224,29 +238,62 @@ const configs = [
         component: Picker,
         type: "dropdown",
         props: {
-          placeholder: "Enter Education",
+          label: "Choose Education",
           id: "education",
           value: "",
-          children: [
-            "Primary",
-            "High School",
-            "PU College",
-            "Diploma",
-            "Graduation",
-            "Post Graduation",
-            "Others",
-          ],
+          required: true,
+        },
+      },
+      // Stream
+      {
+        key: "stream",
+        label: "Stream",
+        type: "dropdown",
+        component: Picker,
+        displayField: (formDataCtx: any) => {
+          const id = formDataCtx.education;
+          return (
+            id.length > 0 &&
+            id != "others" &&
+            Object.keys(streamMap).includes(id)
+          );
+        },
+        props: {
+          label: "Select stream",
+          id: "stream",
+          value: "",
         },
       },
       // Class
       {
         key: "class",
         label: "Class",
-        type: "text",
+        type: "dropdown",
         component: Picker,
+        displayField: (formDataCtx: any) => {
+          const id = formDataCtx.education;
+          return id.length > 0;
+        },
         props: {
-          placeholder: "Select class",
+          label: "Select class",
           id: "class",
+          value: "",
+        },
+      },
+      // Others
+      {
+        key: "educationOthers",
+        label: "Others",
+        type: "text",
+        component: Textfield,
+        displayField: (formDataCtx: any) => {
+          return (
+            formDataCtx.education == "others" || formDataCtx.stream == "others"
+          );
+        },
+        props: {
+          placeholder: "Enter details",
+          id: "educationOthers",
           value: "",
         },
       },
@@ -260,6 +307,7 @@ const configs = [
           placeholder: "Enter Medium of Education",
           id: "mediumOfEducation",
           value: "",
+          required: true,
         },
       },
       // School/College Phone Number
@@ -272,6 +320,7 @@ const configs = [
           placeholder: "Enter School/College Phone Number",
           id: "schoolCollegePhNumber",
           value: "",
+          required: true,
         },
       },
       // Estimated Annual Fee
@@ -284,6 +333,7 @@ const configs = [
           placeholder: "Enter Estimated Annual Fee",
           id: "estimatedAnnualFee",
           value: "",
+          required: true,
         },
       },
       // Previous 3 year marks
@@ -298,7 +348,7 @@ const configs = [
       // Year 1
       {
         key: "year1",
-        label: `${(new Date().getFullYear() - 1).toString()}`,
+        label: `${new Date().getFullYear() - 1}`,
         type: "text",
         component: Textfield,
         props: {
@@ -310,7 +360,7 @@ const configs = [
       // Year 2
       {
         key: "year2",
-        label: `${(new Date().getFullYear() - 2).toString()}`,
+        label: `${new Date().getFullYear() - 2}`,
         type: "text",
         component: Textfield,
         props: {
@@ -322,7 +372,7 @@ const configs = [
       // Year 3
       {
         key: "year3",
-        label: `${(new Date().getFullYear() - 3).toString()}`,
+        label: `${new Date().getFullYear() - 3}`,
         type: "text",
         component: Textfield,
         props: {
@@ -341,6 +391,7 @@ const configs = [
           placeholder: "Enter Hobbies",
           id: "hobbies",
           value: "",
+          required: true,
         },
       },
       // Ambition
@@ -353,6 +404,7 @@ const configs = [
           placeholder: "Enter Ambition",
           id: "ambition",
           value: "",
+          required: true,
         },
       },
       // Academic Year Award Details
@@ -432,6 +484,7 @@ const configs = [
           placeholder: "Enter Father's Annual Income",
           id: "fatherAnnualIncome",
           value: "",
+          required: true,
         },
       },
       // Father's Mobile Number
@@ -444,6 +497,7 @@ const configs = [
           placeholder: "Enter Father's Mobile Number",
           id: "fatherPhNumber",
           value: "",
+          required: true,
         },
       },
       // Mother's Name
@@ -492,6 +546,7 @@ const configs = [
           placeholder: "Enter Mother's Annual Income",
           id: "motherAnnualIncome",
           value: "",
+          required: true,
         },
       },
       // Mother's Mobile Number
@@ -504,6 +559,7 @@ const configs = [
           placeholder: "Enter Mother's Mobile Number",
           id: "motherPhNumber",
           value: "",
+          required: true,
         },
       },
       // Sibling's Name
@@ -576,6 +632,7 @@ const configs = [
           placeholder: "Enter Form Submitted by",
           id: "formSubmittedBy",
           value: "",
+          required: true,
         },
       },
       // Your Phone no.
@@ -588,10 +645,304 @@ const configs = [
           placeholder: "Enter Your Phone no.",
           id: "yourPhNumber",
           value: "",
+          required: true,
         },
       },
     ],
   },
 ];
+
+const streamMap: any = {
+  diploma: {
+    ene: "Electrical & Electronics",
+    entc: "Electronics & Communication",
+    cse: "Computer Science",
+    me: "Mechanical",
+    auto: "Automobile",
+    others: "Others",
+  },
+  graduation: {
+    science: "Science",
+    commerce: "Commerce",
+    arts: "Arts",
+    engineering: "Engineering",
+    arch: "Architecture",
+    medical: "Medical",
+    law: "Law",
+    jounalism: "Jounalism",
+    others: "Others",
+  },
+  postGraduation: {
+    science: "Science MSC",
+    commerce: "Commerce Mcom, CA",
+    arts: "Arts MA",
+    engineering: "Engineering MTech",
+    arch: "Architecture MArch",
+    medical: "Medical MD, MS, etc",
+    law: "Law LLM",
+    jounalism: "Jounalism",
+    others: "Others",
+  },
+};
+
+const classMap: any = {
+  primary: {
+    "1stStandard": "1st Standard",
+    "2ndStandard": "2nd Standard",
+    "3rdStandard": "3rd Standard",
+    "4thStandard": "4th Standard",
+    "5thStandard": "5th Standard",
+    "6thStandard": "6th Standard",
+    "7thStandard": "7th Standard",
+  },
+  highSchool: {
+    "8thStandard": "8th Standard",
+    "9thStandard": "9th Standard",
+    "10thStandard": "10th Standard",
+  },
+  puCollege: {
+    "1stPUCScience": "1st PUC Science",
+    "1stPUCCommerce": "1st PUC Commerce",
+    "1stPUCArts": "1st PUC Arts",
+    "2ndPUCScience": "2nd PUC Science",
+    "2ndPUCCommerce": "2nd PUC Commerce",
+    "2ndPUCArts": "2nd PUC Arts",
+  },
+  diploma: {
+    "1stYear": "1st Year",
+    "2ndYear": "2nd Year",
+    "3rdYear": "3rd Year",
+    "4thYear": "4th Year",
+    "5thYear": "5th Year",
+  },
+  graduation: {
+    "1stYear": "1st Year",
+    "2ndYear": "2nd Year",
+    "3rdYear": "3rd Year",
+    "4thYear": "4th Year",
+    "5thYear": "5th Year",
+  },
+  postGraduation: {
+    "1stYear": "1st Year",
+    "2ndYear": "2nd Year",
+    "3rdYear": "3rd Year",
+    "4thYear": "4th Year",
+    "5thYear": "5th Year",
+  },
+};
+
+const educationLevels: any = {
+  primary: "Primary",
+  highSchool: "High School",
+  puCollege: "PU College",
+  diploma: "Diploma",
+  graduation: "Graduation",
+  postGraduation: "Post Graduation",
+  others: "Others",
+};
+
+const genders = {
+  male: "Male",
+  female: "Female",
+};
+
+const category = {
+  sc: "SC",
+  st: "ST",
+  obc: "OBC",
+  ews: "EWS",
+  general: "General",
+};
+
+export const validationMap: any = {
+  email: {
+    maxLength: 128,
+  },
+  name: {
+    maxLength: 64,
+  },
+  aadharNumber: {
+    maxLength: 12,
+  },
+  dateOfBirth: {},
+  gender: {},
+  category: {},
+  address: {
+    maxLength: 300,
+  },
+  phNumber: {
+    maxLength: 13,
+  },
+  motherTongue: {
+    maxLength: 24,
+  },
+  placeOfBirth: {
+    maxLength: 80,
+  },
+  referral: {
+    maxLength: 64,
+  },
+  refferralPhNumber: {
+    maxLength: 13,
+  },
+  schoolCollegeNameAndAddress: {
+    maxLength: 300,
+  },
+  education: {},
+  stream: {},
+  class: {},
+  educationOthers: {
+    maxLength: 100,
+  },
+  mediumOfEducation: {
+    maxLength: 24,
+  },
+  schoolCollegePhNumber: {
+    maxLength: 13,
+  },
+  estimatedAnnualFee: {
+    maxLength: 16,
+  },
+  year1: {
+    maxLength: 16,
+  },
+  year2: {
+    maxLength: 16,
+  },
+  year3: {
+    maxLength: 16,
+  },
+  hobbies: {
+    maxLength: 1000,
+  },
+  ambition: {
+    maxLength: 3000,
+  },
+  awardDetails: {
+    maxLength: 3000,
+  },
+  attendanceDetails: {
+    maxLength: 100,
+  },
+  fatherName: {
+    maxLength: 64,
+  },
+  fatherAge: {
+    maxLength: 3,
+  },
+  fatherOccupation: {
+    maxLength: 64,
+  },
+  fatherAnnualIncome: {
+    maxLength: 32,
+  },
+  fatherPhNumber: {
+    maxLength: 13,
+  },
+  motherName: {
+    maxLength: 64,
+  },
+  motherAge: {
+    maxLength: 3,
+  },
+  motherOccupation: {
+    maxLength: 64,
+  },
+  motherAnnualIncome: {
+    maxLength: 32,
+  },
+  motherPhNumber: {
+    maxLength: 13,
+  },
+  siblingName: {
+    maxLength: 64,
+  },
+  siblingAge: {
+    maxLength: 3,
+  },
+  siblingOccupation: {
+    maxLength: 64,
+  },
+  siblingAnnualIncome: {
+    maxLength: 32,
+  },
+  siblingPhNumber: {
+    maxLength: 13,
+  },
+  formSubmittedBy: {
+    maxLength: 64,
+  },
+  yourPhNumber: {
+    maxLength: 13,
+  },
+};
+
+export const validateForm = (formData: ScholarshipData) => {
+  const errors: string[] = [];
+  configs.forEach((config) => {
+    config.formFields.forEach((field: any) => {
+      if (field.key in validationMap) {
+        const fieldVal = formData[field.key as ScholarshipFormKeys];
+        if (fieldVal.length > validationMap[field.key].maxLength) {
+          errors.push(
+            `Max length exceeded. Max length for ${field.label} is ${
+              validationMap[field.key].maxLength
+            }`
+          );
+        }
+        if (field.props.required && fieldVal.length == 0) {
+          errors.push(`${field.label} is required`);
+        }
+      }
+    });
+  });
+
+  return errors;
+};
+
+export const renderMenuItem = (item: any) => {
+  return createElement(MenuItem, {
+    value: item.key,
+    children: item.value,
+    key: item.key,
+  });
+};
+
+export const renderPickerChildren = (
+  fieldID: string,
+  formDataCtx: ScholarshipData
+) => {
+  let children: any;
+  switch (fieldID) {
+    case "stream": {
+      const streamID = formDataCtx.education;
+      if (streamID == "others") return null;
+      children = streamMap[streamID];
+      break;
+    }
+    case "class": {
+      const classID = formDataCtx.education;
+      if (classID == "others") return null;
+      children = classMap[classID];
+      break;
+    }
+    case "education": {
+      children = educationLevels;
+      break;
+    }
+    case "gender": {
+      children = genders;
+      break;
+    }
+    case "category": {
+      children = category;
+      break;
+    }
+  }
+  console.log(fieldID, children);
+  return Object.keys(children).map((el: string) =>
+    renderMenuItem({ key: el, value: children[el] })
+  );
+};
 
 export default configs;
