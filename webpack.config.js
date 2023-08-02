@@ -10,45 +10,47 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    publicPath: "/"
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js", ".css"],
+    extensions: [".tsx", ".ts", ".js", ".css"]
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        use: "ts-loader"
       },
       // add rule for loading css
       {
         test: /\.css$/,
-        use: [, MiniCssExtractPlugin.loader, "css-loader"],
+        use: [, MiniCssExtractPlugin.loader, "css-loader"]
       },
       // add rule for loading images
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
-      },
-    ],
+        type: "asset/resource"
+      }
+    ]
   },
   devServer: {
+    historyApiFallback: true,
     static: {
-      directory: path.join(__dirname, "./"),
+      directory: path.join(__dirname, "./")
     },
     devMiddleware: {
-      writeToDisk: true,
+      writeToDisk: true
     },
     compress: true,
-    port: 9000,
+    port: 9000
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./index.html",
-      filename: "index.html",
+      filename: "index.html"
     }),
     new MiniCssExtractPlugin({
-      filename: "styles.css",
-    }),
-  ],
+      filename: "styles.css"
+    })
+  ]
 };
