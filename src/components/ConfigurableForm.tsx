@@ -1,55 +1,67 @@
-import React from "react";
-import { MenuItem } from "@swc-react/menu";
+import React, { FC, createElement, useContext } from "react";
 import { FieldLabel } from "@swc-react/field-label";
+
+import classes from "../styles/ConfigurableForm.module.css";
+import { ScholarshipFormContext } from "../context/ScholarshipFormContext";
+import {
+  renderPickerChildren,
+  validationMap,
+} from "../services/ScholarshipFormService";
 
 interface IConfigurableFormProps {
   config: any;
 }
 
-const ConfigurableForm: React.FC<IConfigurableFormProps> = (
+const ConfigurableForm: FC<IConfigurableFormProps> = (
   props: IConfigurableFormProps
 ) => {
-  const initForm: any = {};
   const { config } = props;
-  config.forEach((el: any) => {
-    initForm[el.key] = "";
-  });
-  const [formData, setFormData] = React.useState(initForm);
-
-  const renderMenuItem = (item: string) => {
-    return React.createElement(MenuItem, {
-      value: item,
-      children: item,
-    });
-  };
+  const formDataCtx = useContext<any>(ScholarshipFormContext);
+  console.log("In ConfigurableForm.tsx");
 
   const renderTextfield = (input: any) => {
-    return React.createElement(input.component, {
+    return createElement(input.component, {
       ...input.props,
-      value: formData[input.key],
+      quiet: true,
+      style: {
+        width: "100%",
+      },
+      value: formDataCtx[input.key],
       change: (e: any) => {
         e.preventDefault();
-        setFormData({ ...formData, [input.key]: e.target.value });
-        console.log(formData);
-        input.props.change(e);
+        const value = e.target.value
+          ?.slice(0, validationMap[input.key]?.maxLength)
+          .trim();
+        formDataCtx.onFormDataChange(input.key, value);
+        if (input.props.change) input.props.change(e);
       },
     });
   };
 
   const renderPicker = (input: any) => {
-    return React.createElement(input.component, {
+    return createElement(input.component, {
       ...input.props,
-      value: formData[input.key],
+      value: formDataCtx[input.key].trim(),
       change: (e: any) => {
         e.preventDefault();
-        setFormData({ ...formData, [input.key]: e.target.value });
-        console.log(formData);
-        input.props.change(e);
+        formDataCtx.onFormDataChange(input.key, e.target.value);
+        if (input.props.change) input.props.change(e);
       },
-      children: input.props.children.map((item: string) =>
-        renderMenuItem(item)
-      ),
+      children: renderPickerChildren(input.key, formDataCtx),
     });
+  };
+
+  const renderDatePicker = (input: any) => {
+    const props = {
+      ...input.props,
+      value: formDataCtx[input.key],
+      onChange: (e: any) => {
+        e.preventDefault();
+        formDataCtx.onFormDataChange(input.key, e.target.value);
+      },
+      className: classes.datePicker,
+    };
+    return <input {...props} type="date" />;
   };
 
   const switchComponent = (input: any) => {
@@ -58,6 +70,8 @@ const ConfigurableForm: React.FC<IConfigurableFormProps> = (
         return renderPicker(input);
       case "text":
         return renderTextfield(input);
+      case "date":
+        return renderDatePicker(input);
       default:
         return null;
     }
@@ -65,26 +79,31 @@ const ConfigurableForm: React.FC<IConfigurableFormProps> = (
 
   const renderInputFields = () => {
     const inputFields: any = config.map((el: any) => {
+      if (el.displayField && !el.displayField(formDataCtx)) {
+        return null;
+      }
       return (
-        <>
-          {React.createElement(FieldLabel, {
+        <div key={el.key} className={classes.card}>
+          {createElement(FieldLabel, {
             children: el.label,
+            style: {
+              fontSize: "16pt",
+              fontFamily: `'docs-Roboto', Helvetica, Arial, sans-serif`,
+              letterSpacing: 0,
+              color: "#000000",
+              fontWeight: 510,
+            },
           })}
           {switchComponent(el)}
-        </>
+        </div>
       );
     });
     return inputFields;
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(formData);
-  };
-
   return (
     <div>
-      <form onSubmit={handleSubmit}>{renderInputFields()}</form>
+      <form className={classes.form}>{renderInputFields()}</form>
     </div>
   );
 };

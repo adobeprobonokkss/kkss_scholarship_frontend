@@ -13,6 +13,9 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [{ path: "/scholarship-form", element: <Protected Component={ScholarshipForm} /> }]
   }
+
+   
+
 ]);
 
 function App() {

@@ -1,0 +1,7 @@
+.stepperButtons {
+  margin: 0.5em;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20% 0 20%;
+}
