@@ -13,9 +13,6 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [{ path: "/scholarship-form", element: <Protected Component={ScholarshipForm} /> }]
   }
-
-   
-
 ]);
 
 function App() {
@@ -28,13 +25,17 @@ function App() {
         <li>
           <Link to="/">Home</Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/login/success">loging_success</Link>
+        </li> */}
+        <li>
+          <Link to="/scholarship-form">Apply for scholarship</Link>
         </li>
       </ul>
       <Routes>
         <Route path="/" element={<Login />}></Route>
         <Route path="/login/success" element={<LoginSuccess />}></Route>
+        <Route path="/scholarship-form" element={<ScholarshipForm />}></Route>
       </Routes>
     </Router>
   );

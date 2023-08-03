@@ -20,7 +20,7 @@
     "@swc-react/picker": "^0.34.0",
     "@swc-react/textfield": "^0.34.0",
     "@swc-react/theme": "^0.34.0",
-    "firebase": "^10.1.0",
+    "firebase": "^10.1.0",   //not required this
     "protobufjs": "^7.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
