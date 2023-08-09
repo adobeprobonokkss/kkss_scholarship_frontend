@@ -6,6 +6,7 @@ import RootLayout from "./pages/RootLayout";
 import Login from "./pages/Login";
 import Protected from "./pages/Protected";
 import LoginSuccess from "./pages/LoginSuccess";
+import ListUsers from "./pages/ListUsers";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/" element={<Login />}></Route>
         <Route path="/login/success" element={<LoginSuccess />}></Route>
         <Route path="/scholarship-form" element={<ScholarshipForm />}></Route>
+        <Route path="/users" element={<ListUsers />}></Route>
       </Routes>
     </Router>
   );

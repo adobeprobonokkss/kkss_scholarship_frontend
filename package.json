@@ -13,6 +13,7 @@
     "build-dev": "yarn clean && webpack --mode development"
   },
   "dependencies": {
+    "@adobe/react-spectrum": "^3.28.0",
     "@swc-react/action-menu": "^0.34.0",
     "@swc-react/button": "^0.34.0",
     "@swc-react/field-label": "^0.34.0",
@@ -20,7 +21,10 @@
     "@swc-react/picker": "^0.34.0",
     "@swc-react/textfield": "^0.34.0",
     "@swc-react/theme": "^0.34.0",
-    "firebase": "^10.1.0", 
+    "axios": "^1.4.0",
+    "cookie-parser": "^1.4.6",
+    "firebase": "^10.1.0",
+    "package.json": "^2.0.1",
     "protobufjs": "^7.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

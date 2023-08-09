@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import cookieParser from "cookie-parser";
+// import cookieParser from "cookie-parser";
 
 function Protected(props: any) {
   const { Component } = props;
