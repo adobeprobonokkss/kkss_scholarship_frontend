@@ -5,7 +5,10 @@ import { Stepper, Step } from "react-form-stepper";
 
 import classes from "../styles/StepperForm.module.css";
 import { ScholarshipFormContext } from "../context/ScholarshipFormContext";
-import { validateForm } from "../services/ScholarshipFormService";
+import {
+  submitApplication,
+  validateForm,
+} from "../services/ScholarshipFormService";
 
 const StepperForm: React.FC<any> = (props: any) => {
   const [activeStep, setActiveStep] = useState(0);
@@ -18,6 +21,7 @@ const StepperForm: React.FC<any> = (props: any) => {
       return;
     }
     console.log("In Submit", formDataCtx);
+    submitApplication(formDataCtx);
   };
   console.log("In StepperForm.tsx");
 
