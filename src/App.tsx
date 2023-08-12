@@ -1,4 +1,11 @@
-import { BrowserRouter as Router, Link, createBrowserRouter, Route, Routes, RouterProvider } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Link,
+  createBrowserRouter,
+  Route,
+  Routes,
+  RouterProvider,
+} from "react-router-dom";
 import React from "react";
 
 import ScholarshipForm from "./pages/ScholarshipForm";
@@ -11,8 +18,13 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [{ path: "/scholarship-form", element: <Protected Component={ScholarshipForm} /> }]
-  }
+    children: [
+      {
+        path: "/scholarship-form",
+        element: <Protected Component={ScholarshipForm} />,
+      },
+    ],
+  },
 ]);
 
 function App() {

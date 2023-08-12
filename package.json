@@ -20,7 +20,8 @@
     "@swc-react/picker": "^0.34.0",
     "@swc-react/textfield": "^0.34.0",
     "@swc-react/theme": "^0.34.0",
-    "firebase": "^10.1.0", 
+    "axios": "^1.4.0",
+    "firebase": "^10.1.0",
     "protobufjs": "^7.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -29,8 +30,10 @@
     "typescript": "^5.1.6"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.3",
     "@types/react": "^18.2.16",
     "@types/react-dom": "^18.2.7",
+    "cookie-parser": "^1.4.6",
     "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.3",
     "mini-css-extract-plugin": "^2.7.6",

@@ -2,6 +2,7 @@ import { Textfield } from "@swc-react/textfield";
 import { Picker } from "@swc-react/picker";
 import { createElement } from "react";
 import { MenuItem } from "@swc-react/menu";
+import axios from "axios";
 
 export type ScholarshipData = {
   email: string;
@@ -943,6 +944,23 @@ export const renderPickerChildren = (
   return Object.keys(children).map((el: string) =>
     renderMenuItem({ key: el, value: children[el] })
   );
+};
+
+// submit scholarship form
+export const submitApplication = async (scholarshipFormData: any) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:1337/api/v1/submitApplication`,
+      {
+        scholarshipFormData,
+      }
+    );
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error submitting scholarship form data: ", error);
+    return null;
+  }
 };
 
 export default configs;
