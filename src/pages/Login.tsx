@@ -16,6 +16,7 @@ function Login(props: any) {
     const response: any = await axios.get(`${BACKENDURL}/api/v1/auth/user`, { withCredentials: true }).catch(err => {
       console.log("not authnticated user....");
     });
+    console.log("hello", response);
     if (response && response.data) {
       console.log(response.data);
       return response.data;
@@ -55,11 +56,18 @@ function Login(props: any) {
     }
   };
 
+  const submitapplication = async () => {
+    let timer: NodeJS.Timeout | null = null;
+    const userSessionInfo: any = await fetchUser();
+    console.log(userSessionInfo);
+  };
+
   return (
     <div className="container">
       <div className="login-card">
         <h1>Login</h1>
         <button onClick={loginWithGoogleSSO}>Login with Gmail</button>
+        <button onClick={submitapplication}>submit application</button>
       </div>
     </div>
   );
