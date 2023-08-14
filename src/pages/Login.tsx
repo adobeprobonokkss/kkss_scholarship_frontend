@@ -49,7 +49,7 @@ function Login(props: any) {
           // await createSession();
           const userSessionInfo: any = await fetchUser();
           console.log(userSessionInfo);
-          if (userSessionInfo.valid) props.setLogin(true);
+          // if (userSessionInfo.valid) props.setLogin(true);
           if (timer) clearInterval(timer);
         }
       }, 500);
