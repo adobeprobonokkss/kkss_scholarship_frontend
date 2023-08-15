@@ -10,19 +10,18 @@ const Navigation: React.FC = () => {
       <nav>
         <ul className={classes.list}>
           <li>
-            <NavLink
-              className={(isActive) => (isActive ? classes.active : "")}
-              to="/"
-            >
-              Home
+            <NavLink className={isActive => (isActive ? classes.active : "")} to="/">
+              DashBoard
             </NavLink>
           </li>
           <li>
-            <NavLink
-              className={(isActive) => (isActive ? classes.active : "")}
-              to="/scholarship-form"
-            >
+            <NavLink className={isActive => (isActive ? classes.active : "")} to="/scholarship-form">
               Scholarship Form
+            </NavLink>
+          </li>
+          <li>
+            <NavLink className={isActive => (isActive ? classes.active : "")} to="/scholarship-form">
+              Edit Profile
             </NavLink>
           </li>
         </ul>

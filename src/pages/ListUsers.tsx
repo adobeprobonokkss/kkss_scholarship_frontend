@@ -55,7 +55,7 @@ function ListUsers() {
   };
 
   const fetchUsers = async () => {
-    const response: any = await axios.get("http://localhost:1337/api/v1/protected/get/users", { withCredentials: true }).catch(err => {
+    const response: any = await axios.get(`${process.env.REACT_APP_BACK_END_URL}/api/v1/protected/get/users`, { withCredentials: true }).catch(err => {
       console.log("not authnticated user....");
     });
 

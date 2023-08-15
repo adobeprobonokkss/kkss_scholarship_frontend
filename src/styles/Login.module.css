@@ -1,0 +1,43 @@
+/* Login.css */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.login-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.org-logo {
+  width: 100px; /* Adjust the width as needed */
+  margin-bottom: 10px;
+}
+
+.login-card h1 {
+  margin: 0 0 20px;
+  font-size: 24px;
+}
+
+.login-card button {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.login-card button:hover {
+  background-color: #357ae8;
+}

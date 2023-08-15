@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require("webpack");
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -51,6 +52,10 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: "styles.css"
+    }),
+
+    new webpack.DefinePlugin({
+      "process.env.REACT_APP_BACK_END_URL": JSON.stringify("https://us-central1-demo2-8894e.cloudfunctions.net/api")
     })
   ]
 };
