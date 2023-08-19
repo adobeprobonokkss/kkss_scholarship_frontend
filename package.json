@@ -30,7 +30,8 @@
     "react-dom": "^18.2.0",
     "react-form-stepper": "^2.0.3",
     "react-router-dom": "^6.14.2",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",

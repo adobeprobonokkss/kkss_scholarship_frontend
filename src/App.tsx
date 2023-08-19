@@ -11,10 +11,14 @@ import ScholarshipForm from "./pages/ScholarshipForm";
 import UserDashBoard from "./pages/UserDashBoard";
 import RootLayout from "./pages/RootLayout";
 import Login from "./pages/Login";
+import DataContext from "./DataContext";
 import Protected from "./pages/Protected";
 import LoginSuccess from "./pages/LoginSuccess";
 import ListUsers from "./pages/ListUsers";
 import FormSearch from "./pages/FormSearch";
+import { defaultUserSession } from "./interface/UserSession";
+import Header from "./components/header";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -33,37 +37,32 @@ const router = createBrowserRouter([
         path: "/search",
         element: <Protected Component={FormSearch} />,
       },
+      {
+        path: "/list",
+        element: <Protected Component={ListUsers} />,
+      },
     ],
   },
 ]);
-
 function App() {
-  const [isLogin, setLogin] = useState(true);
-  const [usersDetail, setUserDetails] = useState(null);
+  const [isLogin, setLogin] = useState(false);
+  // const [usersDetail, setUserDetails] = useState(defaultUserSession);
 
   useEffect(() => {
-    console.log("from appliction", usersDetail);
+    // console.log("From  Application", usersDetail);
   }, [isLogin]);
 
   return isLogin ? (
-    <RouterProvider router={router} />
+    // <DataContext.Provider value={usersDetail}>
+    <>
+      <Header setLogin={setLogin}></Header>
+      <RouterProvider router={router} />
+    </>
   ) : (
+    // </DataContext.Provider>
     <Router>
       <Routes>
-        {!isLogin ? (
-          <Route
-            path="*"
-            element={
-              <Login setUserDetails={setUserDetails} setLogin={setLogin} />
-            }
-          ></Route>
-        ) : (
-          ""
-        )}
-        <Route path="/login/success" element={<LoginSuccess />}></Route>
-        {/* <Route path="/scholarship-form" element={<ScholarshipForm />}></Route> */}
-        <Route path="/users" element={<ListUsers />}></Route>
-        <Route path="/dashboard" element={<UserDashBoard />}></Route>
+        {<Route path="*" element={<Home setLogin={setLogin} />}></Route>}
       </Routes>
     </Router>
   );

@@ -1,34 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { setUserInfo } from "./../utils/shared";
 
+import { defaultUserSession, userSession } from "./../interface/UserSession";
+const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
 function LoginSuccess(props: any) {
-  // const { setUserDetails, setLogin } = props;
-  function setLocalStorage(urlString: string) {
-    const parsedUrl = new URL(urlString);
-    const fragment = parsedUrl.hash.substring(1);
-    const queryParams = new URLSearchParams(fragment);
-    const accessToken = queryParams.get("token");
-    // return accessToken;
-    if (accessToken) {
-      console.log("Access Token:", accessToken);
-      localStorage.setItem("accessToken", accessToken);
-    } else {
-      //localStorage.setItem("accessToken", "not present");
-      console.log("Access Token not found in the URL.");
-    }
-  }
+  const { setLogin } = props;
+  const navigate = useNavigate();
+  // const [details, SetDetails] = useState(defaultUserSession);
 
-  useEffect(() => {
-    setTimeout(() => {
-      localStorage.setItem("url", document.URL);
-      window.close();
-    }, 3000);
-  }, []);
+  // const fetchUser = async () => {
+  //   const response: any = await axios.get(`${BACKENDURL}/api/v1/auth/user`, { withCredentials: true }).catch(err => {
+  //     console.log("not authnticated user....");
+  //   });
+
+  //   if (response && response.data) {
+  //     console.log(response.data);
+  //     return response.data;
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const userDetails = await fetchUser();
+  //     console.log("[LoginSuccess]", userDetails);
+  //     if (!userDetails) {
+  //       setLogin(false);
+  //       return;
+  //     }
+  //     setUserInfo(userDetails);
+  //     setLogin(true);
+  //   })();
+  // }, []);
 
   return (
     <div className="container">
       <div className="login-card">
-        <h1>Redirect Page</h1>
-        <button>Wait for some time we are Redirecting you....</button>
+        <h1>Loading....</h1>
       </div>
     </div>
   );

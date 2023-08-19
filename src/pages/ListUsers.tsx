@@ -14,6 +14,25 @@ interface UserTableProps {
 }
 
 function ListUsers() {
+  const getAllUsers = async () => {
+    const response: any = await axios.get(`${process.env.REACT_APP_BACK_END_URL}/api/v1/protected/get/users`, { withCredentials: true }).catch(err => {
+      console.log("not authnticated user....");
+      navigate("/");
+    });
+
+    if (response && response.data) {
+      setLoading(false);
+      const data: UserData[] = await response.data;
+
+      setData(data);
+      console.log(response.data);
+      return response.data;
+    } else {
+      setLoading(false);
+      setError(response);
+    }
+  };
+
   const navigate = useNavigate();
   // State to store the fetched data
   const [data, setData] = useState<UserData[] | null>(null);
@@ -23,15 +42,14 @@ function ListUsers() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchUsers();
+    console.log("called from listusers");
+    getAllUsers();
   }, []);
 
   const TableView_: React.FC<UserTableProps> = ({ data }) => {
     if (!data || data.length === 0) {
       return <div>Hello</div>;
     }
-    // else return <pre>{JSON.stringify(data)}</pre>;
-    // const data1 = [{ name: 1, email: 3, picture: 7 }];
     return (
       <TableView width="75%" aria-label="Example table with static contents">
         <TableHeader>
@@ -52,24 +70,6 @@ function ListUsers() {
         </TableBody>
       </TableView>
     );
-  };
-
-  const fetchUsers = async () => {
-    const response: any = await axios.get(`${process.env.REACT_APP_BACK_END_URL}/api/v1/protected/get/users`, { withCredentials: true }).catch(err => {
-      console.log("not authnticated user....");
-    });
-
-    if (response && response.data) {
-      setLoading(false);
-      const data: UserData[] = await response.data;
-
-      setData(data);
-      console.log(response.data);
-      return response.data;
-    } else {
-      setLoading(false);
-      setError(response);
-    }
   };
 
   if (loading) {
