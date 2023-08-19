@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Navigate, Link, createBrowserRouter, Route, Routes, RouterProvider, redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  createBrowserRouter,
+  Route,
+  Routes,
+  RouterProvider,
+} from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 import ScholarshipForm from "./pages/ScholarshipForm";
@@ -8,6 +14,7 @@ import Login from "./pages/Login";
 import Protected from "./pages/Protected";
 import LoginSuccess from "./pages/LoginSuccess";
 import ListUsers from "./pages/ListUsers";
+import FormSearch from "./pages/FormSearch";
 
 const router = createBrowserRouter([
   {
@@ -15,19 +22,23 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        path: "/scholarship-form",
-        element: <Protected Component={ScholarshipForm} />
+        path: "/",
+        element: <Protected Component={UserDashBoard} />,
       },
       {
-        path: "/",
-        element: <Protected Component={UserDashBoard} />
-      }
-    ]
-  }
+        path: "/scholarship-form",
+        element: <Protected Component={ScholarshipForm} />,
+      },
+      {
+        path: "/search",
+        element: <Protected Component={FormSearch} />,
+      },
+    ],
+  },
 ]);
 
 function App() {
-  const [isLogin, setLogin] = useState(false);
+  const [isLogin, setLogin] = useState(true);
   const [usersDetail, setUserDetails] = useState(null);
 
   useEffect(() => {
@@ -39,7 +50,16 @@ function App() {
   ) : (
     <Router>
       <Routes>
-        {!isLogin ? <Route path="*" element={<Login setUserDetails={setUserDetails} setLogin={setLogin} />}></Route> : ""}
+        {!isLogin ? (
+          <Route
+            path="*"
+            element={
+              <Login setUserDetails={setUserDetails} setLogin={setLogin} />
+            }
+          ></Route>
+        ) : (
+          ""
+        )}
         <Route path="/login/success" element={<LoginSuccess />}></Route>
         {/* <Route path="/scholarship-form" element={<ScholarshipForm />}></Route> */}
         <Route path="/users" element={<ListUsers />}></Route>
