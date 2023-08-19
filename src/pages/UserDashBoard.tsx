@@ -2,7 +2,6 @@ import React from "react";
 import "./../styles/UserDashBoard.css"; // Import the CSS file for styling
 
 const UserDashBoard: React.FC = () => {
-  // function UserDashBoard(props: any) {
   return (
     <div className="dashboard-container">
       <h1>Welcome Users This is your Dashboard</h1>

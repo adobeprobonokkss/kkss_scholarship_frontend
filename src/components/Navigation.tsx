@@ -20,8 +20,8 @@ const Navigation: React.FC = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink className={isActive => (isActive ? classes.active : "")} to="/scholarship-form">
-              Edit Profile
+            <NavLink className={isActive => (isActive ? classes.active : "")} to="/list">
+              List
             </NavLink>
           </li>
         </ul>
