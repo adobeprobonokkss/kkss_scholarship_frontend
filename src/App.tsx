@@ -10,13 +10,9 @@ import React, { useEffect, useState } from "react";
 import ScholarshipForm from "./pages/ScholarshipForm";
 import UserDashBoard from "./pages/UserDashBoard";
 import RootLayout from "./pages/RootLayout";
-import Login from "./pages/Login";
-import DataContext from "./DataContext";
 import Protected from "./pages/Protected";
-import LoginSuccess from "./pages/LoginSuccess";
 import ListUsers from "./pages/ListUsers";
 import FormSearch from "./pages/FormSearch";
-import { defaultUserSession } from "./interface/UserSession";
 import Header from "./components/header";
 import Home from "./pages/Home";
 

@@ -1,4 +1,4 @@
-import { FieldLabel } from "@swc-react/field-label";
+import { Button } from "@swc-react/button";
 import { Picker } from "@swc-react/picker";
 import { MenuItem } from "@swc-react/menu";
 import {
@@ -9,14 +9,15 @@ import {
   TableRow,
 } from "@swc-react/table";
 import { Textfield } from "@swc-react/textfield";
-import React, { useEffect, useState } from "react";
+import { HelpText } from "@swc-react/help-text";
+import React, { useState } from "react";
 
 import classes from "../styles/FormSearch.module.css";
 import {
   ScholarshipData,
-  getAllScholarshipFormData,
+  ScholarshipDataRequest,
+  getScholarshipFormData,
 } from "../services/ScholarshipFormService";
-import Fuse from "fuse.js";
 
 export type ResultType = {
   scholarshipID: string;
@@ -33,17 +34,12 @@ const FormSearch: React.FC = () => {
   const [searchResults, setSearchResults] = useState<
     (ScholarshipData & ResultType)[]
   >([]);
-  const [scholarshipFormList, setScholarshipFormList] = useState<
-    (ScholarshipData & ResultType)[]
-  >([]);
-  const FUSE_OPTIONS = {
-    keys: ["scholarshipID", "name", "email", "phNumber"],
-  };
+  const [selectedYear, setSelectedYear] = useState("2023");
   const years = [];
 
-  const populateYears = () => {
-    let years = [];
-  };
+  for (let i = 2000; i <= 2100; i++) {
+    years.push(i.toString());
+  }
 
   const handleSearchOptionChange = (event: any) => {
     setSearchOption(event.target.value);
@@ -51,41 +47,55 @@ const FormSearch: React.FC = () => {
 
   const handleSearchQueryChange = (event: any) => {
     setSearchQuery(event.target.value);
+  };
+
+  const handleSearchButtonClick = async () => {
+    console.log("DEBUG", searchQuery);
     if (searchQuery === "") {
       setSearchResults([]);
       return;
     }
-
-    const searchRes = new Fuse(scholarshipFormList, FUSE_OPTIONS).search(
-      searchQuery
+    let scholarshipData: (ScholarshipData & ResultType)[] = [];
+    const request: ScholarshipDataRequest = {
+      field: searchOption,
+      keyword: searchQuery,
+      year: selectedYear,
+    };
+    console.log("DEBUG", request);
+    scholarshipData = (await getScholarshipFormData(request)) ?? [];
+    setSearchResults(
+      Array.isArray(scholarshipData) ? scholarshipData : [scholarshipData]
     );
-    setSearchResults(searchRes as unknown as (ScholarshipData & ResultType)[]);
   };
-
-  const fetchScholarshipFormData = async () => {
-    getAllScholarshipFormData().then((res) => {
-      console.log(res);
-      setScholarshipFormList(res);
-      setSearchResults(res);
-    });
-  };
-
-  useEffect(() => {
-    console.log("scholarshipFormList", scholarshipFormList);
-    fetchScholarshipFormData();
-  }, []);
 
   return (
     <>
       <div className={classes["form-search"]}>
         <div className={classes["form-search-area"]}>
+          <div className={classes["form-search__search-year"]}>
+            <Picker
+              value={selectedYear}
+              change={(event: any) => setSelectedYear(event.target.value)}
+              placeholder="Select a year"
+              style={{ width: "100%" }}
+            >
+              {years.map((year) => (
+                <MenuItem value={year}>{year}</MenuItem>
+              ))}
+            </Picker>
+          </div>
           <div className={classes["form-search__search-options"]}>
-            <FieldLabel>Year</FieldLabel>
             <Picker
               value={searchOption}
-              onChange={handleSearchOptionChange}
+              change={handleSearchOptionChange}
+              placeholder="Select an option"
               style={{ width: "100%" }}
-            ></Picker>
+            >
+              <MenuItem value="scholarshipID">Scholarship ID</MenuItem>
+              <MenuItem value="email">Email</MenuItem>
+              <MenuItem value="phNumber">Phone Number</MenuItem>
+              <MenuItem value="name">Applicant Name</MenuItem>
+            </Picker>
           </div>
           <div className={classes["form-search__search-bar"]}>
             <Textfield
@@ -95,7 +105,21 @@ const FormSearch: React.FC = () => {
               placeholder="Enter search query"
             />
           </div>
+          <div className={classes["form-search__search-button"]}>
+            <Button onClick={handleSearchButtonClick} style={{ width: "100%" }}>
+              Search
+            </Button>
+          </div>
         </div>
+      </div>
+      <div className={classes["form-search__search-help"]}>
+        <HelpText variant="negative" icon>
+          Please use search responsibly. Do not spam the search button.
+        </HelpText>
+        <HelpText variant="neutral" icon>
+          Partial keyword search is supported but it will only fetch records
+          that start with or end with the keyword.
+        </HelpText>
       </div>
       <div className={classes["form-search__search-results"]}>
         <Table>
@@ -131,8 +155,3 @@ const FormSearch: React.FC = () => {
 };
 
 export default FormSearch;
-
-/* CSS styling for FormSearch.tsx component. */
-/*
-
-*/

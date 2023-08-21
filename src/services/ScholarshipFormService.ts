@@ -2,7 +2,7 @@ import { Textfield } from "@swc-react/textfield";
 import { Picker } from "@swc-react/picker";
 import { createElement } from "react";
 import { MenuItem } from "@swc-react/menu";
-import axios, { Axios, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { API_HEADERS, API_TIMEOUT } from "../utils/shared";
 
 export type ScholarshipData = {
@@ -50,6 +50,12 @@ export type ScholarshipData = {
   siblingPhNumber: string;
   formSubmittedBy: string;
   yourPhNumber: string;
+};
+
+export type ScholarshipDataRequest = {
+  field: string;
+  keyword: string;
+  year: string;
 };
 
 export type ScholarshipFormKeys = keyof ScholarshipData;
@@ -969,81 +975,18 @@ export const submitApplication = async (scholarshipFormData: any) => {
 };
 
 // get scholarship form data by scholarship ID
-export const getScholarshipFormData = async (scholarshipID: string) => {
+export const getScholarshipFormData = async (
+  request: ScholarshipDataRequest
+) => {
   // token check
   const options: AxiosRequestConfig = {
     method: "POST",
     url: `${process.env.REACT_APP_BACK_END_URL}/api/v1/getScholarshipFormData`,
     headers: API_HEADERS,
-    data: {
-      scholarshipID,
-    },
+    data: request,
     timeout: API_TIMEOUT,
   };
   try {
-    const response: AxiosResponse = await axios(options);
-    console.log(response);
-    return response?.data?.scholarshipFormData;
-  } catch (error) {
-    console.error("Error getting scholarship form data: ", error);
-    return null;
-  }
-};
-
-// get scholarship form data by email ID
-export const getScholarshipFormDataByEmailId = async (email: string) => {
-  try {
-    const options: AxiosRequestConfig = {
-      method: "POST",
-      url: `${process.env.REACT_APP_BACK_END_URL}/api/v1/getScholarshipFormDataByEmailId`,
-      headers: API_HEADERS,
-      data: {
-        email,
-      },
-      timeout: API_TIMEOUT,
-    };
-    const response: AxiosResponse = await axios(options);
-    console.log(response);
-    return response?.data?.scholarshipFormData;
-  } catch (error) {
-    console.error("Error getting scholarship form data: ", error);
-    return null;
-  }
-};
-
-// get scholarship form data by phone number
-export const getScholarshipFormDataByPhoneNumber = async (phNumber: string) => {
-  try {
-    const options: AxiosRequestConfig = {
-      method: "POST",
-      url: `${process.env.REACT_APP_BACK_END_URL}/api/v1/getScholarshipFormDataByPhoneNumber`,
-      headers: API_HEADERS,
-      data: {
-        phNumber,
-      },
-      timeout: API_TIMEOUT,
-    };
-    const response: AxiosResponse = await axios(options);
-    console.log(response);
-    return response?.data?.scholarshipFormData;
-  } catch (error) {
-    console.error("Error getting scholarship form data: ", error);
-    return null;
-  }
-};
-
-// get scholarship form data by name
-export const getScholarshipFormDataByName = async (name: string) => {
-  try {
-    const options: AxiosRequestConfig = {
-      method: "POST",
-      url: `${process.env.REACT_APP_BACK_END_URL}/api/v1/getScholarshipFormDataByName`,
-      headers: API_HEADERS,
-      data: {
-        name,
-      },
-      timeout: API_TIMEOUT,
-    };
     const response: AxiosResponse = await axios(options);
     console.log(response);
     return response?.data?.scholarshipFormData;

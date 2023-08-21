@@ -3038,6 +3038,14 @@
     "@lit-labs/react" "^1.1.1"
     "@spectrum-web-components/field-label" "^0.34.0"
 
+"@swc-react/help-text@0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@swc-react/help-text/-/help-text-0.34.0.tgz#e58eca80af6bf11f897b87d59a220d45f1e894dc"
+  integrity sha512-I0bPAUJec58gHVB8BD0XvXofBcYC4Q4IbTIO3Dt6prli7P7CWFlPQZub71Vgo4kLc6gmL6R0UOrjOhEhzlOFhQ==
+  dependencies:
+    "@lit-labs/react" "^1.1.1"
+    "@spectrum-web-components/help-text" "^0.34.0"
+
 "@swc-react/menu@^0.34.0":
   version "0.34.0"
   resolved "https://registry.yarnpkg.com/@swc-react/menu/-/menu-0.34.0.tgz#3bc7cbafa2cfac1a1695c7cb68cf3c3d986a28b6"
@@ -6017,6 +6025,11 @@ uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+
+uuid@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
 vary@~1.1.2:
   version "1.1.2"

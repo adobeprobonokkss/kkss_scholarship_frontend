@@ -12,9 +12,15 @@ const Header = (props: any) => {
 
   const handleLogout = async () => {
     destroySession();
-    const response: any = await axios.post(`${BACKENDURL}/api/v1/protected/logout`, {}, { withCredentials: true }).catch(err => {
-      console.log("getting error from server", err);
-    });
+    const response: any = await axios
+      .post(
+        `${BACKENDURL}/api/v1/protected/logout`,
+        {},
+        { withCredentials: true }
+      )
+      .catch((err) => {
+        console.log("getting error from server", err);
+      });
     // console.log(response);
     if (response.status == 200) {
       localStorage.removeItem("state");

@@ -4,19 +4,21 @@
   "main": "index.js",
   "repository": "https://github.com/adobeprobonokkss/kkss_scholarship_frontend.git",
   "author": "Adobe pro bono KKSS team",
-  "license": "",
+  "license": "UNLICENSED",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist",
     "build": "yarn clean && webpack --mode production",
     "start": "yarn clean && webpack serve --mode development --open",
-    "build-dev": "yarn clean && webpack --mode development"
+    "build-dev": "yarn clean && webpack --mode development",
+    "deploy": "yarn build && firebase deploy"
   },
   "dependencies": {
     "@adobe/react-spectrum": "^3.28.0",
     "@swc-react/action-menu": "^0.34.0",
     "@swc-react/button": "^0.34.0",
     "@swc-react/field-label": "^0.34.0",
+    "@swc-react/help-text": "0.34.0",
     "@swc-react/menu": "^0.34.0",
     "@swc-react/picker": "^0.34.0",
     "@swc-react/table": "^0.34.0",
