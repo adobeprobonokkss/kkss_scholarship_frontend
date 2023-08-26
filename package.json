@@ -19,6 +19,7 @@
     "@swc-react/button": "^0.34.0",
     "@swc-react/field-label": "^0.34.0",
     "@swc-react/help-text": "0.34.0",
+    "@swc-react/icon": "0.34.0",
     "@swc-react/menu": "^0.34.0",
     "@swc-react/picker": "^0.34.0",
     "@swc-react/table": "^0.34.0",

@@ -56,6 +56,7 @@ export type ScholarshipDataRequest = {
   field: string;
   keyword: string;
   year: string;
+  status: string | undefined;
 };
 
 export type ScholarshipFormKeys = keyof ScholarshipData;
