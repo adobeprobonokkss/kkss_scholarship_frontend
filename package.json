@@ -24,6 +24,7 @@
     "@swc-react/table": "^0.34.0",
     "@swc-react/textfield": "^0.34.0",
     "@swc-react/theme": "^0.34.0",
+    "@types/react-modal": "^3.16.0",
     "axios": "^1.4.0",
     "firebase": "^10.1.0",
     "fuse.js": "^6.6.2",
@@ -31,6 +32,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-form-stepper": "^2.0.3",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.14.2",
     "typescript": "^5.1.6",
     "uuid": "^9.0.0"
