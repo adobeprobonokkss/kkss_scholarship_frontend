@@ -1,18 +1,20 @@
 import {
   BrowserRouter as Router,
-  Link,
   createBrowserRouter,
   Route,
   Routes,
   RouterProvider,
 } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import ScholarshipForm from "./pages/ScholarshipForm";
+import UserDashBoard from "./pages/UserDashBoard";
 import RootLayout from "./pages/RootLayout";
-import Login from "./pages/Login";
 import Protected from "./pages/Protected";
-import LoginSuccess from "./pages/LoginSuccess";
+import ListUsers from "./pages/ListUsers";
+import FormSearch from "./pages/FormSearch";
+import Header from "./components/header";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
   {
@@ -20,34 +22,43 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
+        path: "/",
+        element: <Protected Component={UserDashBoard} />,
+      },
+      {
         path: "/scholarship-form",
         element: <Protected Component={ScholarshipForm} />,
+      },
+      {
+        path: "/search",
+        element: <Protected Component={FormSearch} />,
+      },
+      {
+        path: "/list",
+        element: <Protected Component={ListUsers} />,
       },
     ],
   },
 ]);
-
 function App() {
-  const isLogin = false;
+  const [isLogin, setLogin] = useState(false);
+  // const [usersDetail, setUserDetails] = useState(defaultUserSession);
+
+  useEffect(() => {
+    // console.log("From  Application", usersDetail);
+  }, [isLogin]);
+
   return isLogin ? (
-    <RouterProvider router={router} />
+    // <DataContext.Provider value={usersDetail}>
+    <>
+      <Header setLogin={setLogin}></Header>
+      <RouterProvider router={router} />
+    </>
   ) : (
+    // </DataContext.Provider>
     <Router>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        {/* <li>
-          <Link to="/login/success">loging_success</Link>
-        </li> */}
-        <li>
-          <Link to="/scholarship-form">Apply for scholarship</Link>
-        </li>
-      </ul>
       <Routes>
-        <Route path="/" element={<Login />}></Route>
-        <Route path="/login/success" element={<LoginSuccess />}></Route>
-        <Route path="/scholarship-form" element={<ScholarshipForm />}></Route>
+        {<Route path="*" element={<Home setLogin={setLogin} />}></Route>}
       </Routes>
     </Router>
   );

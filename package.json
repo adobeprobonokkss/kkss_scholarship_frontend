@@ -4,30 +4,36 @@
   "main": "index.js",
   "repository": "https://github.com/adobeprobonokkss/kkss_scholarship_frontend.git",
   "author": "Adobe pro bono KKSS team",
-  "license": "",
+  "license": "UNLICENSED",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist",
     "build": "yarn clean && webpack --mode production",
     "start": "yarn clean && webpack serve --mode development --open",
-    "build-dev": "yarn clean && webpack --mode development"
+    "build-dev": "yarn clean && webpack --mode development",
+    "deploy": "yarn build && firebase deploy"
   },
   "dependencies": {
+    "@adobe/react-spectrum": "^3.28.0",
     "@swc-react/action-menu": "^0.34.0",
     "@swc-react/button": "^0.34.0",
     "@swc-react/field-label": "^0.34.0",
+    "@swc-react/help-text": "0.34.0",
     "@swc-react/menu": "^0.34.0",
     "@swc-react/picker": "^0.34.0",
+    "@swc-react/table": "^0.34.0",
     "@swc-react/textfield": "^0.34.0",
     "@swc-react/theme": "^0.34.0",
     "axios": "^1.4.0",
     "firebase": "^10.1.0",
+    "fuse.js": "^6.6.2",
     "protobufjs": "^7.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-form-stepper": "^2.0.3",
     "react-router-dom": "^6.14.2",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",

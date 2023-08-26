@@ -14,7 +14,7 @@ const Navigation: React.FC = () => {
               className={(isActive) => (isActive ? classes.active : "")}
               to="/"
             >
-              Home
+              DashBoard
             </NavLink>
           </li>
           <li>
@@ -23,6 +23,22 @@ const Navigation: React.FC = () => {
               to="/scholarship-form"
             >
               Scholarship Form
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={(isActive) => (isActive ? classes.active : "")}
+              to="/list"
+            >
+              List
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={(isActive) => (isActive ? classes.active : "")}
+              to="/search"
+            >
+              Search
             </NavLink>
           </li>
         </ul>
