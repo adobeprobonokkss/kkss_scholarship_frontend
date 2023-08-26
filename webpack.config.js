@@ -56,7 +56,7 @@ module.exports = {
 
     new webpack.DefinePlugin({
       // "process.env.REACT_APP_BACK_END_URL": JSON.stringify(
-      //   "https://us-central1-demo2-8894e.cloudfunctions.net/api"
+      //   "https://asia-south1-kkss-5a230.cloudfunctions.net/kkssCloudFunctions"
       // ),
       "process.env.REACT_APP_BACK_END_URL": JSON.stringify(
         "http://localhost:1337"
