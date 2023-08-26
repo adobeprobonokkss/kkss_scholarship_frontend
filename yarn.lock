@@ -3046,6 +3046,14 @@
     "@lit-labs/react" "^1.1.1"
     "@spectrum-web-components/help-text" "^0.34.0"
 
+"@swc-react/icon@0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@swc-react/icon/-/icon-0.34.0.tgz#82087b1ea7dbfbcdd7beab9ca7011fb6234ff57e"
+  integrity sha512-5p5vkaoHNIgSBeZRGSl/vw9wZUTshZhIh/zNVZPJfw6blxcFMJWpeT3qO8LiGQ+6nS+BuyWpkgbXsEWSGNshMw==
+  dependencies:
+    "@lit-labs/react" "^1.1.1"
+    "@spectrum-web-components/icon" "^0.34.0"
+
 "@swc-react/menu@^0.34.0":
   version "0.34.0"
   resolved "https://registry.yarnpkg.com/@swc-react/menu/-/menu-0.34.0.tgz#3bc7cbafa2cfac1a1695c7cb68cf3c3d986a28b6"
