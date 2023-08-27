@@ -1,9 +1,10 @@
-import { useEffect } from "react";
 import {
   userSession,
   SESSION_STORAGE_USERS_KEY,
   defaultUserSession,
 } from "./../interface/UserSession";
+
+import CryptoJS from "crypto-js";
 
 export const formatDate = (date: Date) => {
   const offset = date.getTimezoneOffset();
@@ -30,7 +31,7 @@ export const getLocalStorage = (key: string, value: string) => {
 export const getUsersInfo = (): userSession => {
   const sessionInfo = sessionStorage.getItem(SESSION_STORAGE_USERS_KEY) ?? null;
   if (sessionInfo) {
-    return JSON.parse(sessionInfo);
+    return JSON.parse(decryptData(sessionInfo));
   } else {
     return defaultUserSession;
   }
@@ -39,10 +40,26 @@ export const getUsersInfo = (): userSession => {
 export const setUserInfo = (userDetails: object) => {
   sessionStorage.setItem(
     SESSION_STORAGE_USERS_KEY,
-    JSON.stringify(userDetails)
+    encryptData(JSON.stringify(userDetails))
   );
 };
 
 export const destroySession = () => {
   sessionStorage.removeItem(SESSION_STORAGE_USERS_KEY);
+};
+
+const secretPass = "XkhZG4fW2t2W";
+
+const encryptData = (text: string) => {
+  const data = CryptoJS.AES.encrypt(
+    JSON.stringify(text),
+    secretPass
+  ).toString();
+  return data;
+};
+
+const decryptData = (text: string) => {
+  const bytes = CryptoJS.AES.decrypt(text, secretPass);
+  const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  return data;
 };

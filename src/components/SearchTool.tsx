@@ -12,17 +12,11 @@ import {
 import { Textfield } from "@swc-react/textfield";
 import { HelpText } from "@swc-react/help-text";
 import React, { useState } from "react";
+
 import { API_HEADERS, API_TIMEOUT } from "./../utils/shared";
+import CustomizedRoleSelection from "./PromoteUserDialogue";
 
 import classes from "./../styles/SearchTool.module.css";
-
-import {
-  ScholarshipData,
-  ScholarshipDataRequest,
-  getScholarshipFormData,
-} from "../services/ScholarshipFormService";
-import { json } from "react-router-dom";
-import CustomizedRoleSelection from "./PromoteUserDialogue";
 
 interface UserData {
   name: string;
@@ -31,18 +25,6 @@ interface UserData {
   role: string;
 }
 
-interface UserTableProps {
-  data: UserData[] | null;
-}
-export type ResultType = {
-  scholarshipID: string;
-  name: string;
-  status: string;
-  backgroundVerifier: string;
-  programManager: string;
-  dateOfSubmission: string;
-};
-
 const SearchTool: React.FC = () => {
   const [searchOption, setSearchOption] = useState("email");
   const [searchQuery, setSearchQuery] = useState("");
@@ -50,7 +32,7 @@ const SearchTool: React.FC = () => {
   const [selectedEmail, setSelectedEmail] = useState<null | string>(null);
   const [isSuccessFullyPromoted, setSuccessFullyPromoted] = useState(false);
 
-  //prompt handle
+  //--------------------Modal Dialogue Code------------------------------
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -64,8 +46,8 @@ const SearchTool: React.FC = () => {
   const handleRoleSubmit = async (selectedRole: string) => {
     console.log("Selected Role:", selectedRole);
     console.log("Selected Email:", selectedEmail);
-    closeModal();
 
+    closeModal();
     //promote user .... and get the response .... inform user by showing message
     try {
       const options: AxiosRequestConfig = {
@@ -77,9 +59,9 @@ const SearchTool: React.FC = () => {
           role: selectedRole,
         },
         timeout: API_TIMEOUT,
+        withCredentials: true,
       };
       const response: AxiosResponse = await axios(options);
-      console.log(response);
       setSuccessFullyPromoted(true);
       setTimeout(() => {
         setSuccessFullyPromoted(false);
@@ -88,23 +70,22 @@ const SearchTool: React.FC = () => {
     } catch (error) {
       console.error("Error submitting scholarship form data: ", error);
       return null;
-    } finally {
     }
   };
 
-  //d
-  const [selectedYear, setSelectedYear] = useState("2023");
-  const years = [];
-
-  for (let i = 2000; i <= 2100; i++) {
-    years.push(i.toString());
-  }
-
-  const getAllUsers = async (): Promise<UserData[]> => {
+  const getAllUsers = async (
+    partialText: string,
+    keyName: string
+  ): Promise<UserData[]> => {
+    console.log(partialText, keyName);
     const response: any = await axios
-      .get(`${process.env.REACT_APP_BACK_END_URL}/api/v1/protected/get/users`, {
-        withCredentials: true,
-      })
+      .post(
+        `${process.env.REACT_APP_BACK_END_URL}/api/v1/protected/get/users`,
+        { keyName, partialText },
+        {
+          withCredentials: true,
+        }
+      )
       .catch((err) => {
         console.log("not authnticated user....");
         // navigate("/");
@@ -133,22 +114,12 @@ const SearchTool: React.FC = () => {
   };
 
   const handleSearchButtonClick = async () => {
-    console.log("DEBUG", searchQuery);
+    // console.log("DEBUG", searchQuery);
     if (searchQuery === "") {
       setSearchResults([]);
       return;
     }
-    let scholarshipData: (ScholarshipData & ResultType)[] = [];
-    // const request: ScholarshipDataRequest = {
-    //   field: searchOption,
-    //   keyword: searchQuery,
-    //   year: selectedYear,
-    // };
-    // const usersList = await getAllUsers();
-    // console.log(usersList);
-
-    // console.log("DEBUG", usersList);
-    const userData = await getAllUsers();
+    const userData = await getAllUsers(searchQuery, searchOption);
     setSearchResults(Array.isArray(userData) ? userData : []);
   };
 
@@ -196,6 +167,7 @@ const SearchTool: React.FC = () => {
       </div>
       <CustomizedRoleSelection
         isOpen={isModalOpen}
+        userName={selectedEmail}
         onClose={closeModal}
         onSubmit={handleRoleSubmit}
       />
@@ -208,8 +180,7 @@ const SearchTool: React.FC = () => {
               <TableCell>Name</TableCell>
               <TableCell>Mobile</TableCell>
               <TableCell>Role</TableCell>
-              {/* <TableCell>ProfileImage</TableCell> */}
-              <TableCell>promote</TableCell>
+              <TableCell>Promotion</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -222,10 +193,6 @@ const SearchTool: React.FC = () => {
                   <TableCell>{searchResult.name}</TableCell>
                   <TableCell>{"NOT AVAILABLE"}</TableCell>
                   <TableCell>{searchResult.role}</TableCell>
-                  {/* <TableCell>
-                    <img src={searchResult.role}></img>
-                  </TableCell> */}
-
                   <TableCell>
                     <button
                       onClick={() => {
@@ -236,10 +203,6 @@ const SearchTool: React.FC = () => {
                       Promote
                     </button>
                   </TableCell>
-                  {/* <TableCell>{searchResult.status}</TableCell>
-                    <TableCell>{searchResult.backgroundVerifier}</TableCell>
-                    <TableCell>{searchResult.programManager}</TableCell>
-                    <TableCell>{searchResult.dateOfSubmission}</TableCell> */}
                 </TableRow>
               ))}
           </TableBody>

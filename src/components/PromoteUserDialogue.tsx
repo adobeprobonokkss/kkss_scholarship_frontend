@@ -4,12 +4,14 @@ import ReactModal from "react-modal";
 ReactModal.setAppElement("#root");
 interface CustomizedRoleSelectionProps {
   isOpen: boolean;
+  userName: string | null;
   onClose: () => void;
   onSubmit: (selectedRole: string) => void;
 }
 
 const CustomizedRoleSelection: React.FC<CustomizedRoleSelectionProps> = ({
   isOpen,
+  userName,
   onClose,
   onSubmit,
 }) => {
@@ -32,7 +34,7 @@ const CustomizedRoleSelection: React.FC<CustomizedRoleSelectionProps> = ({
       onRequestClose={onClose}
       contentLabel="Role Selection"
     >
-      <h2>Select a Role</h2>
+      <h2>Please select a role for user - {userName}</h2>
       <div>
         <label>
           <input
