@@ -23,7 +23,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <RootLayout />,
+      element: <RootLayout setLogin={setLogin} />,
       children: [
         {
           path: "/",
@@ -49,7 +49,6 @@ function App() {
 
   return isLogin ? (
     <>
-      <Header setLogin={setLogin}></Header>
       <RouterProvider router={router} />
     </>
   ) : (

@@ -137,7 +137,7 @@ const FormSearch: React.FC = () => {
             {searchResults &&
               searchResults.map(
                 (searchResult: ScholarshipData & ResultType) => (
-                  <TableRow>
+                  <TableRow key={searchResult.scholarshipID}>
                     <TableCell>{searchResult.scholarshipID}</TableCell>
                     <TableCell>{searchResult.name}</TableCell>
                     <TableCell>{searchResult.status}</TableCell>
