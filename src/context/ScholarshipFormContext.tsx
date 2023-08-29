@@ -1,5 +1,8 @@
 import React from "react";
-import { ScholarshipData } from "services/ScholarshipFormService";
+import {
+  ScholarshipData,
+  ScholarshipFormKeys,
+} from "services/ScholarshipFormService";
 import { formatDate } from "../utils/shared";
 
 const initForm: ScholarshipData = {
@@ -49,18 +52,26 @@ const initForm: ScholarshipData = {
   yourPhNumber: "",
 };
 
+export interface ScholarshipFormContextProps {
+  onFormDataChange: (key: ScholarshipFormKeys, value: string) => void;
+}
 const ScholarshipFormContext = React.createContext<
-  ScholarshipData & { onFormDataChange: (key: any, value: any) => void }
+  ScholarshipData & ScholarshipFormContextProps
 >({
   ...initForm,
-  onFormDataChange: (key: any, value: any) => {},
+  onFormDataChange: (key: ScholarshipFormKeys, value: string) => {},
 });
 
 const ScholarshipFormProvider: React.FC<any> = (props: any) => {
   const [formData, setFormData] = React.useState(initForm);
 
-  const onFormDataChange = (key: any, value: any) => {
+  const onFormDataChange = (key: ScholarshipFormKeys, value: string) => {
+    console.log("onFormDataChange", key, value);
     setFormData((prev) => ({ ...prev, [key]: value }));
+    setTimeout(() => {
+      if (document.querySelectorAll("sp-picker"))
+        document.querySelectorAll("sp-picker")[0]?.removeAttribute("open");
+    }, 500);
   };
   console.log("In ScholarshipFormProvider.tsx");
 

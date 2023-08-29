@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
 import React from "react";
-import Navigation from "../components/Navigation";
 import classes from "../styles/RootLayout.module.css";
-
-function RootLayout() {
+import Header from "../components/header";
+function RootLayout(props: any) {
+  const { setLogin } = props;
   return (
     <>
-      <Navigation></Navigation>
+      {/* <Navigation></Navigation> */}
+      <Header setLogin={setLogin}></Header>
       <main className={classes.content}>
         <Outlet />
       </main>

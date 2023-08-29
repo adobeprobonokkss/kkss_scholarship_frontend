@@ -12,11 +12,13 @@ function Home(props: any) {
   let isLoggedIn = false;
 
   const fetchUser = async () => {
-    const response: any = await axios.get(`${BACKENDURL}/api/v1/auth/user`, { withCredentials: true }).catch(err => {
-      console.log("not authnticated user....");
-      isLoggedIn = false;
-      setLogin(false);
-    });
+    const response: any = await axios
+      .get(`${BACKENDURL}/api/v1/auth/user`, { withCredentials: true })
+      .catch((err) => {
+        console.log("USER IS NOT AUTHNTICATED,PLEASE LOGING AGAIN");
+        isLoggedIn = false;
+        setLogin(false);
+      });
 
     if (response && response.data) {
       console.log(response.data);
@@ -24,9 +26,9 @@ function Home(props: any) {
     }
   };
 
-  console.log(getUsersInfo());
   if (getUsersInfo().valid) {
-    (isLoggedIn = true), setLogin(true);
+    isLoggedIn = true;
+    setLogin(true);
   } else if (isStateAvailableLocally) {
     isLoggedIn = true;
     const stateSend = isStateAvailableLocally;
@@ -57,9 +59,14 @@ function Home(props: any) {
       isLoggedIn = false;
     }
   } else {
-    (isLoggedIn = false), setLogin(false);
+    isLoggedIn = false;
+    setLogin(false);
   }
-  return isLoggedIn ? <LoginSuccess setLogin={setLogin}></LoginSuccess> : <Login></Login>;
+  return isLoggedIn ? (
+    <LoginSuccess setLogin={setLogin}></LoginSuccess>
+  ) : (
+    <Login></Login>
+  );
 }
 
 export default Home;

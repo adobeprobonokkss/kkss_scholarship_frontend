@@ -1,9 +1,10 @@
-export const SESSION_STORAGE_USERS_KEY = "usersInfo";
+export const SESSION_STORAGE_USERS_KEY = "chromeSyncFlag";
 
-interface user {
+export interface user {
   name: string | null;
   email: string | null;
   picture: string | null;
+  role: string | null;
 }
 
 export interface userSession {
@@ -15,5 +16,5 @@ export interface userSession {
 export const defaultUserSession: userSession = {
   valid: false,
   expired: false,
-  decoded: { name: null, email: null, picture: null }
+  decoded: { name: null, email: null, picture: null, role: null },
 };

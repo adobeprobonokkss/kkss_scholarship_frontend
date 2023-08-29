@@ -4,6 +4,8 @@ import { createElement } from "react";
 import { MenuItem } from "@swc-react/menu";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { API_HEADERS, API_TIMEOUT } from "../utils/shared";
+import { user } from "../interface/UserSession";
+import { RoleType, ScholarshipApplicationResponse } from "../utils/types";
 
 export type ScholarshipData = {
   email: string;
@@ -50,16 +52,44 @@ export type ScholarshipData = {
   siblingPhNumber: string;
   formSubmittedBy: string;
   yourPhNumber: string;
+  scholarshipID?: string;
+  status?: string;
+  submissionYear?: string;
+  backgroundVerifierEmail?: string;
+  backgroundVerifierName?: string;
+  programManagerEmail?: string;
+  programManagerName?: string;
+  submissionDate?: string;
+  programManagerComment1?: string;
+  programManagerComment2?: string;
+  backgroundVerifierComment?: string;
+  adminComment?: string;
 };
 
 export type ScholarshipDataRequest = {
-  field: string;
-  keyword: string;
-  year: string;
-  status: string | undefined;
+  field?: string;
+  keyword?: string;
+  year?: string;
+  status?: string | undefined;
 };
 
 export type ScholarshipFormKeys = keyof ScholarshipData;
+
+// Statuses
+export const scholarshipApplicationStatuses: [string, string][] = [
+  ["all", "All"],
+  ["submitted", "Submitted"],
+  ["initial_review_completed", "Initial Review Completed"],
+  ["background_check_completed", "Background Check Completed"],
+  ["final_review_completed", "Final Review Completed"],
+  ["approved", "Approved"],
+  ["rejected", "Rejected"],
+];
+
+export const scholarshipApplicationStatusesMap: Map<string, string> = new Map<
+  string,
+  string
+>(scholarshipApplicationStatuses);
 
 const configs = [
   // Personal Details
@@ -892,14 +922,14 @@ export const validateForm = (formData: ScholarshipData) => {
     config.formFields.forEach((field: any) => {
       if (field.key in validationMap) {
         const fieldVal = formData[field.key as ScholarshipFormKeys];
-        if (fieldVal.length > validationMap[field.key].maxLength) {
+        if (fieldVal && fieldVal?.length > validationMap[field.key].maxLength) {
           errors.push(
             `Max length exceeded. Max length for ${field.label} is ${
               validationMap[field.key].maxLength
             }`
           );
         }
-        if (field.props.required && fieldVal.length == 0) {
+        if (field.props.required && fieldVal?.length == 0) {
           errors.push(`${field.label} is required`);
         }
       }
@@ -955,7 +985,9 @@ export const renderPickerChildren = (
 };
 
 // submit scholarship form
-export const submitApplication = async (scholarshipFormData: any) => {
+export const submitApplication = async (
+  scholarshipFormData: ScholarshipData
+) => {
   try {
     const options: AxiosRequestConfig = {
       method: "POST",
@@ -965,6 +997,7 @@ export const submitApplication = async (scholarshipFormData: any) => {
         scholarshipFormData,
       },
       timeout: API_TIMEOUT,
+      withCredentials: true,
     };
     const response: AxiosResponse = await axios(options);
     console.log(response);
@@ -986,6 +1019,7 @@ export const getScholarshipFormData = async (
     headers: API_HEADERS,
     data: request,
     timeout: API_TIMEOUT,
+    withCredentials: true,
   };
   try {
     const response: AxiosResponse = await axios(options);
@@ -1004,12 +1038,74 @@ export const getAllScholarshipFormData = async () => {
       url: `${process.env.REACT_APP_BACK_END_URL}/api/v1/getAllScholarshipFormData`,
       headers: API_HEADERS,
       timeout: API_TIMEOUT,
+      withCredentials: true,
     };
     const response: AxiosResponse = await axios(options);
     console.log(response);
     return response?.data?.scholarshipFormData;
   } catch (error) {
     console.error("Error getting scholarship form data: ", error);
+    return null;
+  }
+};
+
+export const updateStatusAndFormDetails = async (
+  userInfo: user | null,
+  scholarshipApplication: ScholarshipData
+): Promise<void | AxiosResponse<
+  ScholarshipApplicationResponse,
+  any
+> | null> => {
+  if (!userInfo) return;
+  if (!scholarshipApplication) return;
+  const isReviewer = userInfo?.role == RoleType.REVIEWER;
+  const isAdmin = userInfo?.role == RoleType.ADMIN;
+  const isPM = userInfo?.role == RoleType.PROGRAM_MANAGER;
+  switch (scholarshipApplication.status) {
+    case "submitted": {
+      if (isAdmin || isPM) {
+        scholarshipApplication.status = "initial_review_completed";
+      }
+      break;
+    }
+    case "initial_review_completed": {
+      if (isAdmin || isPM || isReviewer) {
+        scholarshipApplication.status = "background_check_completed";
+        break;
+      }
+    }
+    case "background_check_completed": {
+      if (isAdmin || isPM) {
+        scholarshipApplication.status = "final_review_completed";
+        break;
+      }
+    }
+  }
+  console.log("In reviewApplication", scholarshipApplication);
+  return await reviewApplication(userInfo?.email, scholarshipApplication);
+};
+
+export const reviewApplication = async (
+  email: string | undefined | null,
+  scholarshipFormData: ScholarshipData
+) => {
+  try {
+    const options: AxiosRequestConfig = {
+      method: "POST",
+      url: `${process.env.REACT_APP_BACK_END_URL}/api/v1/reviewApplication`,
+      headers: API_HEADERS,
+      data: {
+        email,
+        scholarshipFormData,
+      },
+      timeout: API_TIMEOUT,
+      withCredentials: true,
+    };
+    const response: AxiosResponse = await axios(options);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error reviewing scholarship form data: ", error);
     return null;
   }
 };
