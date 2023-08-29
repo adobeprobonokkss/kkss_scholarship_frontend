@@ -2,12 +2,14 @@ import React from "react";
 import classes from "././../styles/Header.module.css";
 import axios from "axios";
 import { getUsersInfo, destroySession } from "./../utils/shared";
-
+import Navigation from "./Navigation";
+import { RoleType } from "./../utils/types";
 const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
 
 const Header = (props: any) => {
   const { setLogin } = props;
   const { decoded } = getUsersInfo();
+  const role = decoded?.role ?? RoleType.USER;
   const imageUrl = decoded?.picture || "";
 
   const handleLogout = async () => {
@@ -21,7 +23,6 @@ const Header = (props: any) => {
       .catch((err) => {
         console.log("getting error from server", err);
       });
-    // console.log(response);
     if (response.status == 200) {
       localStorage.removeItem("state");
       setLogin(false);
@@ -34,6 +35,7 @@ const Header = (props: any) => {
         <img className={classes.profile_image} src={imageUrl} alt={imageUrl} />
         <span className={classes.username}>{decoded?.name}</span>
       </div>
+      <Navigation role={role}></Navigation>
       <button onClick={handleLogout} className={classes.logout_button}>
         Logout
       </button>

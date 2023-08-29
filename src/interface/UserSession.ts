@@ -1,4 +1,4 @@
-export const SESSION_STORAGE_USERS_KEY = "usersInfo";
+export const SESSION_STORAGE_USERS_KEY = "chromeSyncFlag";
 
 export interface user {
   name: string | null;
