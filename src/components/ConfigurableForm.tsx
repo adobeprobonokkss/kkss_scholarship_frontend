@@ -30,6 +30,7 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
       change: (e: any) => {
         e.preventDefault();
         const value = e.target.value
+          .trim()
           ?.slice(0, validationMap[input.key]?.maxLength)
           .trim();
         formDataCtx.onFormDataChange(input.key, value);
@@ -93,6 +94,7 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
               color: "#000000",
               fontWeight: 510,
             },
+            required: el.props.required,
           })}
           {switchComponent(el)}
         </div>

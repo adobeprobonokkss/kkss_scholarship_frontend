@@ -27,3 +27,9 @@
   color: #222222;
   padding: 0 5px 0 5px;
 }
+
+.pmDetails {
+  display: grid;
+  grid-template-columns: 5fr 5fr;
+  gap: 10px;
+}

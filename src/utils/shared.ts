@@ -45,17 +45,3 @@ export const setUserInfo = (userDetails: object) => {
 export const destroySession = () => {
   sessionStorage.removeItem(SESSION_STORAGE_USERS_KEY);
 };
-
-// Statuses
-export const scholarshipApplicationStatuses: [string, string][] = [
-  ["all", "All"],
-  ["in_review", "In Review"],
-  ["in_background_check", "In Background Check"],
-  ["submitted", "Submitted"],
-  ["approved", "Approved"],
-];
-
-export const scholarshipApplicationStatusesMap: Map<string, string> = new Map<
-  string,
-  string
->(scholarshipApplicationStatuses);

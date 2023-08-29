@@ -30,6 +30,10 @@ const router = createBrowserRouter([
         element: <Protected Component={ScholarshipForm} />,
       },
       {
+        path: "/scholarship-form/:mode/:scholarshipID",
+        element: <Protected Component={ScholarshipForm} />,
+      },
+      {
         path: "/search/:year?/:status?",
         element: <Protected Component={FormSearch} />,
       },
