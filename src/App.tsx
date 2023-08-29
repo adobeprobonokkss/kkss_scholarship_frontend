@@ -11,9 +11,7 @@ import ScholarshipForm from "./pages/ScholarshipForm";
 import UserDashBoard from "./pages/UserDashBoard";
 import RootLayout from "./pages/RootLayout";
 import Protected from "./pages/Protected";
-// import ListUsers from "./pages/ListUsers";
 import FormSearch from "./pages/FormSearch";
-import Header from "./components/header";
 import Home from "./pages/Home";
 import Users from "./pages/User";
 
