@@ -192,7 +192,7 @@ const Navigation: React.FC<Role> = ({ role }) => {
     return getAdminNavigationBar();
   } else if (role === RoleType.PROGRAM_MANAGER) {
     return getProgramManagerNavigationBar();
-  } else if (role === RoleType.VOLUNTEER) {
+  } else if (role === RoleType.REVIEWER) {
     return getReviewerNavigationBar();
   } else {
     return getUserNavigationBar();

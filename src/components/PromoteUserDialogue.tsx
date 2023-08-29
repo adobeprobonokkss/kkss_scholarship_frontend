@@ -57,17 +57,17 @@ const CustomizedRoleSelection: React.FC<CustomizedRoleSelectionProps> = ({
         <label>
           <input
             type="radio"
-            value="VOLUNTEER"
-            checked={selectedRole === "VOLUNTEER"}
+            value="REVIEWER"
+            checked={selectedRole === "REVIEWER"}
             onChange={handleRoleChange}
           />
-          Volunteer
+          Background Verification Volunteer
         </label>
         <label>
           <input
             type="radio"
-            value="PROGRAM MANAGER"
-            checked={selectedRole === "PROGRAM MANAGER"}
+            value="PROGRAM_MANAGER"
+            checked={selectedRole === "PROGRAM_MANAGER"}
             onChange={handleRoleChange}
           />
           Program Manager

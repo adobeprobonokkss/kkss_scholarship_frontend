@@ -33,10 +33,13 @@ function App() {
           element: <Protected Component={ScholarshipForm} />,
         },
         {
-          path: "/search",
+          path: "/scholarship-form/:mode/:scholarshipID",
+          element: <Protected Component={ScholarshipForm} />,
+        },
+        {
+          path: "/search/:year?/:status?",
           element: <Protected Component={FormSearch} />,
         },
-
         {
           path: "/list",
           element: <Protected access={"ADMIN"} Component={Users} />,

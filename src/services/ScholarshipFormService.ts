@@ -997,6 +997,7 @@ export const submitApplication = async (
         scholarshipFormData,
       },
       timeout: API_TIMEOUT,
+      withCredentials: true,
     };
     const response: AxiosResponse = await axios(options);
     console.log(response);
@@ -1018,6 +1019,7 @@ export const getScholarshipFormData = async (
     headers: API_HEADERS,
     data: request,
     timeout: API_TIMEOUT,
+    withCredentials: true,
   };
   try {
     const response: AxiosResponse = await axios(options);
@@ -1036,6 +1038,7 @@ export const getAllScholarshipFormData = async () => {
       url: `${process.env.REACT_APP_BACK_END_URL}/api/v1/getAllScholarshipFormData`,
       headers: API_HEADERS,
       timeout: API_TIMEOUT,
+      withCredentials: true,
     };
     const response: AxiosResponse = await axios(options);
     console.log(response);
@@ -1096,6 +1099,7 @@ export const reviewApplication = async (
         scholarshipFormData,
       },
       timeout: API_TIMEOUT,
+      withCredentials: true,
     };
     const response: AxiosResponse = await axios(options);
     console.log(response);
