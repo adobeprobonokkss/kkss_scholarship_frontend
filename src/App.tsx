@@ -14,6 +14,7 @@ import Protected from "./pages/Protected";
 import FormSearch from "./pages/FormSearch";
 import Home from "./pages/Home";
 import Users from "./pages/User";
+import PastApplications from "./pages/PastApplications";
 
 function App() {
   const [isLogin, setLogin] = useState(false);
@@ -39,6 +40,10 @@ function App() {
         {
           path: "/search/:year?/:status?",
           element: <Protected Component={FormSearch} />,
+        },
+        {
+          path: "/past-applications",
+          element: <Protected Component={PastApplications} />,
         },
         {
           path: "/list",

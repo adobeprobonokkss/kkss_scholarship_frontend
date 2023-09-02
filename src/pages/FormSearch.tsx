@@ -31,9 +31,9 @@ const FormSearch: React.FC = () => {
   const [searchOption, setSearchOption] = useState("scholarshipID");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<ScholarshipData[]>([]);
-  const [selectedYear, setSelectedYear] = useState("2023");
+  const [selectedYear, setSelectedYear] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("all");
-  const years = [];
+  const years = ["All"];
   const statuses = scholarshipApplicationStatuses;
   const userInfo = getUsersInfo().decoded;
   const isAdmin = userInfo?.role == RoleType.ADMIN;
@@ -49,6 +49,9 @@ const FormSearch: React.FC = () => {
   useEffect(() => {
     console.log("queryYear", routeParams.year);
     console.log("queryStatus", routeParams.status);
+    if (!enableSearch) {
+      navigate("/");
+    }
     if (routeParams.year) {
       setSelectedYear(routeParams.year);
     }
@@ -78,7 +81,7 @@ const FormSearch: React.FC = () => {
     const request: ScholarshipDataRequest = {
       field: searchOption,
       keyword: searchQuery,
-      year: selectedYear,
+      year: selectedYear !== "All" ? selectedYear : undefined,
       status: selectedStatus !== "all" ? selectedStatus : undefined,
     };
     scholarshipData = (await getScholarshipFormData(request)) ?? [];
