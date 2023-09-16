@@ -15,6 +15,7 @@ import FormSearch from "./pages/FormSearch";
 import Home from "./pages/Home";
 import Users from "./pages/User";
 import PastApplications from "./pages/PastApplications";
+import { TrackVolunteeringHours } from "./pages/TrackVolunteeringHours";
 
 function App() {
   const [isLogin, setLogin] = useState(false);
@@ -48,6 +49,10 @@ function App() {
         {
           path: "/list",
           element: <Protected access={"ADMIN"} Component={Users} />,
+        },
+        {
+          path: "/track-time",
+          element: <Protected Component={TrackVolunteeringHours} />,
         },
       ],
     },

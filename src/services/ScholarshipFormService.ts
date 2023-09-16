@@ -1110,4 +1110,26 @@ export const reviewApplication = async (
   }
 };
 
+// Submit Volunteering Hours
+export const submitVolunteeringHours = async (volunteeringDetails: any) => {
+  try {
+    const options: AxiosRequestConfig = {
+      method: "POST",
+      url: `${process.env.REACT_APP_BACK_END_URL}/api/v1/submitVolunteeringHours`,
+      headers: API_HEADERS,
+      data: {
+        volunteeringDetails,
+      },
+      timeout: API_TIMEOUT,
+      withCredentials: true,
+    };
+    const response: AxiosResponse = await axios(options);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error submitting volunteering hours: ", error);
+    return null;
+  }
+};
+
 export default configs;

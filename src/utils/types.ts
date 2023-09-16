@@ -10,3 +10,14 @@ export type ScholarshipApplicationResponse = {
   status: string;
   message: string;
 };
+
+export type VolunteeringDetails = {
+  activityDate?: string;
+  noOfHours?: string;
+  activityDescription?: string;
+  scholarshipID?: string;
+  email?: string;
+  name?: string;
+  submissionDate?: string;
+  status?: string;
+};

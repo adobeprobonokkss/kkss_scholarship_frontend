@@ -62,7 +62,13 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
       },
       className: classes.datePicker,
     };
-    return <input {...props} type="date" />;
+    return (
+      <input
+        {...props}
+        max={new Date().toISOString().split("T")[0]}
+        type="date"
+      />
+    );
   };
 
   const switchComponent = (input: any) => {
