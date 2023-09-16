@@ -13,12 +13,16 @@ import Protected from "./pages/Protected";
 import FormSearch from "./pages/FormSearch";
 import Home from "./pages/Home";
 import Users from "./pages/User";
+<<<<<<< HEAD
 import axios, { AxiosError } from "axios";
 import { destroySession } from "./utils/shared";
 import { RoleType } from "./utils/types";
 import EditProfile from "./pages/EditProfile";
 
 const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
+=======
+import PastApplications from "./pages/PastApplications";
+>>>>>>> 3833cdfc5811750bed0318bd4dd43f62f3b2e9d5
 
 function App() {
   const [isLogin, setLogin] = useState(false);
@@ -85,6 +89,10 @@ function App() {
               Component={FormSearch}
             />
           ),
+        },
+        {
+          path: "/past-applications",
+          element: <Protected Component={PastApplications} />,
         },
         {
           path: "/list",

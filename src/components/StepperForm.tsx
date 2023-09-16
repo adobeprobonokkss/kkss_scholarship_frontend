@@ -100,6 +100,8 @@ const StepperForm: React.FC<any> = (props: any) => {
           scholarshipData[0][key as ScholarshipFormKeys] ?? ""
         );
       });
+    } else {
+      navigate("/");
     }
   };
 
