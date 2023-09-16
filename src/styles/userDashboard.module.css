@@ -1,0 +1,11 @@
+.styled_link {
+  color: white; /* Set the text color to blue */
+  text-decoration: none; /* Remove the default underline */
+  font-weight: bold; /* Make the text bold */
+  margin-right: 10px; /* Add some spacing to the right */
+}
+
+.btn_style {
+  /* border: 2px solid red; */
+  margin: 8px;
+}
