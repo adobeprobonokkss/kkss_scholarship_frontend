@@ -15,6 +15,7 @@ import {
   submitApplication,
   updateStatusAndFormDetails,
   validateForm,
+  validateReviewProcess,
 } from "../services/ScholarshipFormService";
 import { HelpText } from "@swc-react/help-text";
 import { RoleType, ScholarshipApplicationResponse } from "../utils/types";
@@ -54,7 +55,23 @@ const StepperForm: React.FC<any> = (props: any) => {
   const isPM = userInfo?.role == RoleType.PROGRAM_MANAGER;
   const isReviewer = userInfo?.role == RoleType.REVIEWER;
   const stepperLength = isUser ? configs.length : configs.length + 1;
-  const disableSubmit = isUser && mode === "preview";
+  const disableSubmit = () => {
+    if (isUser && mode === "preview") {
+      return true;
+    } else if (isReviewer && formDataCtx.status !== "inital_review_completed") {
+      return true;
+    } else if (
+      isPM &&
+      ![
+        "submitted",
+        "inital_review_completed",
+        "background_verification_completed",
+      ].includes(formDataCtx.status as string)
+    ) {
+      return true;
+    }
+    return false;
+  };
   const enableStep = (isAdmin || isPM || isReviewer) && mode === "preview";
   const navigate = useNavigate();
 
@@ -70,6 +87,11 @@ const StepperForm: React.FC<any> = (props: any) => {
       response = (await submitApplication(formDataCtx))?.data ?? undefined;
     } else if (mode === "preview" && enableStep) {
       console.log("In Preview", formDataCtx);
+      const errors = validateReviewProcess(formDataCtx);
+      if (errors.length > 0) {
+        setErrors(errors);
+        return;
+      }
       response =
         (await updateStatusAndFormDetails(userInfo, { ...formDataCtx }))
           ?.data ?? undefined;
@@ -154,7 +176,7 @@ const StepperForm: React.FC<any> = (props: any) => {
             <Button onClick={() => setActiveStep(activeStep + 1)}>Next</Button>
           )}
           {activeStep === stepperLength - 1 && (
-            <Button onClick={onSubmitHandler} disabled={disableSubmit}>
+            <Button onClick={onSubmitHandler} disabled={disableSubmit()}>
               Submit
             </Button>
           )}
