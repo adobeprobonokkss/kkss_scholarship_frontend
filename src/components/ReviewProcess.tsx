@@ -24,6 +24,9 @@ const ReviewProcess: FC = () => {
   const formDataCtx = useContext<ScholarshipData & ScholarshipFormContextProps>(
     ScholarshipFormContext
   );
+  const hideAfterBGReview =
+    formDataCtx.status == "submitted" ||
+    formDataCtx.status == "initial_review_completed";
 
   const disableAssignPMReviewer = !!formDataCtx.programManagerEmail && !isAdmin;
   const disableAssignBGReviewer = isUser || isReviewer;
@@ -41,6 +44,12 @@ const ReviewProcess: FC = () => {
     color: "#000000",
     fontWeight: 510,
   };
+  const enableBeforeBGReview = formDataCtx.status === "submitted";
+  const enableAfterBGReview =
+    formDataCtx.status === "background_verification_completed";
+  const enableBGReview =
+    formDataCtx.status === "initial_review_completed" ||
+    formDataCtx.status === "submitted";
 
   if (isUser) return <></>;
 
@@ -50,16 +59,24 @@ const ReviewProcess: FC = () => {
         {!hidePMReview && (
           <>
             <div key={"pmReview1Heading"} className={classes.card}>
-              <FieldLabel style={headingLabelStyle}>
+              <FieldLabel
+                disabled={!enableBeforeBGReview}
+                style={headingLabelStyle}
+              >
                 {"Program Manager Review - Before background verification"}
               </FieldLabel>
             </div>
             <div key={"pmReview1"} className={classes.card}>
-              <FieldLabel required={true} style={fieldLabelStyle}>
+              <FieldLabel
+                disabled={!enableBeforeBGReview}
+                required={true}
+                style={fieldLabelStyle}
+              >
                 {"Assign Program Manager"}
               </FieldLabel>
               <div className={classes.pmDetails}>
                 <Textfield
+                  disabled={!enableBeforeBGReview || disableAssignPMReviewer}
                   placeholder="Enter valid Email"
                   id="pmEmail"
                   value={
@@ -81,9 +98,9 @@ const ReviewProcess: FC = () => {
                     const value = e.target?.value.trim() ?? "";
                     formDataCtx.onFormDataChange("programManagerEmail", value);
                   }}
-                  disabled={disableAssignPMReviewer}
                 />
                 <Textfield
+                  disabled={!enableBeforeBGReview || disableAssignPMReviewer}
                   placeholder="Enter valid Name"
                   id="pmName"
                   value={
@@ -105,15 +122,19 @@ const ReviewProcess: FC = () => {
                     const value = e.target?.value.trim() ?? "";
                     formDataCtx.onFormDataChange("programManagerName", value);
                   }}
-                  disabled={disableAssignPMReviewer}
                 />
               </div>
             </div>
             <div key={"pmReviewcomment1"} className={classes.card}>
-              <FieldLabel required={true} style={fieldLabelStyle}>
+              <FieldLabel
+                disabled={!enableBeforeBGReview}
+                required={true}
+                style={fieldLabelStyle}
+              >
                 {"Program Manager Comment"}
               </FieldLabel>
               <Textfield
+                disabled={!enableBeforeBGReview}
                 placeholder="Enter Comment"
                 id="pmComment"
                 value={formDataCtx.programManagerComment1 ?? ""}
@@ -140,7 +161,11 @@ const ReviewProcess: FC = () => {
           </FieldLabel>
         </div>
         <div key={"bgReview"} className={classes.card}>
-          <FieldLabel required={true} style={fieldLabelStyle}>
+          <FieldLabel
+            disabled={!enableBGReview}
+            required={true}
+            style={fieldLabelStyle}
+          >
             {"Assign Background Verification Volunteer"}
           </FieldLabel>
           <div className={classes.pmDetails}>
@@ -162,7 +187,7 @@ const ReviewProcess: FC = () => {
                 const value = e.target?.value.trim() ?? "";
                 formDataCtx.onFormDataChange("backgroundVerifierEmail", value);
               }}
-              disabled={disableAssignBGReviewer}
+              disabled={disableAssignBGReviewer || !enableBGReview}
             />
             <Textfield
               placeholder="Enter valid Name"
@@ -182,15 +207,20 @@ const ReviewProcess: FC = () => {
                 const value = e.target?.value.trim() ?? "";
                 formDataCtx.onFormDataChange("backgroundVerifierName", value);
               }}
-              disabled={disableAssignBGReviewer}
+              disabled={disableAssignBGReviewer || !enableBGReview}
             />
           </div>
         </div>
         <div key={"bgReviewcomment"} className={classes.card}>
-          <FieldLabel required={true} style={fieldLabelStyle}>
+          <FieldLabel
+            disabled={!enableBGReview}
+            required={true}
+            style={fieldLabelStyle}
+          >
             {"Background Verification Comment"}
           </FieldLabel>
           <Textfield
+            disabled={!enableBGReview}
             placeholder="Enter Comment"
             id="bgComment"
             value={formDataCtx.backgroundVerifierComment ?? ""}
@@ -208,19 +238,27 @@ const ReviewProcess: FC = () => {
             }}
           />
         </div>
-        {!hidePMReview && (
+        {!hidePMReview && !hideAfterBGReview && (
           <>
             <div key={"pmReview2Heading"} className={classes.card}>
-              <FieldLabel style={headingLabelStyle}>
+              <FieldLabel
+                disabled={!enableAfterBGReview}
+                style={headingLabelStyle}
+              >
                 {"Program Manager Review - After background verification"}
               </FieldLabel>
             </div>
 
             <div key={"pmReview2"} className={classes.card}>
-              <FieldLabel required={true} style={fieldLabelStyle}>
+              <FieldLabel
+                disabled={!enableAfterBGReview}
+                required={true}
+                style={fieldLabelStyle}
+              >
                 {"Program Manager Comment"}
               </FieldLabel>
               <Textfield
+                disabled={!enableAfterBGReview}
                 placeholder="Enter Comment"
                 id="pmComment2"
                 value={formDataCtx.programManagerComment2 ?? ""}
