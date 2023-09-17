@@ -71,11 +71,20 @@ export type ScholarshipData = {
 };
 
 export enum ApplicationStatus {
-  submitted = "submitted",
-  inReview = "initial_review_completed",
-  reviewCompleted = "REVIEW COMPLETED",
-  verificationDone = "VERIFIED",
-  approve = "approved",
-  reject = "rejected",
-  infoRequired = "INFO REQUIRED",
+  submitted = "Submitted",
+  initial_review_completed = "Initial Review Completed",
+  background_check_completed = "Background Check Completed",
+  final_review_completed = "Final Review Completed",
+  approved = "Approved",
+  rejected = "Rejected",
+  // infoRequired = "INFO REQUIRED",
 }
+
+export const enumColors: Record<ApplicationStatus, string> = {
+  [ApplicationStatus.submitted]: "#454ADE", //
+  [ApplicationStatus.initial_review_completed]: "green", //
+  [ApplicationStatus.background_check_completed]: "#C17817", //
+  [ApplicationStatus.final_review_completed]: "green",
+  [ApplicationStatus.approved]: "#3A914D",
+  [ApplicationStatus.rejected]: "#EE4266", //
+};

@@ -6,6 +6,7 @@ import { Status } from "./../../components/status/Status";
 interface ScholarshipTableProps {
   scholarshipList: ScholarshipData[];
 }
+
 export const UsersTable: React.FC<ScholarshipTableProps> = (
   props: ScholarshipTableProps
 ) => {

@@ -2,17 +2,20 @@ import React, { FC, useEffect, useState } from "react";
 import "./../styles/UserDashBoard.css"; // Import the CSS file for styling
 import { Welcome } from "./../components/dashboard/Welcome";
 import { UsersTable } from "./../components/table/UsersTable";
+import { Tile } from "./../components/tile/Tiles";
 import { getUsersInfo } from "./../utils/shared";
 import { Button } from "@swc-react/button";
 import { Link } from "react-router-dom";
 import classes from "../styles/userDashboard.module.css";
-import { RoleType } from "./../utils/types";
+import { ApplicationStatus, RoleType } from "./../utils/types";
 import axios from "axios";
-import { ScholarshipData } from "./../utils/types";
-
+import { ScholarshipData, enumColors } from "./../utils/types";
 interface Role {
   role: string | null;
 }
+
+// Convert the record's values into an array
+const statusArray = Object.keys(ApplicationStatus);
 
 const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
 
@@ -24,7 +27,6 @@ function getUserDashBoard(decoded: any) {
         `${BACKENDURL}/api/v1/getScholarshipFormData`,
         { withCredentials: true }
       );
-      // console.log(response.data);
       setScholarShipList(response.data.scholarshipFormData);
     })();
   }, []);
@@ -63,8 +65,36 @@ function getUserDashBoard(decoded: any) {
   );
 }
 
-function getAdminNavigationBar() {
-  return <></>;
+function getAdminDashBoard() {
+  const [selectedYear, setSelectedYear] = useState<string>(
+    new Date().getFullYear().toString()
+  );
+  // useEffect(() => {
+  //   console.log("from useEffect", selectedYear);
+  // }, [selectedYear]);
+  return (
+    <>
+      <div>
+        <b>Please Select Year - </b>
+        <select
+          onChange={(e) => {
+            setSelectedYear(e.target.value);
+            console.log("year selected " + e.target.value);
+            // console.log(selectedYear);
+          }}
+        >
+          <option selected={selectedYear == "2022"}>2022</option>
+          <option selected={selectedYear == "2023"}>2023</option>
+          <option selected={selectedYear == "2024"}>2024</option>
+        </select>
+      </div>
+      <div>
+        {statusArray.map<any>((item: string) => {
+          return <Tile color="" statusText={item} year={selectedYear} />;
+        })}
+      </div>
+    </>
+  );
 }
 
 function getReviewerDashBoard(decoded: any) {
@@ -107,7 +137,8 @@ const UserDashBoard: React.FC = () => {
   //make a request to check if client side data has not been updated
 
   if (decoded?.role === RoleType.ADMIN) {
-    return getAdminNavigationBar();
+    console.log("executing this");
+    return getAdminDashBoard();
   } else if (decoded?.role === RoleType.PROGRAM_MANAGER) {
     return getProgramManagerNavigationBar();
   } else if (decoded?.role === RoleType.REVIEWER) {

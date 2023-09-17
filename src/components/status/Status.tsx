@@ -1,28 +1,38 @@
 import React from "react";
-import { ApplicationStatus } from "./../../utils/types";
+import { ApplicationStatus, enumColors } from "./../../utils/types";
 
 interface statusType {
   status: string;
 }
-const enumColors: Record<ApplicationStatus, string> = {
-  [ApplicationStatus.submitted]: "#454ADE", //
-  [ApplicationStatus.inReview]: "#540D6E", //
-  [ApplicationStatus.verificationDone]: "#C17817", //
-  [ApplicationStatus.infoRequired]: "green",
-  [ApplicationStatus.reviewCompleted]: "green",
-  [ApplicationStatus.approve]: "#3A914D",
-  [ApplicationStatus.reject]: "#EE4266", //
-};
+// const enumColors: Record<ApplicationStatus, string> = {
+//   [ApplicationStatus.submitted]: "#454ADE", //
+//   [ApplicationStatus.initial_review_completed]: "green", //
+//   [ApplicationStatus.background_check_completed]: "#C17817", //
+//   [ApplicationStatus.final_review_completed]: "green",
+//   [ApplicationStatus.approved]: "#3A914D",
+//   [ApplicationStatus.rejected]: "#EE4266", //
+// };
 
+// function getValueFromKey(key: string): Status | undefined {
+//   for (const statusKey in Status) {
+//     if (Status.hasOwnProperty(statusKey) && Status[statusKey] === key) {
+//       return Status[statusKey] as Status;
+//     }
+//   }
+//   return undefined; // Return undefined if the key is not found
+// }
 export const Status: React.FC<statusType> = (props: statusType) => {
   const { status } = props;
   console.log(status);
+  const statusValue: string = (ApplicationStatus as any)[status];
+
+  console.log(enumColors[statusValue as ApplicationStatus], "enum");
   const style = {
-    backgroundColor: enumColors[status as ApplicationStatus],
+    backgroundColor: enumColors[statusValue as ApplicationStatus],
     padding: ".25rem",
     "font-weight": "bold",
     color: "white",
     "border-radius": "0.3rem",
   };
-  return <span style={style}>{status}</span>;
+  return <span style={style}>{statusValue}</span>;
 };
