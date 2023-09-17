@@ -1,24 +1,29 @@
-import React, { useEffect } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import React from "react";
+import { Navigate } from "react-router-dom";
 import { getUsersInfo } from "./../utils/shared";
 
+/**
+ * @description to protect route from client side- if user directly enters the url which he has
+ * not access, will be route to dashboard
+ * * - is for all users
+ *
+ * @param props
+ * @returns
+ */
 function Protected(props: any) {
-  console.log("passing", props.access);
   const { Component } = props;
-  const access = props.access;
-  const role = getUsersInfo().decoded?.role;
-  const navigate = useNavigate();
+  const accessList = props.accessList;
+  const currnentUserRole = getUsersInfo().decoded?.role;
 
-  if (false) {
-    console.log("Navigating to ...");
-    navigate("/");
+  {
+    return accessList.includes(currnentUserRole) || accessList.includes("*") ? (
+      <div>
+        <Component />
+      </div>
+    ) : (
+      <Navigate to={"/"}></Navigate>
+    );
   }
-
-  return (
-    <div>
-      <Component />
-    </div>
-  );
 }
 
 export default Protected;
