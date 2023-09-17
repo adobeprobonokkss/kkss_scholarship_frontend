@@ -3,9 +3,10 @@ import { Picker } from "@swc-react/picker";
 import { createElement } from "react";
 import { MenuItem } from "@swc-react/menu";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { API_HEADERS, API_TIMEOUT } from "../utils/shared";
+import { API_HEADERS, API_TIMEOUT, getUsersInfo } from "../utils/shared";
 import { user } from "../interface/UserSession";
 import { RoleType, ScholarshipApplicationResponse } from "../utils/types";
+import { ScholarshipFormContextProps } from "context/ScholarshipFormContext";
 
 export type ScholarshipData = {
   email: string;
@@ -80,7 +81,7 @@ export const scholarshipApplicationStatuses: [string, string][] = [
   ["all", "All"],
   ["submitted", "Submitted"],
   ["initial_review_completed", "Initial Review Completed"],
-  ["background_check_completed", "Background Check Completed"],
+  ["background_verification_completed", "Background Check Completed"],
   ["final_review_completed", "Final Review Completed"],
   ["approved", "Approved"],
   ["rejected", "Rejected"],
@@ -1070,11 +1071,11 @@ export const updateStatusAndFormDetails = async (
     }
     case "initial_review_completed": {
       if (isAdmin || isPM || isReviewer) {
-        scholarshipApplication.status = "background_check_completed";
+        scholarshipApplication.status = "background_verification_completed";
         break;
       }
     }
-    case "background_check_completed": {
+    case "background_verification_completed": {
       if (isAdmin || isPM) {
         scholarshipApplication.status = "final_review_completed";
         break;
@@ -1108,6 +1109,64 @@ export const reviewApplication = async (
     console.error("Error reviewing scholarship form data: ", error);
     return null;
   }
+};
+
+export const validateReviewProcess = (
+  formCtx: ScholarshipData & ScholarshipFormContextProps
+) => {
+  const errors: string[] = [];
+  if (formCtx.status == "submitted") {
+    if (!formCtx.programManagerName || formCtx.programManagerName.length == 0) {
+      errors.push("Program Manager Name is required");
+    }
+    if (
+      !formCtx.programManagerEmail ||
+      formCtx.programManagerEmail.length == 0
+    ) {
+      errors.push("Program Manager Email is required");
+    }
+    if (
+      !formCtx.programManagerComment1 ||
+      formCtx.programManagerComment1.length == 0
+    ) {
+      errors.push("Program Manager Comment is required");
+    }
+    if (
+      !formCtx.backgroundVerifierName ||
+      formCtx.backgroundVerifierName.length == 0
+    ) {
+      errors.push("Background Verifier Name is required");
+    }
+    if (
+      !formCtx.backgroundVerifierEmail ||
+      formCtx.backgroundVerifierEmail.length == 0
+    ) {
+      errors.push("Background Verifier Email is required");
+    }
+  } else if (formCtx.status == "initial_review_completed") {
+    if (
+      !formCtx.backgroundVerifierComment ||
+      formCtx.backgroundVerifierComment.length == 0
+    ) {
+      errors.push("Background Verifier Comment is required");
+    }
+  } else if (formCtx.status == "background_verification_completed") {
+    if (
+      !formCtx.programManagerComment2 ||
+      formCtx.programManagerComment2.length == 0
+    ) {
+      errors.push("Program Manager Comment is required");
+    }
+  } else if (formCtx.status == "final_review_completed") {
+    if (!formCtx.adminComment || formCtx.adminComment.length == 0) {
+      errors.push("Admin Comment is required");
+    }
+  } else if (formCtx.status == "approved" || formCtx.status == "rejected") {
+    if (getUsersInfo()?.decoded?.role != RoleType.ADMIN) {
+      errors.push("Only Admin can approve or reject");
+    }
+  }
+  return errors;
 };
 
 export default configs;
