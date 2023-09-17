@@ -101,6 +101,10 @@ function App() {
           path: "/edit_profile",
           element: <Protected accessList={["*"]} Component={EditProfile} />,
         },
+        {
+          path: "/*",
+          element: <Protected accessList={["*"]} Component={UserDashBoard} />,
+        },
       ],
     },
   ]);

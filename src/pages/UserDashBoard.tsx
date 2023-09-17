@@ -39,20 +39,20 @@ function getUserDashBoard(decoded: any) {
         role={decoded?.role ?? ""}
       ></Welcome>
       <div>
-        {/* <div className={classes.btn_style}>
+        <div className={classes.btn_style}>
           <Button>
             <Link className={classes.styled_link} to="/scholarship-form">
               Apply for scholarship
             </Link>
           </Button>
-        </div> */}
-        <div className={classes.btn_style}>
+        </div>
+        {/* <div className={classes.btn_style}>
           <Button>
             <Link className={classes.styled_link} to="/">
               Log Volunteering Hour
             </Link>
           </Button>
-        </div>
+        </div> */}
         <div>
           <h3>Total volunteeting Hour contributed - {5}/150</h3>
         </div>
