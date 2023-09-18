@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { FieldLabel } from "@swc-react/field-label";
 import { Textfield } from "@swc-react/textfield";
 import { Picker } from "@swc-react/picker";
@@ -53,6 +53,27 @@ const ReviewProcess: FC = () => {
 
   if (isUser) return <></>;
 
+  useEffect(() => {
+    console.log("ReviewProcess: useEffect");
+    if (
+      isPM &&
+      formDataCtx.status === "submitted" &&
+      (!formDataCtx.programManagerEmail ||
+        formDataCtx.programManagerEmail?.length === 0)
+    ) {
+      console.log("ReviewProcess: useEffect - setting PM email and name");
+
+      formDataCtx.onFormDataChange(
+        "programManagerEmail",
+        (userInfo?.email ?? "").trim()
+      );
+      formDataCtx.onFormDataChange(
+        "programManagerName",
+        (userInfo?.name ?? "").trim()
+      );
+    }
+  }, []);
+
   return (
     <div>
       <form className={classes.form}>
@@ -83,8 +104,6 @@ const ReviewProcess: FC = () => {
                     formDataCtx.programManagerEmail &&
                     formDataCtx.programManagerEmail.length > 0
                       ? formDataCtx.programManagerEmail
-                      : isPM
-                      ? userInfo?.email ?? ""
                       : ""
                   }
                   required={true}
@@ -96,7 +115,10 @@ const ReviewProcess: FC = () => {
                   change={(e: any) => {
                     e.preventDefault();
                     const value = e.target?.value.trim() ?? "";
-                    formDataCtx.onFormDataChange("programManagerEmail", value);
+                    formDataCtx.onFormDataChange(
+                      "programManagerEmail",
+                      value?.trim()
+                    );
                   }}
                 />
                 <Textfield
@@ -107,8 +129,6 @@ const ReviewProcess: FC = () => {
                     formDataCtx.programManagerName &&
                     formDataCtx.programManagerName.length > 0
                       ? formDataCtx.programManagerName
-                      : isPM
-                      ? userInfo?.name ?? ""
                       : ""
                   }
                   required={true}
@@ -120,7 +140,10 @@ const ReviewProcess: FC = () => {
                   change={(e: any) => {
                     e.preventDefault();
                     const value = e.target?.value.trim() ?? "";
-                    formDataCtx.onFormDataChange("programManagerName", value);
+                    formDataCtx.onFormDataChange(
+                      "programManagerName",
+                      value?.trim()
+                    );
                   }}
                 />
               </div>
@@ -148,7 +171,10 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   const value = e.target?.value.trim() ?? "";
-                  formDataCtx.onFormDataChange("programManagerComment1", value);
+                  formDataCtx.onFormDataChange(
+                    "programManagerComment1",
+                    value?.trim()
+                  );
                 }}
               />
             </div>
@@ -185,7 +211,10 @@ const ReviewProcess: FC = () => {
               change={(e: any) => {
                 e.preventDefault();
                 const value = e.target?.value.trim() ?? "";
-                formDataCtx.onFormDataChange("backgroundVerifierEmail", value);
+                formDataCtx.onFormDataChange(
+                  "backgroundVerifierEmail",
+                  value?.trim()
+                );
               }}
               disabled={disableAssignBGReviewer || !enableBGReview}
             />
@@ -205,9 +234,14 @@ const ReviewProcess: FC = () => {
               change={(e: any) => {
                 e.preventDefault();
                 const value = e.target?.value.trim() ?? "";
-                formDataCtx.onFormDataChange("backgroundVerifierName", value);
+                formDataCtx.onFormDataChange(
+                  "backgroundVerifierName",
+                  value?.trim()
+                );
               }}
-              disabled={disableAssignBGReviewer || !enableBGReview}
+              disabled={
+                disableAssignBGReviewer && formDataCtx.status !== "submitted"
+              }
             />
           </div>
         </div>
@@ -234,7 +268,10 @@ const ReviewProcess: FC = () => {
             change={(e: any) => {
               e.preventDefault();
               const value = e.target?.value.trim() ?? "";
-              formDataCtx.onFormDataChange("backgroundVerifierComment", value);
+              formDataCtx.onFormDataChange(
+                "backgroundVerifierComment",
+                value?.trim()
+              );
             }}
           />
         </div>
@@ -272,7 +309,10 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   const value = e.target?.value.trim() ?? "";
-                  formDataCtx.onFormDataChange("programManagerComment2", value);
+                  formDataCtx.onFormDataChange(
+                    "programManagerComment2",
+                    value?.trim()
+                  );
                 }}
               />
             </div>
@@ -303,7 +343,7 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   const value = e.target?.value.trim() ?? "";
-                  formDataCtx.onFormDataChange("adminComment", value);
+                  formDataCtx.onFormDataChange("adminComment", value?.trim());
                 }}
               />
             </div>
@@ -321,7 +361,10 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   if (isAdmin) {
-                    formDataCtx.onFormDataChange("status", e.target.value);
+                    formDataCtx.onFormDataChange(
+                      "status",
+                      e.target.value?.trim()
+                    );
                   }
                 }}
                 label="Approve/Reject"

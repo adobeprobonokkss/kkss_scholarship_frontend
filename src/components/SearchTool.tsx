@@ -157,10 +157,10 @@ const SearchTool: React.FC = () => {
         </div>
       </div>
       <div className={classes["form-search__search-help"]}>
-        <HelpText variant="negative" icon>
+        <HelpText size="l" variant="negative" icon>
           Please use search responsibly. Do not spam the search button.
         </HelpText>
-        <HelpText variant="neutral" icon>
+        <HelpText size="l" variant="neutral" icon>
           Partial keyword search is supported but it will only fetch records
           that start with or end with the keyword.
         </HelpText>
