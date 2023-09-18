@@ -33,7 +33,7 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
           .trim()
           ?.slice(0, validationMap[input.key]?.maxLength)
           .trim();
-        formDataCtx.onFormDataChange(input.key, value);
+        formDataCtx.onFormDataChange(input.key, value?.trim());
         if (input.props.change) input.props.change(e);
       },
     });
@@ -45,7 +45,7 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
       value: formDataCtx[input.key].trim(),
       change: (e: any) => {
         e.preventDefault();
-        formDataCtx.onFormDataChange(input.key, e.target.value);
+        formDataCtx.onFormDataChange(input.key, e.target.value?.trim());
         if (input.props.change) input.props.change(e);
       },
       children: renderPickerChildren(input.key, formDataCtx),
@@ -58,7 +58,7 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
       value: formDataCtx[input.key],
       onChange: (e: any) => {
         e.preventDefault();
-        formDataCtx.onFormDataChange(input.key, e.target.value);
+        formDataCtx.onFormDataChange(input.key, e.target.value?.trim());
       },
       className: classes.datePicker,
     };
