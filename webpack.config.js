@@ -55,12 +55,12 @@ module.exports = {
     }),
 
     new webpack.DefinePlugin({
-      // "process.env.REACT_APP_BACK_END_URL": JSON.stringify(
-      //   "https://asia-south1-kkss-5a230.cloudfunctions.net/kkssCloudFunctions"
-      // ),
       "process.env.REACT_APP_BACK_END_URL": JSON.stringify(
-        "http://localhost:1337"
+        "https://asia-south1-kkss-5a230.cloudfunctions.net/kkssCloudFunctions"
       ),
+      // "process.env.REACT_APP_BACK_END_URL": JSON.stringify(
+      //   "http://localhost:1337"
+      // ),
     }),
   ],
 };
