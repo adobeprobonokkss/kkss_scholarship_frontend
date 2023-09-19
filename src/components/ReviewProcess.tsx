@@ -6,7 +6,7 @@ import { MenuItem } from "@swc-react/menu";
 
 import classes from "../styles/ConfigurableForm.module.css";
 import { getUsersInfo } from "../utils/shared";
-import { RoleType } from "../utils/types";
+import { ApplicationStatusKeys, RoleType } from "../utils/types";
 import {
   ScholarshipFormContext,
   ScholarshipFormContextProps,
@@ -25,8 +25,8 @@ const ReviewProcess: FC = () => {
     ScholarshipFormContext
   );
   const hideAfterBGReview =
-    formDataCtx.status == "submitted" ||
-    formDataCtx.status == "initial_review_completed";
+    formDataCtx.status == ApplicationStatusKeys.submitted ||
+    formDataCtx.status == ApplicationStatusKeys.initial_review_completed;
 
   const disableAssignPMReviewer = !!formDataCtx.programManagerEmail && !isAdmin;
   const disableAssignBGReviewer = isUser || isReviewer;
@@ -44,12 +44,14 @@ const ReviewProcess: FC = () => {
     color: "#000000",
     fontWeight: 510,
   };
-  const enableBeforeBGReview = formDataCtx.status === "submitted";
+  const enableBeforeBGReview =
+    formDataCtx.status === ApplicationStatusKeys.submitted;
   const enableAfterBGReview =
-    formDataCtx.status === "background_verification_completed";
+    formDataCtx.status ===
+    ApplicationStatusKeys.background_verification_completed;
   const enableBGReview =
-    formDataCtx.status === "initial_review_completed" ||
-    formDataCtx.status === "submitted";
+    formDataCtx.status === ApplicationStatusKeys.initial_review_completed ||
+    formDataCtx.status === ApplicationStatusKeys.submitted;
 
   if (isUser) return <></>;
 
@@ -57,7 +59,7 @@ const ReviewProcess: FC = () => {
     console.log("ReviewProcess: useEffect");
     if (
       isPM &&
-      formDataCtx.status === "submitted" &&
+      formDataCtx.status === ApplicationStatusKeys.submitted &&
       (!formDataCtx.programManagerEmail ||
         formDataCtx.programManagerEmail?.length === 0)
     ) {
@@ -240,7 +242,8 @@ const ReviewProcess: FC = () => {
                 );
               }}
               disabled={
-                disableAssignBGReviewer && formDataCtx.status !== "submitted"
+                disableAssignBGReviewer &&
+                formDataCtx.status !== ApplicationStatusKeys.submitted
               }
             />
           </div>
@@ -353,8 +356,8 @@ const ReviewProcess: FC = () => {
               </FieldLabel>
               <Picker
                 value={
-                  formDataCtx.status == "approved" ||
-                  formDataCtx.status == "rejected"
+                  formDataCtx.status == ApplicationStatusKeys.approved ||
+                  formDataCtx.status == ApplicationStatusKeys.rejected
                     ? formDataCtx.status
                     : ""
                 }

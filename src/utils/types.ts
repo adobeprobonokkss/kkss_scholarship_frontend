@@ -88,3 +88,15 @@ export const enumColors: Record<ApplicationStatus, string> = {
   [ApplicationStatus.approved]: "#3A914D",
   [ApplicationStatus.rejected]: "#EE4266", //
 };
+
+export enum ApplicationStatusKeys {
+  submitted = "submitted",
+  initial_review_completed = "initial_review_completed",
+  background_verification_completed = "background_verification_completed",
+  final_review_completed = "final_review_completed",
+  approved = "approved",
+  rejected = "rejected",
+  // infoRequired = "INFO REQUIRED",
+}
+
+export type ApplicationStatusType = keyof typeof ApplicationStatusKeys;

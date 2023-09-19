@@ -5,7 +5,12 @@ import { MenuItem } from "@swc-react/menu";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { API_HEADERS, API_TIMEOUT, getUsersInfo } from "../utils/shared";
 import { user } from "../interface/UserSession";
-import { RoleType, ScholarshipApplicationResponse } from "../utils/types";
+import {
+  ApplicationStatusKeys,
+  ApplicationStatusType,
+  RoleType,
+  ScholarshipApplicationResponse,
+} from "../utils/types";
 import { ScholarshipFormContextProps } from "context/ScholarshipFormContext";
 
 export type ScholarshipData = {
@@ -54,7 +59,7 @@ export type ScholarshipData = {
   formSubmittedBy: string;
   yourPhNumber: string;
   scholarshipID?: string;
-  status?: string;
+  status?: ApplicationStatusType;
   submissionYear?: string;
   backgroundVerifierEmail?: string;
   backgroundVerifierName?: string;
@@ -186,6 +191,7 @@ const configs = [
           id: "address",
           value: "",
           multiline: true,
+          grows: true,
           required: true,
           pattern: "[a-zA-Z0-9,.\\- ]{1,300}",
         },
@@ -280,6 +286,7 @@ const configs = [
           value: "",
           required: true,
           multiline: true,
+          grows: true,
           pattern: "[a-zA-Z0-9,.\\- ]{1,300}",
         },
       },
@@ -454,6 +461,7 @@ const configs = [
           required: true,
           pattern: "[a-zA-Z0-9,. ]{1,1000}",
           multiline: true,
+          grows: true,
         },
       },
       // Ambition
@@ -468,6 +476,7 @@ const configs = [
           value: "",
           required: true,
           multiline: true,
+          grows: true,
           pattern: "[a-zA-Z0-9,. ]{1,3000}",
         },
       },
@@ -482,6 +491,8 @@ const configs = [
           id: "awardDetails",
           value: "",
           pattern: "[a-zA-Z0-9,. ]{1,3000}",
+          multiline: true,
+          grows: true,
         },
       },
       // Attendance Details for Previous Year
@@ -1124,19 +1135,22 @@ export const updateStatusAndFormDetails = async (
   switch (scholarshipApplication.status) {
     case "submitted": {
       if (isAdmin || isPM) {
-        scholarshipApplication.status = "initial_review_completed";
+        scholarshipApplication.status =
+          ApplicationStatusKeys.initial_review_completed;
       }
       break;
     }
     case "initial_review_completed": {
       if (isAdmin || isPM || isReviewer) {
-        scholarshipApplication.status = "background_verification_completed";
+        scholarshipApplication.status =
+          ApplicationStatusKeys.background_verification_completed;
         break;
       }
     }
     case "background_verification_completed": {
       if (isAdmin || isPM) {
-        scholarshipApplication.status = "final_review_completed";
+        scholarshipApplication.status =
+          ApplicationStatusKeys.final_review_completed;
         break;
       }
     }
@@ -1174,7 +1188,7 @@ export const validateReviewProcess = (
   formCtx: ScholarshipData & ScholarshipFormContextProps
 ) => {
   const errors: string[] = [];
-  if (formCtx.status == "submitted") {
+  if (formCtx.status == ApplicationStatusKeys.submitted) {
     if (!formCtx.programManagerName || formCtx.programManagerName.length == 0) {
       errors.push("Program Manager Name is required");
     }
@@ -1202,25 +1216,30 @@ export const validateReviewProcess = (
     ) {
       errors.push("Background Verifier Email is required");
     }
-  } else if (formCtx.status == "initial_review_completed") {
+  } else if (formCtx.status == ApplicationStatusKeys.initial_review_completed) {
     if (
       !formCtx.backgroundVerifierComment ||
       formCtx.backgroundVerifierComment.length == 0
     ) {
       errors.push("Background Verifier Comment is required");
     }
-  } else if (formCtx.status == "background_verification_completed") {
+  } else if (
+    formCtx.status == ApplicationStatusKeys.background_verification_completed
+  ) {
     if (
       !formCtx.programManagerComment2 ||
       formCtx.programManagerComment2.length == 0
     ) {
       errors.push("Program Manager Comment is required");
     }
-  } else if (formCtx.status == "final_review_completed") {
+  } else if (formCtx.status == ApplicationStatusKeys.final_review_completed) {
     if (!formCtx.adminComment || formCtx.adminComment.length == 0) {
       errors.push("Admin Comment is required");
     }
-  } else if (formCtx.status == "approved" || formCtx.status == "rejected") {
+  } else if (
+    formCtx.status == ApplicationStatusKeys.approved ||
+    formCtx.status == ApplicationStatusKeys.rejected
+  ) {
     if (getUsersInfo()?.decoded?.role != RoleType.ADMIN) {
       errors.push("Only Admin can approve or reject");
     }

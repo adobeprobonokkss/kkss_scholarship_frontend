@@ -11,14 +11,18 @@ import {
   ScholarshipDataRequest,
   ScholarshipFormKeys,
   getScholarshipFormData,
-  scholarshipApplicationStatusesMap,
   submitApplication,
   updateStatusAndFormDetails,
   validateForm,
   validateReviewProcess,
 } from "../services/ScholarshipFormService";
 import { HelpText } from "@swc-react/help-text";
-import { RoleType, ScholarshipApplicationResponse } from "../utils/types";
+import {
+  ApplicationStatus,
+  ApplicationStatusKeys,
+  RoleType,
+  ScholarshipApplicationResponse,
+} from "../utils/types";
 import { getUsersInfo } from "../utils/shared";
 import ReviewProcess from "./ReviewProcess";
 import { useNavigate } from "react-router-dom";
@@ -123,15 +127,19 @@ const StepperForm: React.FC<any> = (props: any) => {
   const disableSubmit = () => {
     if (isUser && mode === "preview") {
       return true;
-    } else if (isReviewer && formDataCtx.status !== "inital_review_completed") {
+    } else if (
+      isReviewer &&
+      formDataCtx.status != ApplicationStatusKeys.initial_review_completed
+    ) {
       return true;
     } else if (
       isPM &&
+      formDataCtx.status &&
       ![
         "submitted",
         "inital_review_completed",
         "background_verification_completed",
-      ].includes(formDataCtx.status as string)
+      ].includes(formDataCtx.status)
     ) {
       return true;
     }
@@ -200,7 +208,79 @@ const StepperForm: React.FC<any> = (props: any) => {
     if (mode === "preview" && scholarshipID) {
       fetchScholarshipApplications();
     }
+
+    if (mode !== "preview" && userInfo?.role != RoleType.USER) {
+      navigate("/");
+    }
   }, [mode, scholarshipID]);
+
+  useEffect(() => {
+    const personalDetailsButton = document.getElementsByClassName(
+      "StepButton-d2-0-2-8"
+    );
+    const academicDetailsButton = document.getElementsByClassName(
+      "StepButton-d6-0-2-18"
+    );
+    const familyDetailsButton = document.getElementsByClassName(
+      "StepButton-d10-0-2-32"
+    );
+    const reviewProcessButton = document.getElementsByClassName(
+      "StepButton-d14-0-2-44"
+    );
+    console.log(
+      "In useEffect",
+      personalDetailsButton,
+      academicDetailsButton,
+      familyDetailsButton,
+      reviewProcessButton
+    );
+
+    personalDetailsButton[0]?.removeAttribute("disabled");
+    academicDetailsButton[0]?.removeAttribute("disabled");
+    familyDetailsButton[0]?.removeAttribute("disabled");
+    reviewProcessButton[0]?.removeAttribute("disabled");
+
+    if (personalDetailsButton.length > 0) {
+      personalDetailsButton[0].addEventListener("click", () => {
+        console.log("In personalDetailsButton");
+        setActiveStep(0);
+        personalDetailsButton[0]?.removeAttribute("disabled");
+        academicDetailsButton[0]?.removeAttribute("disabled");
+        familyDetailsButton[0]?.removeAttribute("disabled");
+        reviewProcessButton[0]?.removeAttribute("disabled");
+      });
+    }
+    if (academicDetailsButton.length > 0) {
+      academicDetailsButton[0].addEventListener("click", () => {
+        console.log("In academicDetailsButton");
+        setActiveStep(1);
+        personalDetailsButton[0]?.removeAttribute("disabled");
+        academicDetailsButton[0]?.removeAttribute("disabled");
+        familyDetailsButton[0]?.removeAttribute("disabled");
+        reviewProcessButton[0]?.removeAttribute("disabled");
+      });
+    }
+    if (familyDetailsButton.length > 0) {
+      familyDetailsButton[0].addEventListener("click", () => {
+        console.log("In familyDetailsButton");
+        setActiveStep(2);
+        personalDetailsButton[0]?.removeAttribute("disabled");
+        academicDetailsButton[0]?.removeAttribute("disabled");
+        familyDetailsButton[0]?.removeAttribute("disabled");
+        reviewProcessButton[0]?.removeAttribute("disabled");
+      });
+    }
+    if (reviewProcessButton.length > 0) {
+      reviewProcessButton[0].addEventListener("click", () => {
+        console.log("In reviewProcessButton");
+        setActiveStep(3);
+        personalDetailsButton[0]?.removeAttribute("disabled");
+        academicDetailsButton[0]?.removeAttribute("disabled");
+        familyDetailsButton[0]?.removeAttribute("disabled");
+        reviewProcessButton[0]?.removeAttribute("disabled");
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -214,14 +294,20 @@ const StepperForm: React.FC<any> = (props: any) => {
         )}
         {formDataCtx.status && formDataCtx.status.length > 0 ? (
           <h3 className={classes["scholarship-id"]}>
-            Status: {scholarshipApplicationStatusesMap.get(formDataCtx.status)}
+            Status: {ApplicationStatus[formDataCtx.status]}
           </h3>
         ) : (
           <></>
         )}
         <Stepper activeStep={activeStep}>
           {configs.map((config: any) => (
-            <Step key={config.key} label={config.label} />
+            <Step
+              onClick={() => {
+                console.log("In Step", config.key);
+              }}
+              key={config.key}
+              label={config.label}
+            />
           ))}
           {enableStep && (
             <Step key={"reviewProcess"} label={"Review Process"} />
