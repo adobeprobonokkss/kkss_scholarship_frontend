@@ -237,43 +237,27 @@ const StepperForm: React.FC<any> = (props: any) => {
       personalDetailsButton.addEventListener("click", () => {
         console.log("In personalDetailsButton");
         setActiveStep(0);
-        personalDetailsButton?.removeAttribute("disabled");
-        academicDetailsButton?.removeAttribute("disabled");
-        familyDetailsButton?.removeAttribute("disabled");
-        reviewProcessButton?.removeAttribute("disabled");
       });
     }
     if (academicDetailsButton) {
       academicDetailsButton.addEventListener("click", () => {
         console.log("In academicDetailsButton");
         setActiveStep(1);
-        personalDetailsButton?.removeAttribute("disabled");
-        academicDetailsButton?.removeAttribute("disabled");
-        familyDetailsButton?.removeAttribute("disabled");
-        reviewProcessButton?.removeAttribute("disabled");
       });
     }
     if (familyDetailsButton) {
       familyDetailsButton.addEventListener("click", () => {
         console.log("In familyDetailsButton");
         setActiveStep(2);
-        personalDetailsButton?.removeAttribute("disabled");
-        academicDetailsButton?.removeAttribute("disabled");
-        familyDetailsButton?.removeAttribute("disabled");
-        reviewProcessButton?.removeAttribute("disabled");
       });
     }
     if (reviewProcessButton) {
       reviewProcessButton.addEventListener("click", () => {
         console.log("In reviewProcessButton");
         setActiveStep(3);
-        personalDetailsButton?.removeAttribute("disabled");
-        academicDetailsButton?.removeAttribute("disabled");
-        familyDetailsButton?.removeAttribute("disabled");
-        reviewProcessButton?.removeAttribute("disabled");
       });
     }
-  }, []);
+  }, [activeStep]);
 
   return (
     <>
