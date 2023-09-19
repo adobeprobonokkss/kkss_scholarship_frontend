@@ -175,10 +175,9 @@ const StepperForm: React.FC<any> = (props: any) => {
     }
     if (response?.scholarshipID) {
       const url = `/scholarship-form/preview/${response.scholarshipID}`;
-      navigate("/");
       setTimeout(() => {
         navigate(url);
-      });
+      }, 100);
     } else {
       alert("Something went wrong. Please try again later.");
     }
@@ -212,6 +211,15 @@ const StepperForm: React.FC<any> = (props: any) => {
     if (mode !== "preview" && userInfo?.role != RoleType.USER) {
       navigate("/");
     }
+
+    if (
+      !mode &&
+      userInfo?.role == RoleType.USER &&
+      (userInfo?.email ?? "").length > 0
+    ) {
+      formDataCtx.onFormDataChange("email", userInfo?.email ?? "");
+      configs[0].formFields[0].props.disabled = true;
+    }
   }, [mode, scholarshipID]);
 
   useEffect(() => {
@@ -227,6 +235,7 @@ const StepperForm: React.FC<any> = (props: any) => {
       familyDetailsButton,
       reviewProcessButton
     );
+    scrollTo(0, 0);
 
     personalDetailsButton?.removeAttribute("disabled");
     academicDetailsButton?.removeAttribute("disabled");

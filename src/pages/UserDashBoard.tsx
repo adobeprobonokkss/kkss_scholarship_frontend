@@ -10,6 +10,10 @@ import classes from "../styles/userDashboard.module.css";
 import { ApplicationStatus, RoleType } from "./../utils/types";
 import axios from "axios";
 import { ScholarshipData, enumColors } from "./../utils/types";
+import {
+  ScholarshipDataRequest,
+  getScholarshipFormData,
+} from "../services/ScholarshipFormService";
 interface Role {
   role: string | null;
 }
@@ -17,17 +21,18 @@ interface Role {
 // Convert the record's values into an array
 const statusArray = Object.keys(ApplicationStatus);
 
-const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
-
 function getUserDashBoard(decoded: any) {
   const [scholarshipList, setScholarShipList] = useState<ScholarshipData[]>([]);
   useEffect(() => {
     (async () => {
-      const response = await axios.get(
-        `${BACKENDURL}/api/v1/getScholarshipFormData`,
-        { withCredentials: true }
-      );
-      setScholarShipList(response.data.scholarshipFormData);
+      const request: ScholarshipDataRequest = {
+        year: new Date().getFullYear().toString(),
+        field: "email",
+        keyword: decoded?.email ?? "",
+      };
+      const response = await getScholarshipFormData(request);
+      console.log(response);
+      setScholarShipList(response);
     })();
   }, []);
 
@@ -45,6 +50,11 @@ function getUserDashBoard(decoded: any) {
               Apply for scholarship
             </Link>
           </Button>
+          <Button>
+            <Link className={classes.styled_link} to="/past-applications">
+              Past Applications
+            </Link>
+          </Button>
         </div>
         {/* <div className={classes.btn_style}>
           <Button>
@@ -53,11 +63,12 @@ function getUserDashBoard(decoded: any) {
             </Link>
           </Button>
         </div> */}
-        <div>
+        {/* <div>
           <h3>Total volunteeting Hour contributed - {5}/150</h3>
-        </div>
+        </div> */}
+
         <div>
-          <h1>Your submitted application</h1>
+          <h1>Your submitted application this year</h1>
         </div>
         <UsersTable scholarshipList={scholarshipList}></UsersTable>
       </div>
@@ -101,11 +112,14 @@ function getReviewerDashBoard(decoded: any) {
   const [scholarshipList, setScholarShipList] = useState<ScholarshipData[]>([]);
   useEffect(() => {
     (async () => {
-      const response = await axios.get(
-        `${BACKENDURL}/api/v1/getScholarshipFormData`,
-        { withCredentials: true }
-      );
-      setScholarShipList(response.data.scholarshipFormData);
+      const request: ScholarshipDataRequest = {
+        year: new Date().getFullYear().toString(),
+        field: "backgroundVerifierEmail",
+        keyword: decoded?.email ?? "",
+      };
+      const response = await getScholarshipFormData(request);
+      console.log(response);
+      setScholarShipList(response);
     })();
   }, []);
 

@@ -30,9 +30,9 @@ export const Status: React.FC<statusType> = (props: statusType) => {
   const style = {
     backgroundColor: enumColors[statusValue as ApplicationStatus],
     padding: ".25rem",
-    "font-weight": "bold",
+    fontWeight: "bold",
     color: "white",
-    "border-radius": "0.3rem",
+    borderRadius: "0.3rem",
   };
   return <span style={style}>{statusValue}</span>;
 };
