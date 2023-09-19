@@ -89,7 +89,12 @@ function App() {
         },
         {
           path: "/past-applications",
-          element: <Protected Component={PastApplications} />,
+          element: (
+            <Protected
+              accessList={[RoleType.USER]}
+              Component={PastApplications}
+            />
+          ),
         },
         {
           path: "/list",
