@@ -215,18 +215,11 @@ const StepperForm: React.FC<any> = (props: any) => {
   }, [mode, scholarshipID]);
 
   useEffect(() => {
-    const personalDetailsButton = document.getElementsByClassName(
-      "StepButton-d2-0-2-8"
-    );
-    const academicDetailsButton = document.getElementsByClassName(
-      "StepButton-d6-0-2-18"
-    );
-    const familyDetailsButton = document.getElementsByClassName(
-      "StepButton-d10-0-2-32"
-    );
-    const reviewProcessButton = document.getElementsByClassName(
-      "StepButton-d14-0-2-44"
-    );
+    const buttons = document.querySelectorAll("#RFS-StepMain button");
+    const personalDetailsButton = buttons[0];
+    const academicDetailsButton = buttons[1];
+    const familyDetailsButton = buttons[2];
+    const reviewProcessButton = buttons[3];
     console.log(
       "In useEffect",
       personalDetailsButton,
@@ -235,49 +228,49 @@ const StepperForm: React.FC<any> = (props: any) => {
       reviewProcessButton
     );
 
-    personalDetailsButton[0]?.removeAttribute("disabled");
-    academicDetailsButton[0]?.removeAttribute("disabled");
-    familyDetailsButton[0]?.removeAttribute("disabled");
-    reviewProcessButton[0]?.removeAttribute("disabled");
+    personalDetailsButton?.removeAttribute("disabled");
+    academicDetailsButton?.removeAttribute("disabled");
+    familyDetailsButton?.removeAttribute("disabled");
+    reviewProcessButton?.removeAttribute("disabled");
 
-    if (personalDetailsButton.length > 0) {
-      personalDetailsButton[0].addEventListener("click", () => {
+    if (personalDetailsButton) {
+      personalDetailsButton.addEventListener("click", () => {
         console.log("In personalDetailsButton");
         setActiveStep(0);
-        personalDetailsButton[0]?.removeAttribute("disabled");
-        academicDetailsButton[0]?.removeAttribute("disabled");
-        familyDetailsButton[0]?.removeAttribute("disabled");
-        reviewProcessButton[0]?.removeAttribute("disabled");
+        personalDetailsButton?.removeAttribute("disabled");
+        academicDetailsButton?.removeAttribute("disabled");
+        familyDetailsButton?.removeAttribute("disabled");
+        reviewProcessButton?.removeAttribute("disabled");
       });
     }
-    if (academicDetailsButton.length > 0) {
-      academicDetailsButton[0].addEventListener("click", () => {
+    if (academicDetailsButton) {
+      academicDetailsButton.addEventListener("click", () => {
         console.log("In academicDetailsButton");
         setActiveStep(1);
-        personalDetailsButton[0]?.removeAttribute("disabled");
-        academicDetailsButton[0]?.removeAttribute("disabled");
-        familyDetailsButton[0]?.removeAttribute("disabled");
-        reviewProcessButton[0]?.removeAttribute("disabled");
+        personalDetailsButton?.removeAttribute("disabled");
+        academicDetailsButton?.removeAttribute("disabled");
+        familyDetailsButton?.removeAttribute("disabled");
+        reviewProcessButton?.removeAttribute("disabled");
       });
     }
-    if (familyDetailsButton.length > 0) {
-      familyDetailsButton[0].addEventListener("click", () => {
+    if (familyDetailsButton) {
+      familyDetailsButton.addEventListener("click", () => {
         console.log("In familyDetailsButton");
         setActiveStep(2);
-        personalDetailsButton[0]?.removeAttribute("disabled");
-        academicDetailsButton[0]?.removeAttribute("disabled");
-        familyDetailsButton[0]?.removeAttribute("disabled");
-        reviewProcessButton[0]?.removeAttribute("disabled");
+        personalDetailsButton?.removeAttribute("disabled");
+        academicDetailsButton?.removeAttribute("disabled");
+        familyDetailsButton?.removeAttribute("disabled");
+        reviewProcessButton?.removeAttribute("disabled");
       });
     }
-    if (reviewProcessButton.length > 0) {
-      reviewProcessButton[0].addEventListener("click", () => {
+    if (reviewProcessButton) {
+      reviewProcessButton.addEventListener("click", () => {
         console.log("In reviewProcessButton");
         setActiveStep(3);
-        personalDetailsButton[0]?.removeAttribute("disabled");
-        academicDetailsButton[0]?.removeAttribute("disabled");
-        familyDetailsButton[0]?.removeAttribute("disabled");
-        reviewProcessButton[0]?.removeAttribute("disabled");
+        personalDetailsButton?.removeAttribute("disabled");
+        academicDetailsButton?.removeAttribute("disabled");
+        familyDetailsButton?.removeAttribute("disabled");
+        reviewProcessButton?.removeAttribute("disabled");
       });
     }
   }, []);
