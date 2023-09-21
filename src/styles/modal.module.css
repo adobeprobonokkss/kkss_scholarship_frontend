@@ -1,0 +1,58 @@
+/* ModalStyles.css */
+
+/* Style for the modal */
+.custom_modal {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fcfffd;
+  border: 1px solid;
+  padding: 20px;
+  width: 800px;
+  color: "white";
+}
+
+/* Style for the overlay */
+.custom_overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Style for the modal content */
+.modal_content {
+  text-align: left;
+}
+
+/* Style for radio options */
+.radio_options label {
+  display: block;
+  margin-bottom: 10px;
+  margin-right: 8px;
+}
+
+/* Style for buttons */
+.modal_buttons {
+  margin-top: 20px;
+  margin-right: 8px;
+}
+
+.submit_button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.cancel_button {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* Add more styles as needed */

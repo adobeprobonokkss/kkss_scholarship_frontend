@@ -7,8 +7,11 @@ interface welcomeMessage {
 
 export const Welcome: React.FC<welcomeMessage> = ({ userName, role }) => {
   return (
-    <h3>
-      Welocme {role} {userName}
-    </h3>
+    <div>
+      {/* <p> {role}</p> */}
+      <h2>
+        Welcome - {userName} [{role}]
+      </h2>
+    </div>
   );
 };

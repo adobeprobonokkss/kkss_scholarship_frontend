@@ -1,11 +1,14 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
+
+const environment = "production";
 
 module.exports = {
   entry: "./src/index.tsx",
-  mode: "development",
+  mode: environment,
   // source code should be accessible in browser devtools
   devtool: "inline-source-map",
   output: {
@@ -53,14 +56,31 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "styles.css",
     }),
-
     new webpack.DefinePlugin({
-      // "process.env.REACT_APP_BACK_END_URL": JSON.stringify(
-      //   "https://asia-south1-kkss-5a230.cloudfunctions.net/kkssCloudFunctions"
-      // ),
-      "process.env.REACT_APP_BACK_END_URL": JSON.stringify(
-        "http://localhost:1337"
-      ),
+      "process.env.REACT_APP_BACK_END_URL":
+        environment === "development"
+          ? JSON.stringify("http://localhost:1337")
+          : JSON.stringify(
+              "https://asia-south1-kkss-5a230.cloudfunctions.net/kkssCloudFunctions"
+            ),
     }),
   ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      environment === "production" &&
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              pure_funcs: [
+                "console.log",
+                "console.info",
+                "console.debug",
+                "console.warn",
+              ],
+            },
+          },
+        }),
+    ],
+  },
 };

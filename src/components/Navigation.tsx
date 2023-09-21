@@ -20,28 +20,28 @@ function getUserNavigationBar() {
               DashBoard
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
               to="/scholarship-form"
             >
               Apply For Scholarship
             </NavLink>
-          </li>
+          </li> */}
 
-          <li>
+          {/* <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
               to="/"
             >
               Log Volunteering Hour
             </NavLink>
-          </li>
+          </li> */}
 
           <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
-              to="/"
+              to="/edit_profile"
             >
               Edit Profile
             </NavLink>
@@ -86,7 +86,7 @@ function getAdminNavigationBar() {
           <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
-              to="/"
+              to="/edit_profile"
             >
               Edit Profile
             </NavLink>
@@ -110,19 +110,11 @@ function getReviewerNavigationBar() {
               DashBoard
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              className={({ isActive }) => (isActive ? classes.active : "")}
-              to="/"
-            >
-              BackGround Verification
-            </NavLink>
-          </li>
 
           <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
-              to="/"
+              to="/edit_profile"
             >
               Edit Profile
             </NavLink>
@@ -177,7 +169,7 @@ function getProgramManagerNavigationBar() {
           <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
-              to="/"
+              to="/edit_profile"
             >
               Edit Profile
             </NavLink>

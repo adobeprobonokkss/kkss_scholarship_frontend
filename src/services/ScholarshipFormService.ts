@@ -3,9 +3,15 @@ import { Picker } from "@swc-react/picker";
 import { createElement } from "react";
 import { MenuItem } from "@swc-react/menu";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { API_HEADERS, API_TIMEOUT } from "../utils/shared";
+import { API_HEADERS, API_TIMEOUT, getUsersInfo } from "../utils/shared";
 import { user } from "../interface/UserSession";
-import { RoleType, ScholarshipApplicationResponse } from "../utils/types";
+import {
+  ApplicationStatusKeys,
+  ApplicationStatusType,
+  RoleType,
+  ScholarshipApplicationResponse,
+} from "../utils/types";
+import { ScholarshipFormContextProps } from "context/ScholarshipFormContext";
 
 export type ScholarshipData = {
   email: string;
@@ -53,7 +59,7 @@ export type ScholarshipData = {
   formSubmittedBy: string;
   yourPhNumber: string;
   scholarshipID?: string;
-  status?: string;
+  status?: ApplicationStatusType;
   submissionYear?: string;
   backgroundVerifierEmail?: string;
   backgroundVerifierName?: string;
@@ -80,7 +86,7 @@ export const scholarshipApplicationStatuses: [string, string][] = [
   ["all", "All"],
   ["submitted", "Submitted"],
   ["initial_review_completed", "Initial Review Completed"],
-  ["background_check_completed", "Background Check Completed"],
+  ["background_verification_completed", "Background Check Completed"],
   ["final_review_completed", "Final Review Completed"],
   ["approved", "Approved"],
   ["rejected", "Rejected"],
@@ -109,6 +115,7 @@ const configs = [
           value: "",
           required: true,
           type: "email",
+          pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$",
         },
       },
       // Name
@@ -122,6 +129,7 @@ const configs = [
           id: "name",
           value: "",
           required: true,
+          pattern: "[a-zA-Z ]{1,64}",
         },
       },
       // Aadhar Number
@@ -136,6 +144,7 @@ const configs = [
           id: "aadharNumber",
           value: "",
           required: true,
+          pattern: "[0-9]{12}",
         },
       },
       // Date of Birth
@@ -182,7 +191,9 @@ const configs = [
           id: "address",
           value: "",
           multiline: true,
+          grows: true,
           required: true,
+          pattern: "[a-zA-Z0-9,.\\- ]{1,300}",
         },
       },
       // Phone Number
@@ -192,10 +203,11 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter Phone Number",
+          placeholder: "Enter Phone Number (Start with +91)",
           id: "phNumber",
           value: "",
           required: true,
+          pattern: "[+][9][1][789][0-9]{9}",
         },
       },
       // Mother Tongue
@@ -209,6 +221,7 @@ const configs = [
           id: "motherTongue",
           value: "",
           required: true,
+          pattern: "[a-zA-Z ]{1,24}",
         },
       },
       // Place of Birth
@@ -222,6 +235,7 @@ const configs = [
           id: "placeOfBirth",
           value: "",
           required: true,
+          pattern: "[a-zA-Z ]{1,80}",
         },
       },
       // Referred By
@@ -235,6 +249,7 @@ const configs = [
           id: "referral",
           value: "",
           required: true,
+          pattern: "[a-zA-Z ]{1,64}",
         },
       },
       // Contact Number of the Person Referred
@@ -244,10 +259,12 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter contact number of the person Referred",
+          placeholder:
+            "Enter contact number of the person Referred (Start with +91)",
           id: "",
           value: "",
           required: true,
+          pattern: "[+][9][1][789][0-9]{9}",
         },
       },
     ],
@@ -268,6 +285,9 @@ const configs = [
           id: "schoolCollegeNameAndAddress",
           value: "",
           required: true,
+          multiline: true,
+          grows: true,
+          pattern: "[a-zA-Z0-9,.\\- ]{1,300}",
         },
       },
       // Education
@@ -334,6 +354,7 @@ const configs = [
           placeholder: "Enter details",
           id: "educationOthers",
           value: "",
+          pattern: "[a-zA-Z, ]{1,100}",
         },
       },
       // Medium of Education
@@ -347,6 +368,7 @@ const configs = [
           id: "mediumOfEducation",
           value: "",
           required: true,
+          pattern: "[a-zA-Z ]{1,24}",
         },
       },
       // School/College Phone Number
@@ -360,6 +382,7 @@ const configs = [
           id: "schoolCollegePhNumber",
           value: "",
           required: true,
+          pattern: "[0-9]{10}",
         },
       },
       // Estimated Annual Fee
@@ -373,6 +396,7 @@ const configs = [
           id: "estimatedAnnualFee",
           value: "",
           required: true,
+          pattern: "[0-9]{1,16}",
         },
       },
       // Previous 3 year marks
@@ -382,6 +406,7 @@ const configs = [
         component: Textfield,
         props: {
           value: "Previous 3 year marks",
+          pattern: "[0-9]{1,16}",
         },
       },
       // Year 1
@@ -394,6 +419,7 @@ const configs = [
           placeholder: "Enter marks",
           id: "year1",
           value: "",
+          pattern: "[0-9]{1,16}",
         },
       },
       // Year 2
@@ -406,6 +432,7 @@ const configs = [
           placeholder: "Enter marks",
           id: "year2",
           value: "",
+          pattern: "[0-9]{1,16}",
         },
       },
       // Year 3
@@ -418,6 +445,7 @@ const configs = [
           placeholder: "Enter marks",
           id: "year3",
           value: "",
+          pattern: "[0-9]{1,16}",
         },
       },
       // Hobbies
@@ -431,6 +459,9 @@ const configs = [
           id: "hobbies",
           value: "",
           required: true,
+          pattern: "[a-zA-Z0-9,. ]{1,1000}",
+          multiline: true,
+          grows: true,
         },
       },
       // Ambition
@@ -444,6 +475,9 @@ const configs = [
           id: "ambition",
           value: "",
           required: true,
+          multiline: true,
+          grows: true,
+          pattern: "[a-zA-Z0-9,. ]{1,3000}",
         },
       },
       // Academic Year Award Details
@@ -456,6 +490,9 @@ const configs = [
           placeholder: "Enter Academic Year Award Details",
           id: "awardDetails",
           value: "",
+          pattern: "[a-zA-Z0-9,. ]{1,3000}",
+          multiline: true,
+          grows: true,
         },
       },
       // Attendance Details for Previous Year
@@ -468,6 +505,7 @@ const configs = [
           placeholder: "Enter Attendance Details for Previous Year",
           id: "attendanceDetails",
           value: "",
+          pattern: "[a-zA-Z0-9,. ]{1,100}",
         },
       },
     ],
@@ -487,6 +525,7 @@ const configs = [
           placeholder: "Enter Father's Name",
           id: "fatherName",
           value: "",
+          pattern: "[a-zA-Z ]{1,64}",
         },
       },
       // Father's Age
@@ -499,6 +538,7 @@ const configs = [
           placeholder: "Enter Father's Age",
           id: "fatherAge",
           value: "",
+          pattern: "[0-9]{1,3}",
         },
       },
       // Father's Occupation
@@ -511,6 +551,7 @@ const configs = [
           placeholder: "Enter Father's Occupation",
           id: "fatherOccupation",
           value: "",
+          pattern: "[a-zA-Z ]{1,64}",
         },
       },
       // Father's Annual Income
@@ -524,6 +565,7 @@ const configs = [
           id: "fatherAnnualIncome",
           value: "",
           required: true,
+          pattern: "[0-9]{1,32}",
         },
       },
       // Father's Mobile Number
@@ -533,10 +575,11 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter Father's Mobile Number",
+          placeholder: "Enter Father's Mobile Number (Start with +91)",
           id: "fatherPhNumber",
           value: "",
           required: true,
+          pattern: "[+][9][1][789][0-9]{9}",
         },
       },
       // Mother's Name
@@ -549,6 +592,7 @@ const configs = [
           placeholder: "Enter Mother's Name",
           id: "motherName",
           value: "",
+          pattern: "[a-zA-Z ]{1,64}",
         },
       },
       // Mother's Age
@@ -561,6 +605,7 @@ const configs = [
           placeholder: "Enter Mother's Age",
           id: "motherAge",
           value: "",
+          pattern: "[0-9]{1,3}",
         },
       },
       // Mother's Occupation
@@ -573,6 +618,7 @@ const configs = [
           placeholder: "Enter Mother's Occupation",
           id: "motherOccupation",
           value: "",
+          pattern: "[a-zA-Z ]{1,64}",
         },
       },
       // Mother's Annual Income
@@ -586,6 +632,7 @@ const configs = [
           id: "motherAnnualIncome",
           value: "",
           required: true,
+          pattern: "[0-9]{1,32}",
         },
       },
       // Mother's Mobile Number
@@ -595,10 +642,11 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter Mother's Mobile Number",
+          placeholder: "Enter Mother's Mobile Number (Start with +91)",
           id: "motherPhNumber",
           value: "",
           required: true,
+          pattern: "[+][9][1][789][0-9]{9}",
         },
       },
       // Sibling's Name
@@ -611,6 +659,7 @@ const configs = [
           placeholder: "Enter Sibling's Name",
           id: "siblingName",
           value: "",
+          pattern: "[a-zA-Z ]{1,64}",
         },
       },
       //  Sibling's Age
@@ -623,6 +672,7 @@ const configs = [
           placeholder: "Enter Sibling's Age",
           id: "siblingAge",
           value: "",
+          pattern: "[0-9]{1,3}",
         },
       },
       // Sibling's Occupation
@@ -635,6 +685,7 @@ const configs = [
           placeholder: "Enter Sibling's Occupation",
           id: "siblingOccupation",
           value: "",
+          pattern: "[a-zA-Z ]{1,64}",
         },
       },
       // Sibling's Annual Income
@@ -647,6 +698,7 @@ const configs = [
           placeholder: "Enter Sibling's Annual Income",
           id: "siblingAnnualIncome",
           value: "",
+          pattern: "[0-9]{1,32}",
         },
       },
       // Sibling's Mobile Number
@@ -656,9 +708,10 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter Sibling's Mobile Number",
+          placeholder: "Enter Sibling's Mobile Number (Start with +91)",
           id: "siblingPhNumber",
           value: "",
+          pattern: "[+][9][1][789][0-9]{9}",
         },
       },
       // Form Submitted by
@@ -672,6 +725,7 @@ const configs = [
           id: "formSubmittedBy",
           value: "",
           required: true,
+          pattern: "[a-zA-Z ]{1,64}",
         },
       },
       // Your Phone no.
@@ -681,10 +735,11 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter Your Phone no.",
+          placeholder: "Enter Your Phone no. (Start with +91)",
           id: "yourPhNumber",
           value: "",
           required: true,
+          pattern: "[+][9][1][789][0-9]{9}",
         },
       },
     ],
@@ -837,7 +892,7 @@ export const validationMap: any = {
     maxLength: 24,
   },
   schoolCollegePhNumber: {
-    maxLength: 13,
+    maxLength: 10,
   },
   estimatedAnnualFee: {
     maxLength: 16,
@@ -921,16 +976,32 @@ export const validateForm = (formData: ScholarshipData) => {
   configs.forEach((config) => {
     config.formFields.forEach((field: any) => {
       if (field.key in validationMap) {
-        const fieldVal = formData[field.key as ScholarshipFormKeys];
-        if (fieldVal && fieldVal?.length > validationMap[field.key].maxLength) {
+        const fieldVal = formData[field.key as ScholarshipFormKeys] ?? "";
+        const pattern = field.props.pattern;
+        console.log(
+          fieldVal,
+          pattern,
+          new RegExp(pattern),
+          fieldVal && new RegExp(pattern).test(fieldVal)
+        );
+        if (field.props.required && fieldVal?.length == 0) {
+          errors.push(`${field.label} is required`);
+        }
+        if (
+          fieldVal.length > 0 &&
+          pattern &&
+          !new RegExp(pattern).test(fieldVal)
+        ) {
+          errors.push(
+            `Invalid ${field.label}. Please enter valid ${field.label}`
+          );
+        }
+        if (fieldVal?.length > validationMap[field.key].maxLength) {
           errors.push(
             `Max length exceeded. Max length for ${field.label} is ${
               validationMap[field.key].maxLength
             }`
           );
-        }
-        if (field.props.required && fieldVal?.length == 0) {
-          errors.push(`${field.label} is required`);
         }
       }
     });
@@ -1064,19 +1135,22 @@ export const updateStatusAndFormDetails = async (
   switch (scholarshipApplication.status) {
     case "submitted": {
       if (isAdmin || isPM) {
-        scholarshipApplication.status = "initial_review_completed";
+        scholarshipApplication.status =
+          ApplicationStatusKeys.initial_review_completed;
       }
       break;
     }
     case "initial_review_completed": {
       if (isAdmin || isPM || isReviewer) {
-        scholarshipApplication.status = "background_check_completed";
+        scholarshipApplication.status =
+          ApplicationStatusKeys.background_verification_completed;
         break;
       }
     }
-    case "background_check_completed": {
+    case "background_verification_completed": {
       if (isAdmin || isPM) {
-        scholarshipApplication.status = "final_review_completed";
+        scholarshipApplication.status =
+          ApplicationStatusKeys.final_review_completed;
         break;
       }
     }
@@ -1130,6 +1204,68 @@ export const submitVolunteeringHours = async (volunteeringDetails: any) => {
     console.error("Error submitting volunteering hours: ", error);
     return null;
   }
+}
+export const validateReviewProcess = (
+  formCtx: ScholarshipData & ScholarshipFormContextProps
+) => {
+  const errors: string[] = [];
+  if (formCtx.status == ApplicationStatusKeys.submitted) {
+    if (!formCtx.programManagerName || formCtx.programManagerName.length == 0) {
+      errors.push("Program Manager Name is required");
+    }
+    if (
+      !formCtx.programManagerEmail ||
+      formCtx.programManagerEmail.length == 0
+    ) {
+      errors.push("Program Manager Email is required");
+    }
+    if (
+      !formCtx.programManagerComment1 ||
+      formCtx.programManagerComment1.length == 0
+    ) {
+      errors.push("Program Manager Comment is required");
+    }
+    if (
+      !formCtx.backgroundVerifierName ||
+      formCtx.backgroundVerifierName.length == 0
+    ) {
+      errors.push("Background Verifier Name is required");
+    }
+    if (
+      !formCtx.backgroundVerifierEmail ||
+      formCtx.backgroundVerifierEmail.length == 0
+    ) {
+      errors.push("Background Verifier Email is required");
+    }
+  } else if (formCtx.status == ApplicationStatusKeys.initial_review_completed) {
+    if (
+      !formCtx.backgroundVerifierComment ||
+      formCtx.backgroundVerifierComment.length == 0
+    ) {
+      errors.push("Background Verifier Comment is required");
+    }
+  } else if (
+    formCtx.status == ApplicationStatusKeys.background_verification_completed
+  ) {
+    if (
+      !formCtx.programManagerComment2 ||
+      formCtx.programManagerComment2.length == 0
+    ) {
+      errors.push("Program Manager Comment is required");
+    }
+  } else if (formCtx.status == ApplicationStatusKeys.final_review_completed) {
+    if (!formCtx.adminComment || formCtx.adminComment.length == 0) {
+      errors.push("Admin Comment is required");
+    }
+  } else if (
+    formCtx.status == ApplicationStatusKeys.approved ||
+    formCtx.status == ApplicationStatusKeys.rejected
+  ) {
+    if (getUsersInfo()?.decoded?.role != RoleType.ADMIN) {
+      errors.push("Only Admin can approve or reject");
+    }
+  }
+  return errors;
 };
 
 export default configs;

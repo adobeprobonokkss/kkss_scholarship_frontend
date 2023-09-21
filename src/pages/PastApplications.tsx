@@ -16,8 +16,6 @@ import {
   scholarshipApplicationStatusesMap,
 } from "../services/ScholarshipFormService";
 import { useNavigate } from "react-router-dom";
-import { scholarshipApplicationStatuses } from "../services/ScholarshipFormService";
-import { RoleType } from "../utils/types";
 import { getUsersInfo } from "../utils/shared";
 
 const PastApplications: React.FC = () => {

@@ -5,7 +5,13 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  background: url("https://media.istockphoto.com/id/1414321089/photo/graduations-cap-with-money-coins-on-light-blue-background-money-savings-for-education.jpg?s=1024x1024&w=is&k=20&c=l3-od9NFtttPWyt0ka3d8qdXs_P05kaXZCvitF_eFNc=");
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Optional: Prevents scrolling */
+  background-position: center center;
+  /* background-color: red; */
 }
 
 .login-card {

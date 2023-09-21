@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { FieldLabel } from "@swc-react/field-label";
 import { Textfield } from "@swc-react/textfield";
 import { Picker } from "@swc-react/picker";
@@ -6,7 +6,7 @@ import { MenuItem } from "@swc-react/menu";
 
 import classes from "../styles/ConfigurableForm.module.css";
 import { getUsersInfo } from "../utils/shared";
-import { RoleType } from "../utils/types";
+import { ApplicationStatusKeys, RoleType } from "../utils/types";
 import {
   ScholarshipFormContext,
   ScholarshipFormContextProps,
@@ -24,6 +24,9 @@ const ReviewProcess: FC = () => {
   const formDataCtx = useContext<ScholarshipData & ScholarshipFormContextProps>(
     ScholarshipFormContext
   );
+  const hideAfterBGReview =
+    formDataCtx.status == ApplicationStatusKeys.submitted ||
+    formDataCtx.status == ApplicationStatusKeys.initial_review_completed;
 
   const disableAssignPMReviewer = !!formDataCtx.programManagerEmail && !isAdmin;
   const disableAssignBGReviewer = isUser || isReviewer;
@@ -41,8 +44,37 @@ const ReviewProcess: FC = () => {
     color: "#000000",
     fontWeight: 510,
   };
+  const enableBeforeBGReview =
+    formDataCtx.status === ApplicationStatusKeys.submitted;
+  const enableAfterBGReview =
+    formDataCtx.status ===
+    ApplicationStatusKeys.background_verification_completed;
+  const enableBGReview =
+    formDataCtx.status === ApplicationStatusKeys.initial_review_completed ||
+    formDataCtx.status === ApplicationStatusKeys.submitted;
 
   if (isUser) return <></>;
+
+  useEffect(() => {
+    console.log("ReviewProcess: useEffect");
+    if (
+      isPM &&
+      formDataCtx.status === ApplicationStatusKeys.submitted &&
+      (!formDataCtx.programManagerEmail ||
+        formDataCtx.programManagerEmail?.length === 0)
+    ) {
+      console.log("ReviewProcess: useEffect - setting PM email and name");
+
+      formDataCtx.onFormDataChange(
+        "programManagerEmail",
+        (userInfo?.email ?? "").trim()
+      );
+      formDataCtx.onFormDataChange(
+        "programManagerName",
+        (userInfo?.name ?? "").trim()
+      );
+    }
+  }, []);
 
   return (
     <div>
@@ -50,24 +82,30 @@ const ReviewProcess: FC = () => {
         {!hidePMReview && (
           <>
             <div key={"pmReview1Heading"} className={classes.card}>
-              <FieldLabel style={headingLabelStyle}>
+              <FieldLabel
+                disabled={!enableBeforeBGReview}
+                style={headingLabelStyle}
+              >
                 {"Program Manager Review - Before background verification"}
               </FieldLabel>
             </div>
             <div key={"pmReview1"} className={classes.card}>
-              <FieldLabel required={true} style={fieldLabelStyle}>
+              <FieldLabel
+                disabled={!enableBeforeBGReview}
+                required={true}
+                style={fieldLabelStyle}
+              >
                 {"Assign Program Manager"}
               </FieldLabel>
               <div className={classes.pmDetails}>
                 <Textfield
+                  disabled={!enableBeforeBGReview || disableAssignPMReviewer}
                   placeholder="Enter valid Email"
                   id="pmEmail"
                   value={
                     formDataCtx.programManagerEmail &&
                     formDataCtx.programManagerEmail.length > 0
                       ? formDataCtx.programManagerEmail
-                      : isPM
-                      ? userInfo?.email ?? ""
                       : ""
                   }
                   required={true}
@@ -79,19 +117,20 @@ const ReviewProcess: FC = () => {
                   change={(e: any) => {
                     e.preventDefault();
                     const value = e.target?.value.trim() ?? "";
-                    formDataCtx.onFormDataChange("programManagerEmail", value);
+                    formDataCtx.onFormDataChange(
+                      "programManagerEmail",
+                      value?.trim()
+                    );
                   }}
-                  disabled={disableAssignPMReviewer}
                 />
                 <Textfield
+                  disabled={!enableBeforeBGReview || disableAssignPMReviewer}
                   placeholder="Enter valid Name"
                   id="pmName"
                   value={
                     formDataCtx.programManagerName &&
                     formDataCtx.programManagerName.length > 0
                       ? formDataCtx.programManagerName
-                      : isPM
-                      ? userInfo?.name ?? ""
                       : ""
                   }
                   required={true}
@@ -103,17 +142,24 @@ const ReviewProcess: FC = () => {
                   change={(e: any) => {
                     e.preventDefault();
                     const value = e.target?.value.trim() ?? "";
-                    formDataCtx.onFormDataChange("programManagerName", value);
+                    formDataCtx.onFormDataChange(
+                      "programManagerName",
+                      value?.trim()
+                    );
                   }}
-                  disabled={disableAssignPMReviewer}
                 />
               </div>
             </div>
             <div key={"pmReviewcomment1"} className={classes.card}>
-              <FieldLabel required={true} style={fieldLabelStyle}>
+              <FieldLabel
+                disabled={!enableBeforeBGReview}
+                required={true}
+                style={fieldLabelStyle}
+              >
                 {"Program Manager Comment"}
               </FieldLabel>
               <Textfield
+                disabled={!enableBeforeBGReview}
                 placeholder="Enter Comment"
                 id="pmComment"
                 value={formDataCtx.programManagerComment1 ?? ""}
@@ -127,7 +173,10 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   const value = e.target?.value.trim() ?? "";
-                  formDataCtx.onFormDataChange("programManagerComment1", value);
+                  formDataCtx.onFormDataChange(
+                    "programManagerComment1",
+                    value?.trim()
+                  );
                 }}
               />
             </div>
@@ -140,7 +189,11 @@ const ReviewProcess: FC = () => {
           </FieldLabel>
         </div>
         <div key={"bgReview"} className={classes.card}>
-          <FieldLabel required={true} style={fieldLabelStyle}>
+          <FieldLabel
+            disabled={!enableBGReview}
+            required={true}
+            style={fieldLabelStyle}
+          >
             {"Assign Background Verification Volunteer"}
           </FieldLabel>
           <div className={classes.pmDetails}>
@@ -160,9 +213,12 @@ const ReviewProcess: FC = () => {
               change={(e: any) => {
                 e.preventDefault();
                 const value = e.target?.value.trim() ?? "";
-                formDataCtx.onFormDataChange("backgroundVerifierEmail", value);
+                formDataCtx.onFormDataChange(
+                  "backgroundVerifierEmail",
+                  value?.trim()
+                );
               }}
-              disabled={disableAssignBGReviewer}
+              disabled={disableAssignBGReviewer || !enableBGReview}
             />
             <Textfield
               placeholder="Enter valid Name"
@@ -180,17 +236,28 @@ const ReviewProcess: FC = () => {
               change={(e: any) => {
                 e.preventDefault();
                 const value = e.target?.value.trim() ?? "";
-                formDataCtx.onFormDataChange("backgroundVerifierName", value);
+                formDataCtx.onFormDataChange(
+                  "backgroundVerifierName",
+                  value?.trim()
+                );
               }}
-              disabled={disableAssignBGReviewer}
+              disabled={
+                disableAssignBGReviewer &&
+                formDataCtx.status !== ApplicationStatusKeys.submitted
+              }
             />
           </div>
         </div>
         <div key={"bgReviewcomment"} className={classes.card}>
-          <FieldLabel required={true} style={fieldLabelStyle}>
+          <FieldLabel
+            disabled={!enableBGReview}
+            required={true}
+            style={fieldLabelStyle}
+          >
             {"Background Verification Comment"}
           </FieldLabel>
           <Textfield
+            disabled={!enableBGReview}
             placeholder="Enter Comment"
             id="bgComment"
             value={formDataCtx.backgroundVerifierComment ?? ""}
@@ -204,23 +271,34 @@ const ReviewProcess: FC = () => {
             change={(e: any) => {
               e.preventDefault();
               const value = e.target?.value.trim() ?? "";
-              formDataCtx.onFormDataChange("backgroundVerifierComment", value);
+              formDataCtx.onFormDataChange(
+                "backgroundVerifierComment",
+                value?.trim()
+              );
             }}
           />
         </div>
-        {!hidePMReview && (
+        {!hidePMReview && !hideAfterBGReview && (
           <>
             <div key={"pmReview2Heading"} className={classes.card}>
-              <FieldLabel style={headingLabelStyle}>
+              <FieldLabel
+                disabled={!enableAfterBGReview}
+                style={headingLabelStyle}
+              >
                 {"Program Manager Review - After background verification"}
               </FieldLabel>
             </div>
 
             <div key={"pmReview2"} className={classes.card}>
-              <FieldLabel required={true} style={fieldLabelStyle}>
+              <FieldLabel
+                disabled={!enableAfterBGReview}
+                required={true}
+                style={fieldLabelStyle}
+              >
                 {"Program Manager Comment"}
               </FieldLabel>
               <Textfield
+                disabled={!enableAfterBGReview}
                 placeholder="Enter Comment"
                 id="pmComment2"
                 value={formDataCtx.programManagerComment2 ?? ""}
@@ -234,7 +312,10 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   const value = e.target?.value.trim() ?? "";
-                  formDataCtx.onFormDataChange("programManagerComment2", value);
+                  formDataCtx.onFormDataChange(
+                    "programManagerComment2",
+                    value?.trim()
+                  );
                 }}
               />
             </div>
@@ -265,7 +346,7 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   const value = e.target?.value.trim() ?? "";
-                  formDataCtx.onFormDataChange("adminComment", value);
+                  formDataCtx.onFormDataChange("adminComment", value?.trim());
                 }}
               />
             </div>
@@ -275,15 +356,18 @@ const ReviewProcess: FC = () => {
               </FieldLabel>
               <Picker
                 value={
-                  formDataCtx.status == "approved" ||
-                  formDataCtx.status == "rejected"
+                  formDataCtx.status == ApplicationStatusKeys.approved ||
+                  formDataCtx.status == ApplicationStatusKeys.rejected
                     ? formDataCtx.status
                     : ""
                 }
                 change={(e: any) => {
                   e.preventDefault();
                   if (isAdmin) {
-                    formDataCtx.onFormDataChange("status", e.target.value);
+                    formDataCtx.onFormDataChange(
+                      "status",
+                      e.target.value?.trim()
+                    );
                   }
                 }}
                 label="Approve/Reject"
