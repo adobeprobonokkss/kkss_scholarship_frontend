@@ -5,7 +5,12 @@
   margin-right: 10px; /* Add some spacing to the right */
 }
 
+h2 {
+  padding: 0px 20px;
+}
+
 .btn_style {
-  /* border: 2px solid red; */
-  margin: 8px;
+  padding: 0px 20px;
+  display: flex;
+  gap: 20px;
 }

@@ -20,6 +20,14 @@ function getUserNavigationBar() {
               DashBoard
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              className={({ isActive }) => (isActive ? classes.active : "")}
+              to="/track-time"
+            >
+              Track Time
+            </NavLink>
+          </li>
           {/* <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
@@ -80,6 +88,14 @@ function getAdminNavigationBar() {
               to="/search"
             >
               Search Application
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) => (isActive ? classes.active : "")}
+              to="/review-volunteer-hours"
+            >
+              Review Volunteer Activity
             </NavLink>
           </li>
 
@@ -163,6 +179,14 @@ function getProgramManagerNavigationBar() {
               to="/"
             >
               Assign Reviewer
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) => (isActive ? classes.active : "")}
+              to="/review-volunteer-hours"
+            >
+              Review Volunteer Activity
             </NavLink>
           </li>
 

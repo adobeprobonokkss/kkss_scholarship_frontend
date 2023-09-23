@@ -1,0 +1,96 @@
+.table {
+  height: 75vh;
+  padding: 10px 20px;
+}
+
+h1 {
+  padding: 0px 20px;
+}
+
+.table-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 0.5rem;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.name {
+  max-width: 8rem;
+  width: 8rem;
+}
+
+.email {
+  max-width: 12rem;
+  width: 12rem;
+}
+
+.activity-date {
+  max-width: 6rem;
+  width: 6rem;
+  justify-content: center;
+}
+
+.description {
+  max-width: 38rem;
+  width: 38rem;
+  overflow: auto;
+  overflow-wrap: break-word;
+  text-overflow: initial;
+  white-space: normal;
+}
+
+.no-of-hours {
+  max-width: 6rem;
+  width: 6em;
+  justify-content: center;
+}
+
+.submission-date {
+  max-width: 8rem;
+  width: 8rem;
+  justify-content: center;
+}
+
+.approve {
+  max-width: 6rem;
+  width: 6rem;
+}
+
+.reject {
+  max-width: 6rem;
+  width: 6rem;
+}
+
+.description::-webkit-scrollbar {
+  width: 6px;
+}
+
+.description::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.description::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+.description::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.table-header {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  height: fit-content;
+}
+
+.align-center {
+  text-align: center;
+}
