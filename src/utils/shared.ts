@@ -61,5 +61,6 @@ const encryptData = (text: string) => {
 const decryptData = (text: string) => {
   const bytes = CryptoJS.AES.decrypt(text, secretPass);
   const data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  console.log(data);
   return data;
 };

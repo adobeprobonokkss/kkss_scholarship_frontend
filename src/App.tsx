@@ -21,6 +21,7 @@ import EditProfile from "./pages/EditProfile";
 const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
 import PastApplications from "./pages/PastApplications";
 import { TrackVolunteeringHours } from "./pages/TrackVolunteeringHours";
+import ReviewVolunteerHours from "./pages/ReviewVolunteerHours";
 
 function App() {
   const [isLogin, setLogin] = useState(false);
@@ -113,7 +114,21 @@ function App() {
         },
         {
           path: "/track-time",
-          element: <Protected Component={TrackVolunteeringHours} />,
+          element: (
+            <Protected
+              accessList={[RoleType.USER]}
+              Component={TrackVolunteeringHours}
+            />
+          ),
+        },
+        {
+          path: "review-volunteer-hours",
+          element: (
+            <Protected
+              accessList={[RoleType.PROGRAM_MANAGER, RoleType.ADMIN]}
+              Component={ReviewVolunteerHours}
+            />
+          ),
         },
       ],
     },

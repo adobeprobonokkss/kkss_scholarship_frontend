@@ -23,8 +23,9 @@ import {
 } from "../services/ScholarshipFormService";
 import { useNavigate, useParams } from "react-router-dom";
 import { scholarshipApplicationStatuses } from "../services/ScholarshipFormService";
-import { RoleType } from "../utils/types";
+import { RoleType, VolunteerRecordDetails } from "../utils/types";
 import { getUsersInfo } from "../utils/shared";
+import { getVolunteerHoursByScholarshipIDList } from "../services/VolunteerService";
 
 const FormSearch: React.FC = () => {
   let routeParams = useParams();
@@ -83,11 +84,44 @@ const FormSearch: React.FC = () => {
       keyword: searchQuery,
       year: selectedYear !== "All" ? selectedYear : undefined,
       status: selectedStatus !== "all" ? selectedStatus : undefined,
+      limit: 50,
     };
     scholarshipData = (await getScholarshipFormData(request)) ?? [];
+    const volunteerHoursList = await fetchVolunteerHours(scholarshipData);
+    if (volunteerHoursList) {
+      scholarshipData.forEach((scholarshipData) => {
+        volunteerHoursList.forEach((volunteerHours: VolunteerRecordDetails) => {
+          if (
+            scholarshipData?.scholarshipID == volunteerHours?.scholarshipID &&
+            scholarshipData?.status == "approved"
+          ) {
+            scholarshipData.volunteerHours = volunteerHours?.approvedHours;
+          }
+        });
+      });
+    }
+
+    console.log("scholarshipData after scholarshipData", scholarshipData);
+
     setSearchResults(
       Array.isArray(scholarshipData) ? scholarshipData : [scholarshipData]
     );
+  };
+
+  const fetchVolunteerHours = async (scholarshipData: ScholarshipData[]) => {
+    const scholarshipIDList: string[] = [];
+    console.log("scholarshipData", scholarshipData);
+    scholarshipData.forEach((searchResult) => {
+      if (searchResult?.scholarshipID && searchResult?.status == "approved")
+        scholarshipIDList.push(searchResult?.scholarshipID.trim());
+    });
+    console.log("scholarshipIDList", scholarshipIDList);
+    if (scholarshipIDList.length == 0) return;
+    const response = await getVolunteerHoursByScholarshipIDList(
+      scholarshipIDList
+    );
+    console.log("Volunteer Hours", response);
+    return response?.data && response?.data?.volunteerHoursList;
   };
   console.log("searchResults", searchResults);
 
@@ -257,19 +291,32 @@ const FormSearch: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Scholarship ID</TableCell>
-                <TableCell>Applicant</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Background Verifier</TableCell>
-                <TableCell>Program Manager</TableCell>
-                <TableCell>Submission Date</TableCell>
+                <TableCell className={classes["table-cell"]}>
+                  Scholarship ID
+                </TableCell>
+                <TableCell className={classes["table-cell"]}>
+                  Applicant
+                </TableCell>
+                <TableCell className={classes["table-cell"]}>Status</TableCell>
+                <TableCell className={classes["table-cell"]}>
+                  Background Verifier
+                </TableCell>
+                <TableCell className={classes["table-cell"]}>
+                  Program Manager
+                </TableCell>
+                <TableCell className={classes["table-cell"]}>
+                  Submission Date
+                </TableCell>
+                <TableCell className={classes["table-cell"]}>
+                  Volunteer Hours
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {searchResults &&
                 searchResults.map((searchResult: ScholarshipData) => (
                   <TableRow>
-                    <TableCell>
+                    <TableCell className={classes["table-cell"]}>
                       <Link
                         onClick={() =>
                           navigate(
@@ -280,20 +327,29 @@ const FormSearch: React.FC = () => {
                         {searchResult.scholarshipID}
                       </Link>
                     </TableCell>
-                    <TableCell>{searchResult.name}</TableCell>
-                    <TableCell>
+                    <TableCell className={classes["table-cell"]}>
+                      {searchResult.name}
+                    </TableCell>
+                    <TableCell className={classes["table-cell"]}>
                       {searchResult.status &&
                         scholarshipApplicationStatusesMap.get(
                           searchResult.status
                         )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={classes["table-cell"]}>
                       {searchResult.backgroundVerifierEmail}
                     </TableCell>
-                    <TableCell>{searchResult.programManagerEmail}</TableCell>
-                    <TableCell>
+                    <TableCell className={classes["table-cell"]}>
+                      {searchResult.programManagerEmail}
+                    </TableCell>
+                    <TableCell className={classes["table-cell"]}>
                       {searchResult.submissionDate
                         ? searchResult.submissionDate
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell className={classes["table-cell"]}>
+                      {searchResult.volunteerHours
+                        ? searchResult.volunteerHours
                         : "N/A"}
                     </TableCell>
                   </TableRow>

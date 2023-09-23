@@ -6,9 +6,8 @@ function RootLayout(props: any) {
   const { setLogin } = props;
   return (
     <>
-      {/* <Navigation></Navigation> */}
-      <Header setLogin={setLogin}></Header>
       <main className={classes.content}>
+        <Header setLogin={setLogin}></Header>
         <Outlet />
       </main>
     </>

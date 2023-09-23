@@ -1,3 +1,5 @@
 .content {
-  margin: 2rem auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
 }

@@ -16,11 +16,27 @@ export type VolunteeringDetails = {
   noOfHours?: string;
   activityDescription?: string;
   scholarshipID?: string;
-  email?: string;
-  name?: string;
-  submissionDate?: string;
-  status?: string;
 };
+
+export type PastVolunteeringDetails = {
+  activityDate: string;
+  activityDescription: string;
+  email: string;
+  name: string;
+  noOfHours: string;
+  requestID: string;
+  scholarshipID: string;
+  status: string;
+  submissionDate: string;
+};
+
+export type VolunteerRecordDetails = {
+  approvedHours: string;
+  email: string;
+  name: string;
+  scholarshipID: string;
+};
+
 export type ScholarshipData = {
   email: string;
   name: string;

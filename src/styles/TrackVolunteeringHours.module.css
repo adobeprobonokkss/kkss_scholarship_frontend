@@ -12,3 +12,88 @@
   color: #222222;
   padding: 0 5px 0 5px;
 }
+
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  padding: 0 2rem 0 2rem;
+}
+
+.track-time-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.impact {
+  display: grid;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.impact h1,
+h3 {
+  margin: 0;
+}
+
+.impact-label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.impact-label span {
+  font-size: 2.7rem;
+}
+
+.track-volunteering-hours-form,
+.submittted-enteries {
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.track-volunteering-hours-form h1 {
+  margin: 0;
+}
+
+.table-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 0.5rem;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.activity-date {
+  max-width: 6rem;
+  width: 6rem;
+  justify-content: center;
+}
+
+.description {
+  max-width: 30rem;
+  width: 30rem;
+  overflow: auto;
+  overflow-wrap: break-word;
+  text-overflow: initial;
+  white-space: normal;
+}
+
+.no-of-hours {
+  max-width: 6rem;
+  width: 6em;
+  justify-content: center;
+}
+
+.submission-date {
+  max-width: 8rem;
+  width: 8rem;
+  justify-content: center;
+}

@@ -8,8 +8,7 @@ import { Button } from "@swc-react/button";
 import { Link } from "react-router-dom";
 import classes from "../styles/userDashboard.module.css";
 import { ApplicationStatus, RoleType } from "./../utils/types";
-import axios from "axios";
-import { ScholarshipData, enumColors } from "./../utils/types";
+import { ScholarshipData } from "./../utils/types";
 import {
   ScholarshipDataRequest,
   getScholarshipFormData,

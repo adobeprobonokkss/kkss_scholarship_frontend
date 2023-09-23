@@ -3,6 +3,13 @@ import { ScholarshipData } from "./../../utils/types";
 import { Link } from "react-router-dom";
 import classes from "./../../styles/COMP_Table.module.css";
 import { Status } from "./../../components/status/Status";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@swc-react/table";
 interface ScholarshipTableProps {
   scholarshipList: ScholarshipData[];
 }
@@ -13,35 +20,35 @@ export const UsersTable: React.FC<ScholarshipTableProps> = (
   const { scholarshipList } = props;
 
   return (
-    <table className={classes.my_table}>
-      <thead>
-        <tr>
-          <th>Application ID</th>
-          <th>Name</th>
-          <th>Status</th>
-          <th>Submission Date</th>
-          <th>PM</th>
-          <th>Reviewer</th>
-        </tr>
-      </thead>
-      <tbody>
-        {scholarshipList.map((item, index) => (
-          <tr key={index}>
-            <td>
+    <Table className={classes.my_table}>
+      <TableHead>
+        <TableRow>
+          <TableCell>Application ID</TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell>Status</TableCell>
+          <TableCell>Submission Date</TableCell>
+          <TableCell>PM</TableCell>
+          <TableCell>Reviewer</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {scholarshipList?.map((item, index) => (
+          <TableRow key={index}>
+            <TableCell>
               <Link to={`/scholarship-form/preview/${item.scholarshipID}`}>
                 {item.scholarshipID}
               </Link>
-            </td>
-            <td>{item.name}</td>
-            <td>
+            </TableCell>
+            <TableCell>{item.name}</TableCell>
+            <TableCell>
               <Status status={item.status ?? ""}></Status>
-            </td>
-            <td>{item.submissionDate}</td>
-            <td>{item.programManagerEmail}</td>
-            <td>{item.backgroundVerifierEmail}</td>
-          </tr>
+            </TableCell>
+            <TableCell>{item.submissionDate}</TableCell>
+            <TableCell>{item.programManagerEmail}</TableCell>
+            <TableCell>{item.backgroundVerifierEmail}</TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 };
