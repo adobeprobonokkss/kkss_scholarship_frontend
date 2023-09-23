@@ -81,12 +81,12 @@ export enum ApplicationStatus {
 }
 
 export const enumColors: Record<ApplicationStatus, string> = {
-  [ApplicationStatus.submitted]: "#454ADE", //
-  [ApplicationStatus.initial_review_completed]: "green", //
-  [ApplicationStatus.background_verification_completed]: "#C17817", //
-  [ApplicationStatus.final_review_completed]: "green",
-  [ApplicationStatus.approved]: "#3A914D",
-  [ApplicationStatus.rejected]: "#EE4266", //
+  [ApplicationStatus.submitted]: "#3498db", //
+  [ApplicationStatus.initial_review_completed]: "#27ae60", //
+  [ApplicationStatus.background_verification_completed]: "#f1c40f", //
+  [ApplicationStatus.final_review_completed]: "#8e44ad",
+  [ApplicationStatus.approved]: "#2ecc71",
+  [ApplicationStatus.rejected]: "#e74c3c", //
 };
 
 export enum ApplicationStatusKeys {

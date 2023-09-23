@@ -1,6 +1,7 @@
 import { Button } from "@swc-react/button";
 import { Picker } from "@swc-react/picker";
 import { MenuItem } from "@swc-react/menu";
+import { Status } from "./../components/status/Status";
 import {
   Table,
   TableBody,
@@ -25,6 +26,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { scholarshipApplicationStatuses } from "../services/ScholarshipFormService";
 import { RoleType } from "../utils/types";
 import { getUsersInfo } from "../utils/shared";
+import { Grid } from "@adobe/react-spectrum";
 
 const FormSearch: React.FC = () => {
   let routeParams = useParams();
@@ -282,10 +284,11 @@ const FormSearch: React.FC = () => {
                     </TableCell>
                     <TableCell>{searchResult.name}</TableCell>
                     <TableCell>
-                      {searchResult.status &&
+                      <Status status={searchResult.status ?? ""}></Status>
+                      {/* {searchResult.status &&
                         scholarshipApplicationStatusesMap.get(
                           searchResult.status
-                        )}
+                        )} */}
                     </TableCell>
                     <TableCell>
                       {searchResult.backgroundVerifierEmail}
