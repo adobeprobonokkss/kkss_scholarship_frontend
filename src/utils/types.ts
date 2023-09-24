@@ -11,6 +11,32 @@ export type ScholarshipApplicationResponse = {
   message: string;
 };
 
+export type VolunteeringDetails = {
+  activityDate?: string;
+  noOfHours?: string;
+  activityDescription?: string;
+  scholarshipID?: string;
+};
+
+export type PastVolunteeringDetails = {
+  activityDate: string;
+  activityDescription: string;
+  email: string;
+  name: string;
+  noOfHours: string;
+  requestID: string;
+  scholarshipID: string;
+  status: string;
+  submissionDate: string;
+};
+
+export type VolunteerRecordDetails = {
+  approvedHours: string;
+  email: string;
+  name: string;
+  scholarshipID: string;
+};
+
 export type ScholarshipData = {
   email: string;
   name: string;

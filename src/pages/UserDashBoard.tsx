@@ -8,8 +8,7 @@ import { Button } from "@swc-react/button";
 import { Link } from "react-router-dom";
 import classes from "../styles/userDashboard.module.css";
 import { ApplicationStatus, RoleType } from "./../utils/types";
-import axios from "axios";
-import { ScholarshipData, enumColors } from "./../utils/types";
+import { ScholarshipData } from "./../utils/types";
 import {
   ScholarshipDataRequest,
   getScholarshipFormData,
@@ -18,6 +17,10 @@ interface Role {
   role: string | null;
 }
 
+const validYearOption = [
+  2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032,
+  2034, 2035,
+];
 // Convert the record's values into an array
 const statusArray = Object.keys(ApplicationStatus);
 
@@ -94,9 +97,14 @@ function getAdminDashBoard() {
             // console.log(selectedYear);
           }}
         >
-          <option selected={selectedYear == "2022"}>2022</option>
+          {validYearOption.map((yearvalue) => (
+            <option selected={selectedYear == `${yearvalue}`}>
+              {yearvalue}
+            </option>
+          ))}
+          {/* <option selected={selectedYear == "2022"}>2022</option>
           <option selected={selectedYear == "2023"}>2023</option>
-          <option selected={selectedYear == "2024"}>2024</option>
+          <option selected={selectedYear == "2024"}>2024</option> */}
         </select>
       </div>
       <div>
@@ -141,8 +149,40 @@ function getReviewerDashBoard(decoded: any) {
   );
 }
 
-function getProgramManagerNavigationBar() {
-  return <></>;
+function getProgramManagerDashBoard() {
+  const [selectedYear, setSelectedYear] = useState<string>(
+    new Date().getFullYear().toString()
+  );
+  // useEffect(() => {
+  //   console.log("from useEffect", selectedYear);
+  // }, [selectedYear]);
+  return (
+    <>
+      <div>
+        <b>Please Select Year - </b>
+        <select
+          onChange={(e) => {
+            setSelectedYear(e.target.value);
+            console.log("year selected " + e.target.value);
+            // console.log(selectedYear);
+          }}
+        >
+          {validYearOption.map((yearvalue) => (
+            <option selected={selectedYear == `${yearvalue}`}>
+              {yearvalue}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        {statusArray
+          .filter((item) => !(item === "approved" || item === "rejected"))
+          .map<any>((item: string) => {
+            return <Tile color="" statusText={item} year={selectedYear} />;
+          })}
+      </div>
+    </>
+  );
 }
 
 const UserDashBoard: React.FC = () => {
@@ -154,7 +194,7 @@ const UserDashBoard: React.FC = () => {
     console.log("executing this");
     return getAdminDashBoard();
   } else if (decoded?.role === RoleType.PROGRAM_MANAGER) {
-    return getProgramManagerNavigationBar();
+    return getProgramManagerDashBoard();
   } else if (decoded?.role === RoleType.REVIEWER) {
     return getReviewerDashBoard(decoded);
   } else {

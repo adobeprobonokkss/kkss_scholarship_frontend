@@ -70,6 +70,7 @@ export type ScholarshipData = {
   programManagerComment2?: string;
   backgroundVerifierComment?: string;
   adminComment?: string;
+  volunteerHours?: string;
 };
 
 export type ScholarshipDataRequest = {
@@ -77,6 +78,7 @@ export type ScholarshipDataRequest = {
   keyword?: string;
   year?: string;
   status?: string | undefined;
+  limit?: number;
 };
 
 export type ScholarshipFormKeys = keyof ScholarshipData;

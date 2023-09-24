@@ -20,6 +20,9 @@ import { RoleType } from "./utils/types";
 import EditProfile from "./pages/EditProfile";
 const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
 import PastApplications from "./pages/PastApplications";
+import { TrackVolunteeringHours } from "./pages/TrackVolunteeringHours";
+import ReviewVolunteerHours from "./pages/ReviewVolunteerHours";
+
 function App() {
   useEffect(() => {
     (async () => {
@@ -128,6 +131,24 @@ function App() {
         {
           path: "/*",
           element: <Protected accessList={["*"]} Component={UserDashBoard} />,
+        },
+        {
+          path: "/track-time",
+          element: (
+            <Protected
+              accessList={[RoleType.USER]}
+              Component={TrackVolunteeringHours}
+            />
+          ),
+        },
+        {
+          path: "review-volunteer-hours",
+          element: (
+            <Protected
+              accessList={[RoleType.PROGRAM_MANAGER, RoleType.ADMIN]}
+              Component={ReviewVolunteerHours}
+            />
+          ),
         },
       ],
     },
