@@ -4,8 +4,9 @@ import {
   Route,
   Routes,
   RouterProvider,
+  useNavigate,
 } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ScholarshipForm from "./pages/ScholarshipForm";
 import UserDashBoard from "./pages/UserDashBoard";
 import RootLayout from "./pages/RootLayout";
@@ -14,16 +15,34 @@ import FormSearch from "./pages/FormSearch";
 import Home from "./pages/Home";
 import Users from "./pages/User";
 import axios, { AxiosError } from "axios";
-import { destroySession } from "./utils/shared";
+import { destroySession, setUserInfo } from "./utils/shared";
 import { RoleType } from "./utils/types";
 import EditProfile from "./pages/EditProfile";
-
 const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
 import PastApplications from "./pages/PastApplications";
 import { TrackVolunteeringHours } from "./pages/TrackVolunteeringHours";
 import ReviewVolunteerHours from "./pages/ReviewVolunteerHours";
 
 function App() {
+  useEffect(() => {
+    (async () => {
+      console.log("some function here......");
+
+      const response: any = await axios
+        .get(`${BACKENDURL}/api/v1/auth/user`, { withCredentials: true })
+        .catch((err) => {
+          console.log("getting error from server", err);
+        });
+      if (response && response.status == 200) {
+        setUserInfo(response.data);
+        localStorage.removeItem("state");
+        setLogin(true);
+      } else {
+        setLogin(false);
+      }
+    })();
+  }, []);
+
   const [isLogin, setLogin] = useState(false);
 
   const handleLogout = async () => {
@@ -45,6 +64,7 @@ function App() {
 
   axios.interceptors.response.use(
     function (response) {
+      console.log("interceptor", response.request.responseURL, response.status);
       if (response.status === 401) {
         handleLogout();
         return response;

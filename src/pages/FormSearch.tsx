@@ -1,6 +1,7 @@
 import { Button } from "@swc-react/button";
 import { Picker } from "@swc-react/picker";
 import { MenuItem } from "@swc-react/menu";
+import { Status } from "./../components/status/Status";
 import {
   Table,
   TableBody,
@@ -32,8 +33,8 @@ const FormSearch: React.FC = () => {
   const [searchOption, setSearchOption] = useState("scholarshipID");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<ScholarshipData[]>([]);
-  const [selectedYear, setSelectedYear] = useState("All");
-  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedYear, setSelectedYear] = useState("-");
+  const [selectedStatus, setSelectedStatus] = useState("-");
   const years = ["All"];
   const statuses = scholarshipApplicationStatuses;
   const userInfo = getUsersInfo().decoded;
@@ -62,7 +63,9 @@ const FormSearch: React.FC = () => {
   }, [routeParams.year, routeParams.status]);
 
   useEffect(() => {
+    if (selectedYear === "-" || selectedStatus === "-") return;
     fetchScholarshipApplications();
+    console.log("reproducible- ", selectedYear, selectedStatus);
   }, [selectedYear, selectedStatus]);
 
   const handleSearchOptionChange = (event: any) => {
@@ -86,6 +89,7 @@ const FormSearch: React.FC = () => {
       status: selectedStatus !== "all" ? selectedStatus : undefined,
       limit: 50,
     };
+
     scholarshipData = (await getScholarshipFormData(request)) ?? [];
     const volunteerHoursList = await fetchVolunteerHours(scholarshipData);
     if (volunteerHoursList) {
@@ -99,6 +103,7 @@ const FormSearch: React.FC = () => {
           }
         });
       });
+      console.log("ret", request);
     }
 
     console.log("scholarshipData after scholarshipData", scholarshipData);
@@ -331,10 +336,11 @@ const FormSearch: React.FC = () => {
                       {searchResult.name}
                     </TableCell>
                     <TableCell className={classes["table-cell"]}>
-                      {searchResult.status &&
+                      <Status status={searchResult.status ?? ""}></Status>
+                      {/* {searchResult.status &&
                         scholarshipApplicationStatusesMap.get(
                           searchResult.status
-                        )}
+                        )}  */}
                     </TableCell>
                     <TableCell className={classes["table-cell"]}>
                       {searchResult.backgroundVerifierEmail}

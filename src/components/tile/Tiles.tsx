@@ -14,7 +14,7 @@ interface tileType {
 export const Tile: React.FC<tileType> = ({ color, statusText, year }) => {
   const statusValue: string = (ApplicationStatus as any)[statusText];
   const tileColor: string = enumColors[statusValue as ApplicationStatus];
-  const [totalCount, setTotalCount] = useState(0);
+  const [totalCount, setTotalCount] = useState("...");
   useEffect(() => {
     (async () => {
       if (true) {

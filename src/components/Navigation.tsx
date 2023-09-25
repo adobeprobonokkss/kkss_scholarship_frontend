@@ -46,14 +46,14 @@ function getUserNavigationBar() {
             </NavLink>
           </li> */}
 
-          <li>
+          {/* <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
               to="/edit_profile"
             >
               Edit Profile
             </NavLink>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </header>
@@ -99,14 +99,14 @@ function getAdminNavigationBar() {
             </NavLink>
           </li>
 
-          <li>
+          {/* <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
               to="/edit_profile"
             >
               Edit Profile
             </NavLink>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </header>
@@ -127,14 +127,14 @@ function getReviewerNavigationBar() {
             </NavLink>
           </li>
 
-          <li>
+          {/* <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
               to="/edit_profile"
             >
               Edit Profile
             </NavLink>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </header>
@@ -148,35 +148,34 @@ function getProgramManagerNavigationBar() {
         <ul className={classes.list}>
           <li>
             <NavLink
-              // className={({ isActive }) => (isActive ? classes.active : "")}
               className={({ isActive }) => (isActive ? classes.active : "")}
               to="/"
             >
               DashBoard
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
               to="/"
             >
               Assing Reviewer
             </NavLink>
-          </li>
+          </li> */}
 
-          <li>
+          {/* <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
               to="/"
             >
               Approve Volunteering Hour
             </NavLink>
-          </li>
+          </li> */}
 
           <li>
             <NavLink
               className={({ isActive }) => (isActive ? classes.active : "")}
-              to="/"
+              to="/search/2023/submitted"
             >
               Assign Reviewer
             </NavLink>
@@ -187,15 +186,6 @@ function getProgramManagerNavigationBar() {
               to="/review-volunteer-hours"
             >
               Review Volunteer Activity
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink
-              className={({ isActive }) => (isActive ? classes.active : "")}
-              to="/edit_profile"
-            >
-              Edit Profile
             </NavLink>
           </li>
         </ul>
