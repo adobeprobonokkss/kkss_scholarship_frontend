@@ -73,7 +73,7 @@ function App() {
     },
     function (error) {
       console.log(error);
-      handleLogout();
+      isLogin && handleLogout();
       return Promise.reject(error);
     }
   );
