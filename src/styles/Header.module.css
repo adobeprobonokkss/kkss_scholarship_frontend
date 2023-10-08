@@ -24,11 +24,5 @@
 }
 
 .logout_button {
-  background-color: #ff6347;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  color: #fff;
   cursor: pointer;
-  font-size: 1rem;
 }

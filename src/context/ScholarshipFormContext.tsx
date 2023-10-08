@@ -32,7 +32,6 @@ const initForm: ScholarshipData = {
   hobbies: "",
   ambition: "",
   awardDetails: "",
-  attendanceDetails: "",
   fatherName: "",
   fatherAge: "",
   fatherOccupation: "",
@@ -48,8 +47,6 @@ const initForm: ScholarshipData = {
   siblingOccupation: "",
   siblingAnnualIncome: "",
   siblingPhNumber: "",
-  formSubmittedBy: "",
-  yourPhNumber: "",
 };
 
 export interface ScholarshipFormContextProps {

@@ -6,6 +6,9 @@ import Navigation from "./Navigation";
 import { RoleType } from "./../utils/types";
 // const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
 import { handleLogout } from "./../services/sessionService";
+import { Button } from "@swc-react/button";
+import { Icon } from "@swc-react/icon";
+import LogoutIcon from "./LogoutIcon";
 
 const Header = (props: any) => {
   const { setLogin } = props;
@@ -36,15 +39,18 @@ const Header = (props: any) => {
         <span className={classes.username}>{decoded?.name}</span>
       </div>
       <Navigation role={role}></Navigation>
-      <button
+      <Button
         onClick={() => {
           handleLogout(() => {});
           setLogin(false);
         }}
         className={classes.logout_button}
       >
+        <Icon slot="icon">
+          <LogoutIcon />
+        </Icon>
         Logout
-      </button>
+      </Button>
     </div>
   );
 };

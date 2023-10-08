@@ -40,7 +40,6 @@ export type ScholarshipData = {
   hobbies: string;
   ambition: string;
   awardDetails: string;
-  attendanceDetails: string;
   fatherName: string;
   fatherAge: string;
   fatherOccupation: string;
@@ -56,8 +55,6 @@ export type ScholarshipData = {
   siblingOccupation: string;
   siblingAnnualIncome: string;
   siblingPhNumber: string;
-  formSubmittedBy: string;
-  yourPhNumber: string;
   scholarshipID?: string;
   status?: ApplicationStatusType;
   submissionYear?: string;
@@ -205,11 +202,11 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter Phone Number (Start with +91)",
+          placeholder: "Enter Phone Number ",
           id: "phNumber",
           value: "",
           required: true,
-          pattern: "[+][9][1][789][0-9]{9}",
+          pattern: "[0-9]{10}",
         },
       },
       // Mother Tongue
@@ -261,12 +258,11 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder:
-            "Enter contact number of the person Referred (Start with +91)",
+          placeholder: "Enter contact number of the person Referred ",
           id: "",
           value: "",
           required: true,
-          pattern: "[+][9][1][789][0-9]{9}",
+          pattern: "[0-9]{10}",
         },
       },
     ],
@@ -497,19 +493,6 @@ const configs = [
           grows: true,
         },
       },
-      // Attendance Details for Previous Year
-      {
-        key: "attendanceDetails",
-        label: "Attendance Details for Previous Year",
-        type: "text",
-        component: Textfield,
-        props: {
-          placeholder: "Enter Attendance Details for Previous Year",
-          id: "attendanceDetails",
-          value: "",
-          pattern: "[a-zA-Z0-9,. ]{1,100}",
-        },
-      },
     ],
   },
   // Family Details
@@ -577,11 +560,11 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter Father's Mobile Number (Start with +91)",
+          placeholder: "Enter Father's Mobile Number ",
           id: "fatherPhNumber",
           value: "",
           required: true,
-          pattern: "[+][9][1][789][0-9]{9}",
+          pattern: "[0-9]{10}",
         },
       },
       // Mother's Name
@@ -644,11 +627,11 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter Mother's Mobile Number (Start with +91)",
+          placeholder: "Enter Mother's Mobile Number ",
           id: "motherPhNumber",
           value: "",
           required: true,
-          pattern: "[+][9][1][789][0-9]{9}",
+          pattern: "[0-9]{10}",
         },
       },
       // Sibling's Name
@@ -710,38 +693,10 @@ const configs = [
         type: "text",
         component: Textfield,
         props: {
-          placeholder: "Enter Sibling's Mobile Number (Start with +91)",
+          placeholder: "Enter Sibling's Mobile Number ",
           id: "siblingPhNumber",
           value: "",
-          pattern: "[+][9][1][789][0-9]{9}",
-        },
-      },
-      // Form Submitted by
-      {
-        key: "formSubmittedBy",
-        label: "Form Submitted by",
-        type: "text",
-        component: Textfield,
-        props: {
-          placeholder: "Enter Form Submitted by",
-          id: "formSubmittedBy",
-          value: "",
-          required: true,
-          pattern: "[a-zA-Z ]{1,64}",
-        },
-      },
-      // Your Phone no.
-      {
-        key: "yourPhNumber",
-        label: "Your Phone no.",
-        type: "text",
-        component: Textfield,
-        props: {
-          placeholder: "Enter Your Phone no. (Start with +91)",
-          id: "yourPhNumber",
-          value: "",
-          required: true,
-          pattern: "[+][9][1][789][0-9]{9}",
+          pattern: "[0-9]{10}",
         },
       },
     ],
@@ -917,9 +872,6 @@ export const validationMap: any = {
   awardDetails: {
     maxLength: 3000,
   },
-  attendanceDetails: {
-    maxLength: 100,
-  },
   fatherName: {
     maxLength: 64,
   },
@@ -963,12 +915,6 @@ export const validationMap: any = {
     maxLength: 32,
   },
   siblingPhNumber: {
-    maxLength: 13,
-  },
-  formSubmittedBy: {
-    maxLength: 64,
-  },
-  yourPhNumber: {
     maxLength: 13,
   },
 };
