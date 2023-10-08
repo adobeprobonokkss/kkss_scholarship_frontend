@@ -5,7 +5,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 const CopyPlugin = require("copy-webpack-plugin");
 
-const environment = "development";
+const environment = "production";
 
 module.exports = {
   entry: "./src/index.tsx",
