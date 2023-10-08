@@ -80,8 +80,6 @@ export type ScholarshipData = {
   siblingOccupation: string;
   siblingAnnualIncome: string;
   siblingPhNumber: string;
-  formSubmittedBy: string;
-  yourPhNumber: string;
   scholarshipID?: string;
   status?: string;
   submissionYear?: string;

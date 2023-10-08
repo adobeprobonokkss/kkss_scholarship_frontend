@@ -15,6 +15,11 @@ import {
 } from "../services/ScholarshipFormService";
 
 import "./../styles/UserDashBoard.css"; // Import the CSS file for styling
+import { Icon } from "@swc-react/icon";
+import ClockIcon from "../components/ClockIcon";
+import AddIcon from "../components/AddIcon";
+import { Picker } from "@swc-react/picker";
+import { MenuItem } from "@swc-react/menu";
 
 interface Role {
   role: string | null;
@@ -52,11 +57,17 @@ function getUserDashBoard(decoded: any) {
       <div>
         <div className={classes.btn_style}>
           <Button>
+            <Icon slot="icon">
+              <AddIcon />
+            </Icon>
             <Link className={classes.styled_link} to="/scholarship-form">
               Apply for scholarship
             </Link>
           </Button>
           <Button>
+            <Icon slot="icon">
+              <ClockIcon />
+            </Icon>
             <Link className={classes.styled_link} to="/past-applications">
               Past Applications
             </Link>

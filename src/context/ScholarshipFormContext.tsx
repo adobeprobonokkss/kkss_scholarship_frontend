@@ -48,8 +48,6 @@ const initForm: ScholarshipData = {
   siblingOccupation: "",
   siblingAnnualIncome: "",
   siblingPhNumber: "",
-  formSubmittedBy: "",
-  yourPhNumber: "",
 };
 
 export interface ScholarshipFormContextProps {
