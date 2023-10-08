@@ -40,7 +40,6 @@ export type ScholarshipData = {
   hobbies: string;
   ambition: string;
   awardDetails: string;
-  attendanceDetails: string;
   fatherName: string;
   fatherAge: string;
   fatherOccupation: string;
@@ -494,19 +493,6 @@ const configs = [
           grows: true,
         },
       },
-      // Attendance Details for Previous Year
-      {
-        key: "attendanceDetails",
-        label: "Attendance Details for Previous Year",
-        type: "text",
-        component: Textfield,
-        props: {
-          placeholder: "Enter Attendance Details for Previous Year",
-          id: "attendanceDetails",
-          value: "",
-          pattern: "[a-zA-Z0-9,. ]{1,100}",
-        },
-      },
     ],
   },
   // Family Details
@@ -885,9 +871,6 @@ export const validationMap: any = {
   },
   awardDetails: {
     maxLength: 3000,
-  },
-  attendanceDetails: {
-    maxLength: 100,
   },
   fatherName: {
     maxLength: 64,

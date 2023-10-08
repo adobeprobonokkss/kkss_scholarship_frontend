@@ -64,7 +64,6 @@ export type ScholarshipData = {
   hobbies: string;
   ambition: string;
   awardDetails: string;
-  attendanceDetails: string;
   fatherName: string;
   fatherAge: string;
   fatherOccupation: string;

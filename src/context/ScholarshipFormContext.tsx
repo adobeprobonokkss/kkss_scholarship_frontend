@@ -32,7 +32,6 @@ const initForm: ScholarshipData = {
   hobbies: "",
   ambition: "",
   awardDetails: "",
-  attendanceDetails: "",
   fatherName: "",
   fatherAge: "",
   fatherOccupation: "",
