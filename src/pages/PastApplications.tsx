@@ -1,11 +1,8 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@swc-react/table";
-import { Link } from "@swc-react/link";
+const { Table, TableBody, TableCell, TableHead, TableRow } = await import(
+  "@swc-react/table"
+);
+const { Link } = await import("@swc-react/link");
+const { useNavigate } = await import("react-router-dom");
 import React from "react";
 
 import classes from "../styles/FormSearch.module.css";
@@ -15,7 +12,6 @@ import {
   getScholarshipFormData,
   scholarshipApplicationStatusesMap,
 } from "../services/ScholarshipFormService";
-import { useNavigate } from "react-router-dom";
 import { getUsersInfo } from "../utils/shared";
 
 const PastApplications: React.FC = () => {

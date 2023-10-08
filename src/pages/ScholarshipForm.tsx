@@ -1,10 +1,8 @@
-import React from "react";
+import React, { lazy } from "react";
+const { useParams } = await import("react-router-dom");
 import configs from "../services/ScholarshipFormService";
-import StepperForm from "../components/StepperForm";
+const StepperForm = lazy(() => import("../components/StepperForm"));
 import { ScholarshipFormProvider } from "../context/ScholarshipFormContext";
-import { useParams } from "react-router-dom";
-
-import classes from "../styles/ScholarshipForm.module.css";
 
 const ScholarshipForm: React.FC = () => {
   const sfConfigs = configs;

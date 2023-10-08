@@ -9,8 +9,6 @@ const environment = "production";
 module.exports = {
   entry: "./src/index.tsx",
   mode: environment,
-  // source code should be accessible in browser devtools
-  devtool: "inline-source-map",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
@@ -66,10 +64,12 @@ module.exports = {
     }),
   ],
   optimization: {
+    usedExports: true,
     minimize: true,
     minimizer: [
       environment === "production" &&
         new TerserPlugin({
+          minify: TerserPlugin.uglifyJsMinify,
           terserOptions: {
             compress: {
               pure_funcs: [

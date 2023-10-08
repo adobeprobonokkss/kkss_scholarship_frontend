@@ -5,11 +5,12 @@
   "repository": "https://github.com/adobeprobonokkss/kkss_scholarship_frontend.git",
   "author": "Adobe pro bono KKSS team",
   "license": "UNLICENSED",
+  "sideEffects": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist",
-    "build": "export GENERATE_SOURCEMAP=false yarn clean && webpack --mode=production",
-    "start": "export GENERATE_SOURCEMAP=false yarn clean && webpack serve --open",
+    "build": "export GENERATE_SOURCEMAP=false && yarn clean && webpack --mode=production",
+    "start": "export GENERATE_SOURCEMAP=false && yarn clean && webpack serve --mode=development --open",
     "build-dev": "yarn clean && webpack --mode development",
     "deploy": "yarn build && firebase deploy"
   },
@@ -69,7 +70,7 @@
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",
-    "@types/react": "^18.2.16",
+    "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.7",
     "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.3",
@@ -77,6 +78,7 @@
     "style-loader": "^3.3.3",
     "terser-webpack-plugin": "^5.3.9",
     "ts-loader": "^9.4.4",
+    "uglify-js": "^3.17.4",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"

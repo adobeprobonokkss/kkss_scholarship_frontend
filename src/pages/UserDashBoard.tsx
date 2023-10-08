@@ -1,11 +1,12 @@
-import React, { FC, useEffect, useState } from "react";
-import "./../styles/UserDashBoard.css"; // Import the CSS file for styling
-import { Welcome } from "./../components/dashboard/Welcome";
-import { UsersTable } from "./../components/table/UsersTable";
-import { Tile } from "./../components/tile/Tiles";
+import React, { lazy, useEffect, useState } from "react";
+const { Button } = await import("@swc-react/button");
+const { Link } = await import("react-router-dom");
+
+const Welcome = lazy(() => import("./../components/dashboard/Welcome"));
+const UsersTable = lazy(() => import("./../components/table/UsersTable"));
+const Tile = lazy(() => import("./../components/tile/Tiles"));
+
 import { getUsersInfo } from "./../utils/shared";
-import { Button } from "@swc-react/button";
-import { Link } from "react-router-dom";
 import classes from "../styles/userDashboard.module.css";
 import { ApplicationStatus, RoleType } from "./../utils/types";
 import { ScholarshipData } from "./../utils/types";
@@ -13,6 +14,9 @@ import {
   ScholarshipDataRequest,
   getScholarshipFormData,
 } from "../services/ScholarshipFormService";
+
+import "./../styles/UserDashBoard.css"; // Import the CSS file for styling
+
 interface Role {
   role: string | null;
 }

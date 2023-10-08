@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Login from "./Login";
-import LoginSuccess from "./LoginSuccess";
+import React, { lazy, useEffect } from "react";
+const Login = lazy(() => import("./Login"));
+const LoginSuccess = lazy(() => import("./LoginSuccess"));
 import { getUsersInfo, setUserInfo } from "./../utils/shared";
 import axios from "axios";
 

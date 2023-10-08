@@ -4,8 +4,7 @@ interface welcomeMessage {
   userName: string;
   role: string;
 }
-
-export const Welcome: React.FC<welcomeMessage> = ({ userName, role }) => {
+const Welcome: React.FC<welcomeMessage> = ({ userName, role }) => {
   return (
     <div>
       {/* <p> {role}</p> */}
@@ -15,3 +14,5 @@ export const Welcome: React.FC<welcomeMessage> = ({ userName, role }) => {
     </div>
   );
 };
+
+export default Welcome;
