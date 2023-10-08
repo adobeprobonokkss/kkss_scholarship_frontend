@@ -1,29 +1,28 @@
-const {
-  BrowserRouter: Router,
-  createBrowserRouter,
-  Route,
+import {
+  BrowserRouter as Router,
   Routes,
+  Route,
+  createBrowserRouter,
   RouterProvider,
-} = await import("react-router-dom");
-const React = await import("react");
-const { lazy, useEffect, useState } = await import("react");
+} from "react-router-dom";
+import React from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
-const ScholarshipForm = lazy(() => import("./pages/ScholarshipForm"));
-const UserDashBoard = lazy(() => import("./pages/UserDashBoard"));
-const RootLayout = lazy(() => import("./pages/RootLayout"));
-const Protected = lazy(() => import("./pages/Protected"));
-const FormSearch = lazy(() => import("./pages/FormSearch"));
-const Home = lazy(() => import("./pages/Home"));
-const Users = lazy(() => import("./pages/User"));
-const PastApplications = lazy(() => import("./pages/PastApplications"));
-const TrackVolunteeringHours = lazy(
-  () => import("./pages/TrackVolunteeringHours")
-);
-const ReviewVolunteerHours = lazy(() => import("./pages/ReviewVolunteerHours"));
-const EditProfile = lazy(() => import("./pages/EditProfile"));
-const { destroySession, setUserInfo } = await import("./utils/shared");
-const { RoleType } = await import("./utils/types");
+import ScholarshipForm from "./pages/ScholarshipForm";
+import UserDashBoard from "./pages/UserDashBoard";
+import RootLayout from "./pages/RootLayout";
+import Protected from "./pages/Protected";
+import FormSearch from "./pages/FormSearch";
+import Home from "./pages/Home";
+import Users from "./pages/User";
+import PastApplications from "./pages/PastApplications";
+import TrackVolunteeringHours from "./pages/TrackVolunteeringHours";
+import ReviewVolunteerHours from "./pages/ReviewVolunteerHours";
+import EditProfile from "./pages/EditProfile";
+
+import { destroySession, setUserInfo } from "./utils/shared";
+import { RoleType } from "./utils/types";
 const BACKENDURL = process.env.REACT_APP_BACK_END_URL;
 
 function App() {

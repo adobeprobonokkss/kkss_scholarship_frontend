@@ -9,8 +9,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf dist",
-    "build": "export GENERATE_SOURCEMAP=false && yarn clean && webpack --mode=production",
-    "start": "export GENERATE_SOURCEMAP=false && yarn clean && webpack serve --mode=development --open",
+    "build": "export GENERATE_SOURCEMAP=false && yarn clean && webpack --mode=production && yarn copy-index-css",
+    "start": "export GENERATE_SOURCEMAP=false && yarn clean && webpack serve --mode=development --open --hot && yarn copy-index-css",
+    "copy-index-css": "cp src/index.css dist/index.css",
     "build-dev": "yarn clean && webpack --mode development",
     "deploy": "yarn build && firebase deploy"
   },
