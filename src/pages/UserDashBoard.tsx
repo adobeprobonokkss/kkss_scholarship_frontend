@@ -1,10 +1,9 @@
-import React, { lazy, useEffect, useState } from "react";
-const { Button } = await import("@swc-react/button");
-const { Link } = await import("react-router-dom");
-
-const Welcome = lazy(() => import("./../components/dashboard/Welcome"));
-const UsersTable = lazy(() => import("./../components/table/UsersTable"));
-const Tile = lazy(() => import("./../components/tile/Tiles"));
+import React, { useEffect, useState } from "react";
+import { Button } from "@swc-react/button";
+import { Link } from "react-router-dom";
+import Welcome from "../components/dashboard/Welcome";
+import UsersTable from "../components/table/UsersTable";
+import Tile from "../components/tile/Tiles";
 
 import { getUsersInfo } from "./../utils/shared";
 import classes from "../styles/userDashboard.module.css";
