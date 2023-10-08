@@ -1,32 +1,28 @@
-import { Button } from "@swc-react/button";
-import { Picker } from "@swc-react/picker";
-import { MenuItem } from "@swc-react/menu";
-import { Status } from "./../components/status/Status";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@swc-react/table";
-import { Textfield } from "@swc-react/textfield";
-import { HelpText } from "@swc-react/help-text";
-import { Icon } from "@swc-react/icon";
-import { Link } from "@swc-react/link";
-import React, { useEffect, useState } from "react";
+const { Button } = await import("@swc-react/button");
+const { Picker } = await import("@swc-react/picker");
+const { MenuItem } = await import("@swc-react/menu");
+const { Table, TableBody, TableCell, TableHead, TableRow } = await import(
+  "@swc-react/table"
+);
+const { Textfield } = await import("@swc-react/textfield");
+const { HelpText } = await import("@swc-react/help-text");
+const { Icon } = await import("@swc-react/icon");
+const { Link } = await import("@swc-react/link");
+const { useNavigate, useParams } = await import("react-router-dom");
+import React, { lazy, useEffect, useState } from "react";
 
 import classes from "../styles/FormSearch.module.css";
 import {
   ScholarshipData,
   ScholarshipDataRequest,
   getScholarshipFormData,
-  scholarshipApplicationStatusesMap,
 } from "../services/ScholarshipFormService";
-import { useNavigate, useParams } from "react-router-dom";
 import { scholarshipApplicationStatuses } from "../services/ScholarshipFormService";
 import { RoleType, VolunteerRecordDetails } from "../utils/types";
 import { getUsersInfo } from "../utils/shared";
 import { getVolunteerHoursByScholarshipIDList } from "../services/VolunteerService";
+const HelpTextIcon = lazy(() => import("../components/HelpTextIcon"));
+const Status = lazy(() => import("../components/status/Status"));
 
 const FormSearch: React.FC = () => {
   let routeParams = useParams();
@@ -206,22 +202,7 @@ const FormSearch: React.FC = () => {
                     top: "4px",
                   }}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    width="18"
-                  >
-                    <title>InfoMedium</title>
-                    <rect
-                      id="ToDelete"
-                      fill="#ff13dc"
-                      opacity="0"
-                      width="18"
-                      height="18"
-                    />
-                    <path d="M9,1a8,8,0,1,0,8,8A8,8,0,0,0,9,1ZM8.85,3.15a1.359,1.359,0,0,1,1.43109,1.28286q.00352.06452.00091.12914A1.332,1.332,0,0,1,8.85,5.994,1.353,1.353,0,0,1,7.418,4.561,1.359,1.359,0,0,1,8.72191,3.14905Q8.78595,3.14652,8.85,3.15ZM11,13.5a.5.5,0,0,1-.5.5h-3a.5.5,0,0,1-.5-.5v-1a.5.5,0,0,1,.5-.5H8V9H7.5A.5.5,0,0,1,7,8.5v-1A.5.5,0,0,1,7.5,7h2a.5.5,0,0,1,.5.5V12h.5a.5.5,0,0,1,.5.5Z" />
-                  </svg>
+                  <HelpTextIcon />
                 </Icon>
                 Partial keyword search is supported but it will only fetch
                 records that start with or end with the keyword.
@@ -236,22 +217,7 @@ const FormSearch: React.FC = () => {
                     top: "4px",
                   }}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    width="18"
-                  >
-                    <title>InfoMedium</title>
-                    <rect
-                      id="ToDelete"
-                      fill="#ff13dc"
-                      opacity="0"
-                      width="18"
-                      height="18"
-                    />
-                    <path d="M9,1a8,8,0,1,0,8,8A8,8,0,0,0,9,1ZM8.85,3.15a1.359,1.359,0,0,1,1.43109,1.28286q.00352.06452.00091.12914A1.332,1.332,0,0,1,8.85,5.994,1.353,1.353,0,0,1,7.418,4.561,1.359,1.359,0,0,1,8.72191,3.14905Q8.78595,3.14652,8.85,3.15ZM11,13.5a.5.5,0,0,1-.5.5h-3a.5.5,0,0,1-.5-.5v-1a.5.5,0,0,1,.5-.5H8V9H7.5A.5.5,0,0,1,7,8.5v-1A.5.5,0,0,1,7.5,7h2a.5.5,0,0,1,.5.5V12h.5a.5.5,0,0,1,.5.5Z" />
-                  </svg>
+                  <HelpTextIcon />
                 </Icon>
                 You can search with keywords by just selecting one of the two
                 options, Status or Year.
@@ -266,22 +232,7 @@ const FormSearch: React.FC = () => {
                     top: "4px",
                   }}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    width="18"
-                  >
-                    <title>InfoMedium</title>
-                    <rect
-                      id="ToDelete"
-                      fill="#ff13dc"
-                      opacity="0"
-                      width="18"
-                      height="18"
-                    />
-                    <path d="M9,1a8,8,0,1,0,8,8A8,8,0,0,0,9,1ZM8.85,3.15a1.359,1.359,0,0,1,1.43109,1.28286q.00352.06452.00091.12914A1.332,1.332,0,0,1,8.85,5.994,1.353,1.353,0,0,1,7.418,4.561,1.359,1.359,0,0,1,8.72191,3.14905Q8.78595,3.14652,8.85,3.15ZM11,13.5a.5.5,0,0,1-.5.5h-3a.5.5,0,0,1-.5-.5v-1a.5.5,0,0,1,.5-.5H8V9H7.5A.5.5,0,0,1,7,8.5v-1A.5.5,0,0,1,7.5,7h2a.5.5,0,0,1,.5.5V12h.5a.5.5,0,0,1,.5.5Z" />
-                  </svg>
+                  <HelpTextIcon />
                 </Icon>
                 If search results in "no results found", please make sure there
                 is not space before and after the keyword. Also try both start

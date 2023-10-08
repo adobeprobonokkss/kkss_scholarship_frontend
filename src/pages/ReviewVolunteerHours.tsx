@@ -1,17 +1,13 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@swc-react/table";
+const { Table, TableBody, TableCell, TableHead, TableRow } = await import(
+  "@swc-react/table"
+);
+const { Button } = await import("@swc-react/button");
 import React, { FC, useEffect, useState } from "react";
 import {
   approveOrRejectVolunteeringHours,
   getAllVolunteerActivityHours,
 } from "../services/VolunteerService";
 import { PastVolunteeringDetails } from "../utils/types";
-import { Button } from "@swc-react/button";
 import classes from "../styles/ReviewVolunteerHours.module.css";
 import { getUsersInfo } from "../utils/shared";
 

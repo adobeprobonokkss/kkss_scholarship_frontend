@@ -1,20 +1,16 @@
-// Form for tracking volunteering hours
-// The form will have the following fields
-// Activity Date - input date
-// No. of hours - <Textfield> from @swc-react/textfield
-// Activity Description - <Textfield> from @swc-react/textfield
-// Submit button - <Button> from @swc-react/button
-// Each input field has a field label - <FieldLabel> from @swc-react/field-label
-
-import React, { useEffect, useState } from "react";
-import { Button } from "@swc-react/button";
-import { Textfield } from "@swc-react/textfield";
-import { FieldLabel } from "@swc-react/field-label";
-import { HelpText } from "@swc-react/help-text";
+import React, { FC, lazy, useEffect, useState } from "react";
+const { Button } = await import("@swc-react/button");
+const { Textfield } = await import("@swc-react/textfield");
+const { FieldLabel } = await import("@swc-react/field-label");
+const { HelpText } = await import("@swc-react/help-text");
+const { DialogWrapper } = await import("@swc-react/dialog");
+const { Icon } = await import("@swc-react/icon");
+const { Table, TableBody, TableCell, TableHead, TableRow } = await import(
+  "@swc-react/table"
+);
+const { useNavigate } = await import("react-router-dom");
 
 import classes from "../styles/TrackVolunteeringHours.module.css";
-import { DialogWrapper } from "@swc-react/dialog";
-import { Icon } from "@swc-react/icon";
 import {
   ScholarshipDataRequest,
   getScholarshipFormData,
@@ -25,20 +21,13 @@ import {
   RoleType,
   VolunteeringDetails,
 } from "../utils/types";
-import { useNavigate } from "react-router-dom";
 import { getUsersInfo } from "../utils/shared";
 import {
   getAllVolunteeringActivityHoursByUser,
   getVolunteeringHours,
   submitVolunteeringHours,
 } from "../services/VolunteerService";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@swc-react/table";
+const HelpTextIcon = lazy(() => import("../components/HelpTextIcon"));
 
 const renderErrors = (errors: string[], onClose: (arg0: never[]) => void) => {
   return (
@@ -72,29 +61,14 @@ const renderHelpTexts = (helpTexts: string[]) => {
           top: "4px",
         }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="18"
-          viewBox="0 0 18 18"
-          width="18"
-        >
-          <title>InfoMedium</title>
-          <rect
-            id="ToDelete"
-            fill="#ff13dc"
-            opacity="0"
-            width="18"
-            height="18"
-          />
-          <path d="M9,1a8,8,0,1,0,8,8A8,8,0,0,0,9,1ZM8.85,3.15a1.359,1.359,0,0,1,1.43109,1.28286q.00352.06452.00091.12914A1.332,1.332,0,0,1,8.85,5.994,1.353,1.353,0,0,1,7.418,4.561,1.359,1.359,0,0,1,8.72191,3.14905Q8.78595,3.14652,8.85,3.15ZM11,13.5a.5.5,0,0,1-.5.5h-3a.5.5,0,0,1-.5-.5v-1a.5.5,0,0,1,.5-.5H8V9H7.5A.5.5,0,0,1,7,8.5v-1A.5.5,0,0,1,7.5,7h2a.5.5,0,0,1,.5.5V12h.5a.5.5,0,0,1,.5.5Z" />
-        </svg>
+        <HelpTextIcon />
       </Icon>
       {helpText}
     </HelpText>
   ));
 };
 
-export const TrackVolunteeringHours: React.FC = () => {
+const TrackVolunteeringHours: FC = () => {
   const [activityDate, setActivityDate] = useState("");
   const [noOfHours, setNoOfHours] = useState("");
   const [activityDescription, setActivityDescription] = useState("");
@@ -430,3 +404,5 @@ export const TrackVolunteeringHours: React.FC = () => {
     </>
   );
 };
+
+export default TrackVolunteeringHours;
