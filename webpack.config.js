@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const environment = "production";
 
@@ -61,6 +62,9 @@ module.exports = {
           : JSON.stringify(
               "https://asia-south1-kkss-5a230.cloudfunctions.net/kkssCloudFunctions"
             ),
+    }),
+    new CopyPlugin({
+      patterns: [{ from: "assets", to: "assets" }],
     }),
   ],
   optimization: {

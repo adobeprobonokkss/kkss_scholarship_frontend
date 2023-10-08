@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url("https://media.istockphoto.com/id/1414321089/photo/graduations-cap-with-money-coins-on-light-blue-background-money-savings-for-education.jpg?s=1024x1024&w=is&k=20&c=l3-od9NFtttPWyt0ka3d8qdXs_P05kaXZCvitF_eFNc=");
+  background-color: #eaeaea;
 
   background-size: cover;
   background-repeat: no-repeat;
@@ -17,9 +17,11 @@
 .login-card {
   background-color: white;
   border-radius: 8px;
-  padding: 20px;
+  padding: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
+  display: grid;
+  gap: 10px;
 }
 
 .org-logo {
@@ -30,6 +32,10 @@
 .login-card h1 {
   margin: 0 0 20px;
   font-size: 24px;
+}
+
+.login-card h2 {
+  margin: 0;
 }
 
 .login-card button {
@@ -46,4 +52,13 @@
 
 .login-card button:hover {
   background-color: #357ae8;
+}
+
+.login-card .logo {
+  justify-self: center;
+}
+
+.login-card .login-button {
+  justify-self: center;
+  margin-top: 10px;
 }
