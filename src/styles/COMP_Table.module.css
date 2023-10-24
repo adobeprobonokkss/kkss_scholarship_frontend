@@ -1,8 +1,8 @@
 /* TableStyles.css */
 .my_table {
-  width: 90%;
+  width: 100%;
   border-collapse: collapse;
-  margin: 20px;
+  padding: 10px 20px;
 }
 
 .my_table th,

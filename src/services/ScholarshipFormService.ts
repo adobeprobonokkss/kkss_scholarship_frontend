@@ -190,7 +190,6 @@ const configs = [
           id: "address",
           value: "",
           multiline: true,
-          grows: true,
           required: true,
           pattern: "[a-zA-Z0-9,.\\- ]{1,300}",
         },
@@ -284,7 +283,7 @@ const configs = [
           value: "",
           required: true,
           multiline: true,
-          grows: true,
+
           pattern: "[a-zA-Z0-9,.\\- ]{1,300}",
         },
       },
@@ -308,7 +307,7 @@ const configs = [
         type: "dropdown",
         component: Picker,
         displayField: (formDataCtx: any) => {
-          const id = formDataCtx.education;
+          const id = formDataCtx?.education;
           return (
             id.length > 0 &&
             id != "others" &&
@@ -328,7 +327,7 @@ const configs = [
         type: "dropdown",
         component: Picker,
         displayField: (formDataCtx: any) => {
-          const id = formDataCtx.education;
+          const id = formDataCtx?.education;
           return id.length > 0;
         },
         props: {
@@ -345,7 +344,8 @@ const configs = [
         component: Textfield,
         displayField: (formDataCtx: any) => {
           return (
-            formDataCtx.education == "others" || formDataCtx.stream == "others"
+            formDataCtx?.education == "others" ||
+            formDataCtx?.stream == "others"
           );
         },
         props: {
@@ -459,7 +459,6 @@ const configs = [
           required: true,
           pattern: "[a-zA-Z0-9,. ]{1,1000}",
           multiline: true,
-          grows: true,
         },
       },
       // Ambition
@@ -474,7 +473,7 @@ const configs = [
           value: "",
           required: true,
           multiline: true,
-          grows: true,
+
           pattern: "[a-zA-Z0-9,. ]{1,3000}",
         },
       },
@@ -490,7 +489,6 @@ const configs = [
           value: "",
           pattern: "[a-zA-Z0-9,. ]{1,3000}",
           multiline: true,
-          grows: true,
         },
       },
     ],
@@ -973,13 +971,13 @@ export const renderPickerChildren = (
   let children: any;
   switch (fieldID) {
     case "stream": {
-      const streamID = formDataCtx.education;
+      const streamID = formDataCtx?.education;
       if (streamID == "others") return null;
       children = streamMap[streamID];
       break;
     }
     case "class": {
-      const classID = formDataCtx.education;
+      const classID = formDataCtx?.education;
       if (classID == "others") return null;
       children = classMap[classID];
       break;

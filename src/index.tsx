@@ -26,6 +26,12 @@ const Index = async () => {
 
   const app = initializeApp(firebaseConfig);
   db = getFirestore(app);
+  document
+    .querySelector("link[rel=stylesheet]")
+    ?.setAttribute("href", `${window.location.origin}/index.css`);
+  document
+    .querySelector(`script[src="bundle.js"]`)
+    ?.setAttribute("src", `${window.location.origin}/bundle.js`);
 
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>

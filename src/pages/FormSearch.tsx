@@ -238,6 +238,21 @@ const FormSearch: React.FC = () => {
                 is not space before and after the keyword. Also try both start
                 with and end with in case of partial keyword search.
               </HelpText>
+              <HelpText size="l" variant="neutral" icon>
+                <Icon
+                  style={{
+                    position: "relative",
+                    width: "18px",
+                    height: "18px",
+                    margin: "0px 6px 0 0",
+                    top: "4px",
+                  }}
+                >
+                  <HelpTextIcon />
+                </Icon>
+                Only 50 records will be fetched at a time. Please use the
+                filters to narrow down your search.
+              </HelpText>
             </div>
           </div>
         </>

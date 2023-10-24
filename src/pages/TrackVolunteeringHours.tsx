@@ -116,7 +116,7 @@ const TrackVolunteeringHours: FC = () => {
     ];
     if (
       !eligibileEducationLevels.includes(
-        scholarshipApplications.at(0).education
+        scholarshipApplications.at(0)?.education
       )
     ) {
       alert("Applicant should be in 11th standard or above to volunteer");

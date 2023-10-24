@@ -22,7 +22,7 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
   const renderTextfield = (input: any) => {
     return createElement(input.component, {
       ...input.props,
-      quiet: true,
+      ...(input?.props?.multiline ? {} : { quiet: true }),
       style: {
         width: "100%",
       },
@@ -33,7 +33,7 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
           .trim()
           ?.slice(0, validationMap[input.key]?.maxLength)
           .trim();
-        formDataCtx.onFormDataChange(input.key, value?.trim());
+        formDataCtx?.onFormDataChange(input.key, value?.trim());
         if (input.props.change) input.props.change(e);
       },
     });
@@ -45,7 +45,7 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
       value: formDataCtx[input.key].trim(),
       change: (e: any) => {
         e.preventDefault();
-        formDataCtx.onFormDataChange(input.key, e.target.value?.trim());
+        formDataCtx?.onFormDataChange(input.key, e.target.value?.trim());
         if (input.props.change) input.props.change(e);
       },
       children: renderPickerChildren(input.key, formDataCtx),
@@ -58,7 +58,7 @@ const ConfigurableForm: FC<IConfigurableFormProps> = (
       value: formDataCtx[input.key],
       onChange: (e: any) => {
         e.preventDefault();
-        formDataCtx.onFormDataChange(input.key, e.target.value?.trim());
+        formDataCtx?.onFormDataChange(input.key, e.target.value?.trim());
       },
       className: classes.datePicker,
     };

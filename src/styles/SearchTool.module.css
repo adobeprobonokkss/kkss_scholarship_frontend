@@ -14,12 +14,11 @@
   display: grid;
   gap: 10px;
   width: 100%;
-  grid-template-columns: 2fr 2fr 5fr 1fr;
+  grid-template-columns: 2fr 5fr 1fr;
 }
 
 .form-search__search-options {
   display: flex;
-  width: 10rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -31,7 +30,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 25rem;
   gap: 1rem;
 }
 

@@ -14,3 +14,30 @@ h2 {
   display: flex;
   gap: 20px;
 }
+
+.submitted-heading {
+  padding: 0px 20px;
+}
+
+.select-year {
+  padding: 0 0 0 10px;
+}
+
+.tiles {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 10px;
+}
+
+.select-year-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.year-picker {
+  width: fit-content;
+  padding: auto;
+}

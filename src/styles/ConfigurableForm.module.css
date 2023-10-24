@@ -4,7 +4,8 @@
   align-items: flex-start;
   justify-content: center;
   width: 100%;
-  padding: 0 20% 0 20%;
+  gap: 15px;
+  padding: 0 3rem 0 3rem;
 }
 
 .card {
@@ -15,7 +16,6 @@
   border-radius: 8px;
   gap: 15px;
   width: 100%;
-  margin: 0.5em;
   overflow: hidden;
 }
 
