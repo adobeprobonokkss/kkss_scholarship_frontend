@@ -4,7 +4,7 @@
 }
 
 h1 {
-  padding: 0px 20px;
+  padding: 0px;
 }
 
 .table-cell {
@@ -35,8 +35,8 @@ h1 {
 }
 
 .description {
-  max-width: 38rem;
-  width: 38rem;
+  max-width: 30%;
+  width: 30%;
   overflow: auto;
   overflow-wrap: break-word;
   text-overflow: initial;

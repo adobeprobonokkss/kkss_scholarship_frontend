@@ -9,7 +9,8 @@ const Welcome: React.FC<welcomeMessage> = ({ userName, role }) => {
     <div>
       {/* <p> {role}</p> */}
       <h2>
-        Welcome - {userName} [{role}]
+        Welcome - {userName}
+        {/* [{role}] */}
       </h2>
     </div>
   );

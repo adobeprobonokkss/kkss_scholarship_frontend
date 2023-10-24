@@ -31,14 +31,15 @@ const Tile: React.FC<tileType> = ({ color, statusText, year }) => {
   }, [year]);
 
   const tileStyle: React.CSSProperties = {
+    display: "grid",
+    placeItems: "center",
     backgroundColor: tileColor,
-    padding: "1%",
+    padding: "10px 20px",
     borderRadius: "8px",
     textAlign: "center",
     boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+    minWidth: "200px",
     width: "16%",
-    margin: "1%",
-    display: "inline-block",
     color: "white",
   };
 

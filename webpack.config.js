@@ -65,6 +65,7 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [{ from: "assets", to: "assets" }],
+      patterns: [{ from: "src/index.css", to: "index.css" }],
     }),
   ],
   optimization: {

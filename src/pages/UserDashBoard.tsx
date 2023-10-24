@@ -15,6 +15,7 @@ import {
 } from "../services/ScholarshipFormService";
 
 import "./../styles/UserDashBoard.css"; // Import the CSS file for styling
+
 import { Icon } from "@swc-react/icon";
 import ClockIcon from "../components/ClockIcon";
 import AddIcon from "../components/AddIcon";
@@ -73,19 +74,11 @@ function getUserDashBoard(decoded: any) {
             </Link>
           </Button>
         </div>
-        {/* <div className={classes.btn_style}>
-          <Button>
-            <Link className={classes.styled_link} to="/">
-              Log Volunteering Hour
-            </Link>
-          </Button>
-        </div> */}
-        {/* <div>
-          <h3>Total volunteeting Hour contributed - {5}/150</h3>
-        </div> */}
 
         <div>
-          <h1>Your submitted application this year</h1>
+          <h1 className={classes["submitted-heading"]}>
+            Your submitted application this year
+          </h1>
         </div>
         <UsersTable scholarshipList={scholarshipList}></UsersTable>
       </div>
@@ -97,31 +90,28 @@ function getAdminDashBoard() {
   const [selectedYear, setSelectedYear] = useState<string>(
     new Date().getFullYear().toString()
   );
-  // useEffect(() => {
-  //   console.log("from useEffect", selectedYear);
-  // }, [selectedYear]);
   return (
     <>
-      <div>
-        <b>Please Select Year - </b>
-        <select
-          onChange={(e) => {
+      <div className={classes["select-year-container"]}>
+        <b className={classes["select-year"]}>Please Select Year</b>
+
+        <Picker
+          className={classes["year-picker"]}
+          value={selectedYear}
+          change={(e: any) => {
+            e.preventDefault();
             setSelectedYear(e.target.value);
             console.log("year selected " + e.target.value);
-            // console.log(selectedYear);
           }}
         >
           {validYearOption.map((yearvalue) => (
-            <option selected={selectedYear == `${yearvalue}`}>
+            <MenuItem key={`years-${yearvalue}`} value={`${yearvalue}`}>
               {yearvalue}
-            </option>
+            </MenuItem>
           ))}
-          {/* <option selected={selectedYear == "2022"}>2022</option>
-          <option selected={selectedYear == "2023"}>2023</option>
-          <option selected={selectedYear == "2024"}>2024</option> */}
-        </select>
+        </Picker>
       </div>
-      <div>
+      <div className={classes["tiles"]}>
         {statusArray.map<any>((item: string) => {
           return <Tile color="" statusText={item} year={selectedYear} />;
         })}
@@ -155,7 +145,7 @@ function getReviewerDashBoard(decoded: any) {
       <hr></hr>
       <div>
         <div>
-          <h4>APPLICATION IN REVIEW</h4>
+          <h2>APPLICATION IN REVIEW</h2>
         </div>
         <UsersTable scholarshipList={scholarshipList}></UsersTable>
       </div>
@@ -167,28 +157,27 @@ function getProgramManagerDashBoard() {
   const [selectedYear, setSelectedYear] = useState<string>(
     new Date().getFullYear().toString()
   );
-  // useEffect(() => {
-  //   console.log("from useEffect", selectedYear);
-  // }, [selectedYear]);
   return (
     <>
-      <div>
-        <b>Please Select Year - </b>
-        <select
-          onChange={(e) => {
+      <div className={classes["select-year-container"]}>
+        <b className={classes["select-year"]}>Please Select Year</b>
+        <Picker
+          className={classes["year-picker"]}
+          value={selectedYear}
+          change={(e: any) => {
+            e.preventDefault();
             setSelectedYear(e.target.value);
             console.log("year selected " + e.target.value);
-            // console.log(selectedYear);
           }}
         >
           {validYearOption.map((yearvalue) => (
-            <option selected={selectedYear == `${yearvalue}`}>
+            <MenuItem key={`years-${yearvalue}`} value={`${yearvalue}`}>
               {yearvalue}
-            </option>
+            </MenuItem>
           ))}
-        </select>
+        </Picker>
       </div>
-      <div>
+      <div className={classes["tiles"]}>
         {statusArray
           .filter((item) => !(item === "approved" || item === "rejected"))
           .map<any>((item: string) => {
@@ -201,8 +190,6 @@ function getProgramManagerDashBoard() {
 
 const UserDashBoard: React.FC = () => {
   const { decoded } = getUsersInfo();
-  // const scholarShipList=
-  //make a request to check if client side data has not been updated
 
   if (decoded?.role === RoleType.ADMIN) {
     console.log("executing this");

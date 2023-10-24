@@ -20,16 +20,25 @@ const ReviewProcess: FC = () => {
   const isAdmin = userInfo?.role == RoleType.ADMIN;
   const isReviewer = userInfo?.role == RoleType.REVIEWER;
   const hidePMReview = isUser || isReviewer;
-  const hideAdminReview = isUser || isPM || isReviewer;
   const formDataCtx = useContext<ScholarshipData & ScholarshipFormContextProps>(
     ScholarshipFormContext
   );
   const hideAfterBGReview =
-    formDataCtx.status == ApplicationStatusKeys.submitted ||
-    formDataCtx.status == ApplicationStatusKeys.initial_review_completed;
-
-  const disableAssignPMReviewer = !!formDataCtx.programManagerEmail && !isAdmin;
-  const disableAssignBGReviewer = isUser || isReviewer;
+    formDataCtx?.status == ApplicationStatusKeys.submitted ||
+    formDataCtx?.status == ApplicationStatusKeys.initial_review_completed;
+  const hideBGReview =
+    isUser || formDataCtx?.status == ApplicationStatusKeys.submitted;
+  const hideAdminReview =
+    isUser ||
+    isPM ||
+    isReviewer ||
+    formDataCtx?.status == ApplicationStatusKeys.submitted ||
+    formDataCtx?.status == ApplicationStatusKeys.initial_review_completed ||
+    formDataCtx?.status ==
+      ApplicationStatusKeys.background_verification_completed;
+  const disableAssignPMReviewer =
+    !!formDataCtx?.programManagerEmail && !isAdmin;
+  const disableAssignBGReviewer = isUser || isReviewer || hideAfterBGReview;
   const headingLabelStyle = {
     fontSize: "16pt",
     fontFamily: `'docs-Roboto', Helvetica, Arial, sans-serif`,
@@ -45,13 +54,13 @@ const ReviewProcess: FC = () => {
     fontWeight: 510,
   };
   const enableBeforeBGReview =
-    formDataCtx.status === ApplicationStatusKeys.submitted;
+    formDataCtx?.status === ApplicationStatusKeys.submitted;
   const enableAfterBGReview =
-    formDataCtx.status ===
+    formDataCtx?.status ===
     ApplicationStatusKeys.background_verification_completed;
   const enableBGReview =
-    formDataCtx.status === ApplicationStatusKeys.initial_review_completed ||
-    formDataCtx.status === ApplicationStatusKeys.submitted;
+    formDataCtx?.status === ApplicationStatusKeys.initial_review_completed ||
+    formDataCtx?.status === ApplicationStatusKeys.submitted;
 
   if (isUser) return <></>;
 
@@ -59,17 +68,17 @@ const ReviewProcess: FC = () => {
     console.log("ReviewProcess: useEffect");
     if (
       isPM &&
-      formDataCtx.status === ApplicationStatusKeys.submitted &&
-      (!formDataCtx.programManagerEmail ||
-        formDataCtx.programManagerEmail?.length === 0)
+      formDataCtx?.status === ApplicationStatusKeys.submitted &&
+      (!formDataCtx?.programManagerEmail ||
+        formDataCtx?.programManagerEmail?.length === 0)
     ) {
       console.log("ReviewProcess: useEffect - setting PM email and name");
 
-      formDataCtx.onFormDataChange(
+      formDataCtx?.onFormDataChange(
         "programManagerEmail",
         (userInfo?.email ?? "").trim()
       );
-      formDataCtx.onFormDataChange(
+      formDataCtx?.onFormDataChange(
         "programManagerName",
         (userInfo?.name ?? "").trim()
       );
@@ -103,9 +112,9 @@ const ReviewProcess: FC = () => {
                   placeholder="Enter valid Email"
                   id="pmEmail"
                   value={
-                    formDataCtx.programManagerEmail &&
-                    formDataCtx.programManagerEmail.length > 0
-                      ? formDataCtx.programManagerEmail
+                    formDataCtx?.programManagerEmail &&
+                    formDataCtx?.programManagerEmail.length > 0
+                      ? formDataCtx?.programManagerEmail
                       : ""
                   }
                   required={true}
@@ -117,7 +126,7 @@ const ReviewProcess: FC = () => {
                   change={(e: any) => {
                     e.preventDefault();
                     const value = e.target?.value.trim() ?? "";
-                    formDataCtx.onFormDataChange(
+                    formDataCtx?.onFormDataChange(
                       "programManagerEmail",
                       value?.trim()
                     );
@@ -128,9 +137,9 @@ const ReviewProcess: FC = () => {
                   placeholder="Enter valid Name"
                   id="pmName"
                   value={
-                    formDataCtx.programManagerName &&
-                    formDataCtx.programManagerName.length > 0
-                      ? formDataCtx.programManagerName
+                    formDataCtx?.programManagerName &&
+                    formDataCtx?.programManagerName.length > 0
+                      ? formDataCtx?.programManagerName
                       : ""
                   }
                   required={true}
@@ -142,7 +151,7 @@ const ReviewProcess: FC = () => {
                   change={(e: any) => {
                     e.preventDefault();
                     const value = e.target?.value.trim() ?? "";
-                    formDataCtx.onFormDataChange(
+                    formDataCtx?.onFormDataChange(
                       "programManagerName",
                       value?.trim()
                     );
@@ -162,10 +171,9 @@ const ReviewProcess: FC = () => {
                 disabled={!enableBeforeBGReview}
                 placeholder="Enter Comment"
                 id="pmComment"
-                value={formDataCtx.programManagerComment1 ?? ""}
+                value={formDataCtx?.programManagerComment1 ?? ""}
                 required={true}
                 type="text"
-                quiet={true}
                 multiline={true}
                 style={{
                   width: "100%",
@@ -173,7 +181,7 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   const value = e.target?.value.trim() ?? "";
-                  formDataCtx.onFormDataChange(
+                  formDataCtx?.onFormDataChange(
                     "programManagerComment1",
                     value?.trim()
                   );
@@ -201,9 +209,9 @@ const ReviewProcess: FC = () => {
               placeholder="Enter valid Email"
               id="bgEmail"
               value={
-                formDataCtx.backgroundVerifierEmail &&
-                formDataCtx.backgroundVerifierEmail.length > 0
-                  ? formDataCtx.backgroundVerifierEmail
+                formDataCtx?.backgroundVerifierEmail &&
+                formDataCtx?.backgroundVerifierEmail.length > 0
+                  ? formDataCtx?.backgroundVerifierEmail
                   : ""
               }
               required={true}
@@ -213,7 +221,7 @@ const ReviewProcess: FC = () => {
               change={(e: any) => {
                 e.preventDefault();
                 const value = e.target?.value.trim() ?? "";
-                formDataCtx.onFormDataChange(
+                formDataCtx?.onFormDataChange(
                   "backgroundVerifierEmail",
                   value?.trim()
                 );
@@ -224,9 +232,9 @@ const ReviewProcess: FC = () => {
               placeholder="Enter valid Name"
               id="bgName"
               value={
-                formDataCtx.backgroundVerifierName &&
-                formDataCtx.backgroundVerifierName.length > 0
-                  ? formDataCtx.backgroundVerifierName
+                formDataCtx?.backgroundVerifierName &&
+                formDataCtx?.backgroundVerifierName.length > 0
+                  ? formDataCtx?.backgroundVerifierName
                   : ""
               }
               required={true}
@@ -236,48 +244,46 @@ const ReviewProcess: FC = () => {
               change={(e: any) => {
                 e.preventDefault();
                 const value = e.target?.value.trim() ?? "";
-                formDataCtx.onFormDataChange(
+                formDataCtx?.onFormDataChange(
                   "backgroundVerifierName",
                   value?.trim()
                 );
               }}
-              disabled={
-                disableAssignBGReviewer &&
-                formDataCtx.status !== ApplicationStatusKeys.submitted
-              }
+              disabled={disableAssignBGReviewer || !enableBGReview}
             />
           </div>
         </div>
-        <div key={"bgReviewcomment"} className={classes.card}>
-          <FieldLabel
-            disabled={!enableBGReview}
-            required={true}
-            style={fieldLabelStyle}
-          >
-            {"Background Verification Comment"}
-          </FieldLabel>
-          <Textfield
-            disabled={!enableBGReview}
-            placeholder="Enter Comment"
-            id="bgComment"
-            value={formDataCtx.backgroundVerifierComment ?? ""}
-            required={true}
-            type="text"
-            quiet={true}
-            multiline={true}
-            style={{
-              width: "100%",
-            }}
-            change={(e: any) => {
-              e.preventDefault();
-              const value = e.target?.value.trim() ?? "";
-              formDataCtx.onFormDataChange(
-                "backgroundVerifierComment",
-                value?.trim()
-              );
-            }}
-          />
-        </div>
+        {!hideBGReview && (
+          <div key={"bgReviewcomment"} className={classes.card}>
+            <FieldLabel
+              disabled={!enableBGReview}
+              required={true}
+              style={fieldLabelStyle}
+            >
+              {"Background Verification Comment"}
+            </FieldLabel>
+            <Textfield
+              disabled={!enableBGReview}
+              placeholder="Enter Comment"
+              id="bgComment"
+              value={formDataCtx?.backgroundVerifierComment ?? ""}
+              required={true}
+              type="text"
+              multiline={true}
+              style={{
+                width: "100%",
+              }}
+              change={(e: any) => {
+                e.preventDefault();
+                const value = e.target?.value.trim() ?? "";
+                formDataCtx?.onFormDataChange(
+                  "backgroundVerifierComment",
+                  value?.trim()
+                );
+              }}
+            />
+          </div>
+        )}
         {!hidePMReview && !hideAfterBGReview && (
           <>
             <div key={"pmReview2Heading"} className={classes.card}>
@@ -301,10 +307,9 @@ const ReviewProcess: FC = () => {
                 disabled={!enableAfterBGReview}
                 placeholder="Enter Comment"
                 id="pmComment2"
-                value={formDataCtx.programManagerComment2 ?? ""}
+                value={formDataCtx?.programManagerComment2 ?? ""}
                 required={true}
                 type="text"
-                quiet={true}
                 multiline={true}
                 style={{
                   width: "100%",
@@ -312,7 +317,7 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   const value = e.target?.value.trim() ?? "";
-                  formDataCtx.onFormDataChange(
+                  formDataCtx?.onFormDataChange(
                     "programManagerComment2",
                     value?.trim()
                   );
@@ -335,10 +340,9 @@ const ReviewProcess: FC = () => {
               <Textfield
                 placeholder="Enter Comment"
                 id="adminComment"
-                value={formDataCtx.adminComment ?? ""}
+                value={formDataCtx?.adminComment ?? ""}
                 required={true}
                 type="text"
-                quiet={true}
                 multiline={true}
                 style={{
                   width: "100%",
@@ -346,7 +350,7 @@ const ReviewProcess: FC = () => {
                 change={(e: any) => {
                   e.preventDefault();
                   const value = e.target?.value.trim() ?? "";
-                  formDataCtx.onFormDataChange("adminComment", value?.trim());
+                  formDataCtx?.onFormDataChange("adminComment", value?.trim());
                 }}
               />
             </div>
@@ -356,15 +360,15 @@ const ReviewProcess: FC = () => {
               </FieldLabel>
               <Picker
                 value={
-                  formDataCtx.status == ApplicationStatusKeys.approved ||
-                  formDataCtx.status == ApplicationStatusKeys.rejected
-                    ? formDataCtx.status
+                  formDataCtx?.status == ApplicationStatusKeys.approved ||
+                  formDataCtx?.status == ApplicationStatusKeys.rejected
+                    ? formDataCtx?.status
                     : ""
                 }
                 change={(e: any) => {
                   e.preventDefault();
                   if (isAdmin) {
-                    formDataCtx.onFormDataChange(
+                    formDataCtx?.onFormDataChange(
                       "status",
                       e.target.value?.trim()
                     );

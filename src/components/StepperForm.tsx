@@ -26,6 +26,8 @@ import {
 } from "../utils/types";
 import { getUsersInfo } from "../utils/shared";
 import ConfigurableForm from "./ConfigurableForm";
+import { NavigateFunction } from "react-router-dom";
+import Status from "./status/Status";
 const ReviewProcess = lazy(() => import("./ReviewProcess"));
 const HelpTextIcon = lazy(() => import("./HelpTextIcon"));
 
@@ -98,10 +100,58 @@ const renderConfirmationDialog = (
   );
 };
 
+const renderAcknowledgementDialog = (
+  mode: string,
+  response: ScholarshipApplicationResponse | undefined,
+  onClose: () => void,
+  navigate: NavigateFunction
+) => {
+  const message = response?.scholarshipID
+    ? {
+        title: "Application Submitted Successfully",
+        body: `Your application has been submitted successfully. Your application ID is ${response?.scholarshipID}. Please use this ID for future reference.`,
+      }
+    : {
+        title: "Application Submission Failed",
+        body: `Something went wrong. Please try again later.`,
+      };
+
+  const onDialogClose = () => {
+    onClose();
+    if (response?.scholarshipID) {
+      const url = `/scholarship-form/preview/${response.scholarshipID}`;
+      if (!mode) {
+        navigate(url);
+      }
+      window.location.reload();
+    }
+  };
+
+  return (
+    <DialogWrapper
+      slot="click-content"
+      headline={message.title}
+      dismissable
+      underlay
+      open={true}
+      close={onDialogClose}
+    >
+      <HelpText size="l" variant="neutral" icon>
+        {message.body}
+      </HelpText>
+      <div className={classes["dialog-buttons"]}>
+        <Button onClick={onDialogClose}>Close</Button>
+      </div>
+    </DialogWrapper>
+  );
+};
+
 const StepperForm: React.FC<any> = (props: any) => {
   const [activeStep, setActiveStep] = useState(0);
   const [errors, setErrors] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [acknowledgement, setAcknowledgement] = useState(false);
+  const [response, setResponse] = useState<ScholarshipApplicationResponse>();
   const { configs, mode, scholarshipID } = props;
   const formDataCtx = useContext(ScholarshipFormContext);
   const userInfo = getUsersInfo().decoded;
@@ -115,17 +165,17 @@ const StepperForm: React.FC<any> = (props: any) => {
       return true;
     } else if (
       isReviewer &&
-      formDataCtx.status != ApplicationStatusKeys.initial_review_completed
+      formDataCtx?.status != ApplicationStatusKeys.initial_review_completed
     ) {
       return true;
     } else if (
       isPM &&
-      formDataCtx.status &&
+      formDataCtx?.status &&
       ![
         "submitted",
         "inital_review_completed",
         "background_verification_completed",
-      ].includes(formDataCtx.status)
+      ].includes(formDataCtx?.status)
     ) {
       return true;
     }
@@ -159,14 +209,8 @@ const StepperForm: React.FC<any> = (props: any) => {
         (await updateStatusAndFormDetails(userInfo, { ...formDataCtx }))
           ?.data ?? undefined;
     }
-    if (response?.scholarshipID) {
-      const url = `/scholarship-form/preview/${response.scholarshipID}`;
-      setTimeout(() => {
-        navigate(url);
-      }, 100);
-    } else {
-      alert("Something went wrong. Please try again later.");
-    }
+    setResponse(response);
+    setAcknowledgement(true);
   };
   console.log("In StepperForm.tsx");
 
@@ -179,7 +223,7 @@ const StepperForm: React.FC<any> = (props: any) => {
     scholarshipData = (await getScholarshipFormData(request)) ?? [];
     if (scholarshipData.length > 0) {
       Object.keys(scholarshipData[0]).forEach((key) => {
-        formDataCtx.onFormDataChange(
+        formDataCtx?.onFormDataChange(
           key as ScholarshipFormKeys,
           (scholarshipData[0][key as ScholarshipFormKeys] ?? "")?.trim()
         );
@@ -203,7 +247,7 @@ const StepperForm: React.FC<any> = (props: any) => {
       userInfo?.role == RoleType.USER &&
       (userInfo?.email ?? "").length > 0
     ) {
-      formDataCtx.onFormDataChange("email", userInfo?.email ?? "");
+      formDataCtx?.onFormDataChange("email", userInfo?.email ?? "");
       configs[0].formFields[0].props.disabled = true;
     }
   }, [mode, scholarshipID]);
@@ -214,13 +258,6 @@ const StepperForm: React.FC<any> = (props: any) => {
     const academicDetailsButton = buttons[1];
     const familyDetailsButton = buttons[2];
     const reviewProcessButton = buttons[3];
-    console.log(
-      "In useEffect",
-      personalDetailsButton,
-      academicDetailsButton,
-      familyDetailsButton,
-      reviewProcessButton
-    );
     scrollTo(0, 0);
 
     personalDetailsButton?.removeAttribute("disabled");
@@ -264,9 +301,9 @@ const StepperForm: React.FC<any> = (props: any) => {
         ) : (
           <></>
         )}
-        {formDataCtx.status && formDataCtx.status.length > 0 ? (
+        {formDataCtx?.status && formDataCtx?.status.length > 0 ? (
           <h3 className={classes["scholarship-id"]}>
-            Status: {ApplicationStatus[formDataCtx.status]}
+            Status: <Status status={formDataCtx?.status} />
           </h3>
         ) : (
           <></>
@@ -312,6 +349,15 @@ const StepperForm: React.FC<any> = (props: any) => {
       <div>{errors.length > 0 ? renderErrors(errors, setErrors) : <></>}</div>
       {submitting &&
         renderConfirmationDialog(submitForm, () => setSubmitting(false))}
+      {acknowledgement &&
+        renderAcknowledgementDialog(
+          mode,
+          response,
+          () => {
+            setAcknowledgement(false);
+          },
+          navigate
+        )}
     </>
   );
 };

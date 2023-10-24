@@ -1,12 +1,13 @@
 .stepperButtons {
-  margin: 0.5em;
+  margin-top: 1rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 20% 0 20%;
+  padding: 0 3rem 0 3rem;
 }
 
 .scholarship-id {
+  margin-top: 10px;
   text-align: center;
 }
 
