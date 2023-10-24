@@ -30,7 +30,7 @@ function Login(props: any) {
       <div className={classes["login-card"]}>
         <img
           className={classes["logo"]}
-          src="../../assets/AbhyudayaLogo.jpeg"
+          src="assets/AbhyudayaLogo.jpeg"
           alt=""
         />
         <h1>Keshava Kripa Samvardhana Samiti</h1>

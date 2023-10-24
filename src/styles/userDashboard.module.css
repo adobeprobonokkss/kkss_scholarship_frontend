@@ -29,6 +29,7 @@ h2 {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
   padding: 10px;
+  place-items: center;
 }
 
 .select-year-container {
