@@ -39,6 +39,7 @@ const Tile: React.FC<tileType> = ({ color, statusText, year }) => {
     textAlign: "center",
     boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
     minWidth: "200px",
+    minHeight: "100px",
     width: "16%",
     color: "white",
   };
